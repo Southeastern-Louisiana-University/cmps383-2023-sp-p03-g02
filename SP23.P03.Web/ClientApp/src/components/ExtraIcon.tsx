@@ -1,6 +1,6 @@
 import { FontAwesomeIcon, FontAwesomeIconProps } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { faRunning, faWalking } from "@fortawesome/free-solid-svg-icons";
+import { faPerson, faRunning, faTrain, faWalking } from "@fortawesome/free-solid-svg-icons";
 
 // This component is for FontAwesome icons that are not included in Semantic UI's Icon component.
 // Feel free to add more icons if you need them.
@@ -8,6 +8,8 @@ import { faRunning, faWalking } from "@fortawesome/free-solid-svg-icons";
 const EXTRA_ICONS = {
     "running": faRunning,
     "walking": faWalking,
+    "person": faPerson,
+    "train": faTrain,
 };
 
 type ExtraIconProps = Omit<FontAwesomeIconProps, "icon"> & {
