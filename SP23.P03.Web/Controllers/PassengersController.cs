@@ -185,7 +185,7 @@ namespace SP23.P03.Web.Controllers
             return Ok();
         }
 
-        private bool InvalidCreatePassengerDto(CreatePassengerDto? createPassengerDto) =>
+        private static bool InvalidCreatePassengerDto(CreatePassengerDto? createPassengerDto) =>
             createPassengerDto == null
             || String.IsNullOrWhiteSpace(createPassengerDto.FirstName)
             || String.IsNullOrWhiteSpace(createPassengerDto.LastName)
