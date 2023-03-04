@@ -7,5 +7,7 @@
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public DateTimeOffset Birthday { get; set; }
+        public int Age { get; set; }
+        public string AgeGroup { get; set; } = string.Empty;
     }
 }

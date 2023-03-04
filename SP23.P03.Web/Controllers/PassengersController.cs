@@ -47,6 +47,8 @@ namespace SP23.P03.Web.Controllers
                 FirstName = passenger.FirstName,
                 LastName = passenger.LastName,
                 Birthday = passenger.Birthday,
+                Age = passenger.Age,
+                AgeGroup = passenger.AgeGroup
             };
 
             return Ok(passengerDto);
@@ -71,6 +73,8 @@ namespace SP23.P03.Web.Controllers
                 FirstName = x.FirstName,
                 LastName = x.LastName,
                 Birthday = x.Birthday,
+                Age = x.Age,
+                AgeGroup = x.AgeGroup
             }).ToList();
 
             return Ok(myPassengers);
@@ -110,6 +114,8 @@ namespace SP23.P03.Web.Controllers
                 FirstName = createdPassenger.FirstName,
                 LastName = createdPassenger.LastName,
                 Birthday = createdPassenger.Birthday,
+                Age = createdPassenger.Age,
+                AgeGroup = createdPassenger.AgeGroup,
             };
 
             return Ok(passengerDto);
@@ -150,6 +156,8 @@ namespace SP23.P03.Web.Controllers
                 FirstName = passenger.FirstName,
                 LastName = passenger.LastName,
                 Birthday = passenger.Birthday,
+                Age = passenger.Age,
+                AgeGroup = passenger.AgeGroup,
             };
 
             return Ok(passengerDto);
