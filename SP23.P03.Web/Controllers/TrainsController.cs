@@ -5,7 +5,6 @@ using SP23.P03.Web.Data;
 using SP23.P03.Web.Extensions;
 using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.Trains;
-using SP23.P03.Web.Features.TrainStations;
 
 namespace SP23.P03.Web.Controllers
 {
@@ -22,11 +21,22 @@ namespace SP23.P03.Web.Controllers
             trains = dataContext.Set<Train>();
         }
 
+        [HttpGet]
+        public IQueryable<TrainDto> GetAllTrains()
+        {
+            return GetTrainDtos(trains);
+        }//end GetAllTrains
+
         [HttpGet("{id}")]
         [Authorize]
         public ActionResult<TrainDto> GetTrainById([FromRoute] int id)
         {
             var train = trains.FirstOrDefault(x => x.Id == id);
+
+            if (train == null)
+            {
+                return NotFound();
+            }
 
             var trainDto = new TrainDto
             {
@@ -37,7 +47,19 @@ namespace SP23.P03.Web.Controllers
             };
 
             return Ok(trainDto);
-        }
+        }//end GetTrainById
+
+        private static IQueryable<TrainDto> GetTrainDtos(IQueryable<Train> trains)
+        {
+            return trains
+                .Select(x => new TrainDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Status = x.Status,
+                    Capacity = x.Capacity,
+                });
+        }//end GetTrainDtos
 
     }//end TrainsController
 }//end namespace
