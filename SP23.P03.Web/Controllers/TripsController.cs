@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SP23.P03.Web.Data;
+using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.Trips;
 
 namespace SP23.P03.Web.Controllers;
@@ -14,7 +15,7 @@ public class TripsController : ControllerBase
     private readonly DbSet<Trip> trips;
     private readonly DataContext dataContext;
 
-    public TripsContoller(DataContext dataContext)
+    public TripsController(DataContext dataContext)
     {
         this.dataContext = dataContext;
         trips = dataContext.Set<Trip>();
@@ -37,5 +38,23 @@ public class TripsController : ControllerBase
         }
 
         return Ok(result);
+    }
+
+    [HttpPost]
+    [Authorize(Roles = RoleNames.Admin)]
+
+    private static IQueryable<TripDto> GetTripDtos(IQueryable<Trip> trips)
+    {
+        return trips
+            .Select(x => new TripDto
+            {
+                Id = x.Id,
+                TrainId = x.TrainId,
+                FromStationId = x.FromStationId,
+                ToStationId = x.ToStationId,
+                Departure = x.Departure,
+                Arrival = x.Arrival,
+                BasePrice = x.BasePrice
+            });
     }
 }
