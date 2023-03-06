@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32.SafeHandles;
 using SP23.P03.Web.Data;
 using SP23.P03.Web.Extensions;
 using SP23.P03.Web.Features.Authorization;
@@ -48,6 +49,37 @@ namespace SP23.P03.Web.Controllers
 
             return Ok(trainDto);
         }//end GetTrainById
+
+        [HttpPost]
+        [Authorize(Roles = RoleNames.Admin)]
+        public ActionResult<CreateTrainDto> CreateTrain(CreateTrainDto dto)
+        {
+            if (IsInvalid(dto))
+            {
+                return BadRequest();
+            }
+
+            var train = new Train
+            {
+                Name = dto.Name,
+                Status = dto.Status,
+                Capacity = dto.Capacity
+            };
+            trains.Add(train);
+
+            dataContext.SaveChanges();
+
+            dto.Id = train.Id;
+
+            return CreatedAtAction(nameof(GetTrainById), new { id = dto.Id }, dto);
+        }//end CreateStation
+
+        private bool IsInvalid(CreateTrainDto dto)
+        {
+            return string.IsNullOrWhiteSpace(dto.Name) ||
+                   string.IsNullOrWhiteSpace(dto.Status) ||
+                   dto.Capacity >= 150;
+        }//end IsInvalid
 
         private static IQueryable<TrainDto> GetTrainDtos(IQueryable<Train> trains)
         {
