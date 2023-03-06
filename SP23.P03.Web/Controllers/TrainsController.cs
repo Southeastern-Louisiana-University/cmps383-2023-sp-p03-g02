@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Win32.SafeHandles;
 using SP23.P03.Web.Data;
@@ -52,7 +53,7 @@ namespace SP23.P03.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = RoleNames.Admin)]
-        public ActionResult<CreateTrainDto> CreateTrain(CreateTrainDto dto)
+        public ActionResult<TrainDto> CreateTrain(TrainDto dto)
         {
             if (IsInvalid(dto))
             {
@@ -74,7 +75,34 @@ namespace SP23.P03.Web.Controllers
             return CreatedAtAction(nameof(GetTrainById), new { id = dto.Id }, dto);
         }//end CreateStation
 
-        private bool IsInvalid(CreateTrainDto dto)
+        [HttpPut("{id}")]
+        [Authorize(Roles = RoleNames.Admin)]
+        public ActionResult<TrainDto> UpdateTrain(int id, TrainDto dto)
+        {
+            if (IsInvalid(dto))
+            {
+                return BadRequest();
+            }
+
+            var train = trains.FirstOrDefault(x => x.Id == id);
+
+            if (train == null)
+            {
+                return NotFound();
+            }
+
+            train.Name = dto.Name;
+            train.Status = dto.Status;
+            train.Capacity = dto.Capacity;
+
+            dataContext.SaveChanges();
+
+            dto.Id = train.Id;
+
+            return Ok(dto);
+        }//end UpdateTrain
+
+        private bool IsInvalid(TrainDto dto)
         {
             return string.IsNullOrWhiteSpace(dto.Name) ||
                    string.IsNullOrWhiteSpace(dto.Status) ||
