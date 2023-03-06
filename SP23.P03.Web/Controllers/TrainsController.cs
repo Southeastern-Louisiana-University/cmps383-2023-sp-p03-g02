@@ -102,6 +102,24 @@ namespace SP23.P03.Web.Controllers
             return Ok(dto);
         }//end UpdateTrain
 
+        [HttpDelete("{id}")]
+        [Authorize(Roles = RoleNames.Admin)]
+        public ActionResult DeleteTrain(int id, TrainDto dto)
+        {
+            var train = trains.FirstOrDefault(x => x.Id == id);
+
+            if (train == null)
+            {
+                return NotFound();
+            }
+
+            trains.Remove(train);
+
+            dataContext.SaveChanges();
+
+            return Ok();
+        }
+
         private bool IsInvalid(TrainDto dto)
         {
             return string.IsNullOrWhiteSpace(dto.Name) ||
