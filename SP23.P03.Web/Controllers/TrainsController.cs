@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.Win32.SafeHandles;
 using SP23.P03.Web.Data;
 using SP23.P03.Web.Extensions;
@@ -16,6 +17,7 @@ namespace SP23.P03.Web.Controllers
     {
         private readonly DbSet<Train> trains;
         private readonly DataContext dataContext;
+        //private readonly int id;
 
         public TrainsController(DataContext dataContext)
         {
@@ -53,36 +55,47 @@ namespace SP23.P03.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = RoleNames.Admin)]
-        public ActionResult<TrainDto> CreateTrain(TrainDto dto)
+        public ActionResult<CreateTrainDto> CreateTrain(CreateTrainDto createTrainDto, int id)
         {
-            if (IsInvalid(dto))
+            var train = trains.FirstOrDefault(x => x.Id == id);
+
+            //BadRequest if Name is bad
+            //BadRequest if Capacity is Invalid
+            if (InvalidCreateTrainDto(createTrainDto))
             {
                 return BadRequest();
             }
 
-            var train = new Train
+            var createdTrain = new Train
             {
-                Name = dto.Name,
-                Status = dto.Status,
-                Capacity = dto.Capacity
+                Name = createTrainDto.Name,
+                Status = createTrainDto.Status,
+                Capacity = createTrainDto.Capacity
             };
-            trains.Add(train);
 
+            trains.Add(createdTrain);
             dataContext.SaveChanges();
 
-            dto.Id = train.Id;
+            var trainDto = new TrainDto {
+                Id = createdTrain.Id,
+                Name = createdTrain.Name,
+                Status = createdTrain.Status,
+                Capacity = createdTrain.Capacity
+            };
 
-            return CreatedAtAction(nameof(GetTrainById), new { id = dto.Id }, dto);
+            return Ok(trainDto);
         }//end CreateStation
 
         [HttpPut("{id}")]
         [Authorize(Roles = RoleNames.Admin)]
         public ActionResult<TrainDto> UpdateTrain(int id, TrainDto dto)
         {
+            /*
             if (IsInvalid(dto))
             {
                 return BadRequest();
             }
+            */
 
             var train = trains.FirstOrDefault(x => x.Id == id);
 
@@ -120,12 +133,11 @@ namespace SP23.P03.Web.Controllers
             return Ok();
         }
 
-        private bool IsInvalid(TrainDto dto)
-        {
-            return string.IsNullOrWhiteSpace(dto.Name) ||
-                   string.IsNullOrWhiteSpace(dto.Status) ||
-                   dto.Capacity >= 150;
-        }//end IsInvalid
+        private bool InvalidCreateTrainDto(CreateTrainDto createTrainDto) =>
+           createTrainDto == null
+           || String.IsNullOrEmpty(createTrainDto.Name)
+           || String.IsNullOrEmpty(createTrainDto.Status)
+           || createTrainDto.Capacity == 0;
 
         private static IQueryable<TrainDto> GetTrainDtos(IQueryable<Train> trains)
         {
