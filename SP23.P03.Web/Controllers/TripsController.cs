@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SP23.P03.Web.Data;
+using SP23.P03.Web.Extensions;
 using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.Trips;
 
@@ -31,17 +33,72 @@ public class TripsController : ControllerBase
     [Route("{id}")]
     public ActionResult<TripDto> GetTripById(int id)
     {
-        var result = GetTripDtos(trips.Where(x => x.Id == id)).FirstOrDefault();
-        if (result == null)
+        var tripDtos = GetTripDtos(trips.Where(x => x.Id == id)).FirstOrDefault();
+        if (tripDtos == null)
         {
             return NotFound();
         }
 
-        return Ok(result);
+        return Ok(tripDtos);
     }
 
     [HttpPost]
+    //[Authorize(Roles = RoleNames.Admin)]
+    public ActionResult<CreateTripDto> CreateTrip([FromBody] CreateTripDto dto)
+    {
+        if (InvalidCreateTripDto(dto))
+        {
+            return BadRequest();
+        }
+
+        var createdTrip = new Trip
+        {
+            TrainId = dto.TrainId,
+            FromStationId = dto.FromStationId,
+            ToStationId = dto.ToStationId,
+            Departure = dto.Departure,
+            Arrival = dto.Arrival,
+            BasePrice = dto.BasePrice
+        };
+
+        trips.Add(createdTrip);
+        dataContext.SaveChanges();
+
+        var tripDto = new TripDto
+        {
+            Id = createdTrip.Id,
+            TrainId = createdTrip.TrainId,
+            FromStationId = createdTrip.FromStationId,
+            ToStationId = createdTrip.ToStationId,
+            Departure = createdTrip.Departure,
+            Arrival = createdTrip.Arrival,
+            BasePrice = createdTrip.BasePrice
+        };
+
+        return CreatedAtAction(nameof(GetTripById), new { id = tripDto.Id }, tripDto);
+    }
+
+    [HttpDelete("{id}")]
     [Authorize(Roles = RoleNames.Admin)]
+    public ActionResult DeleteTrip([FromRoute] int id)
+    {
+        var trip = trips.FirstOrDefault(x => x.Id == id);
+
+        if (trip == null)
+        {
+            return NotFound();
+        }
+
+        trips.Remove(trip);
+        dataContext.SaveChanges();
+
+        return Ok();
+    }
+
+    private bool InvalidCreateTripDto(CreateTripDto dto)
+    {
+        return false;
+    }
 
     private static IQueryable<TripDto> GetTripDtos(IQueryable<Trip> trips)
     {

@@ -7,11 +7,11 @@ public class Trip
 {
     public int Id { get; set; }
     public int TrainId { get; set; }
-    public Train Train { get; set; }
+    public Train? Train { get; set; }
     public int FromStationId { get; set; }
-    public TrainStation FromStation { get; set; }
+    public TrainStation? FromStation { get; set; }
     public int ToStationId { get; set; }
-    public TrainStation ToStation { get; set; }
+    public TrainStation? ToStation { get; set; }
     public DateTimeOffset Departure { get; set; }
     public DateTimeOffset Arrival { get; set; }
     public float BasePrice { get; set; }
