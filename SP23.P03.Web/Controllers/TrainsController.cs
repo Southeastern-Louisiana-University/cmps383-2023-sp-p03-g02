@@ -88,15 +88,9 @@ namespace SP23.P03.Web.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = RoleNames.Admin)]
-        public ActionResult<TrainDto> UpdateTrain(int id, TrainDto dto)
+        public ActionResult<TrainDto> UpdateTrain([FromBody]CreateTrainDto createTrainDto,
+                                                  [FromRoute] int id)
         {
-            /*
-            if (IsInvalid(dto))
-            {
-                return BadRequest();
-            }
-            */
-
             var train = trains.FirstOrDefault(x => x.Id == id);
 
             if (train == null)
@@ -104,15 +98,26 @@ namespace SP23.P03.Web.Controllers
                 return NotFound();
             }
 
-            train.Name = dto.Name;
-            train.Status = dto.Status;
-            train.Capacity = dto.Capacity;
+            if (InvalidCreateTrainDto(createTrainDto))
+            {
+                return BadRequest();
+            }
+
+            train.Name = createTrainDto.Name;
+            train.Status = createTrainDto.Status;
+            train.Capacity = createTrainDto.Capacity;
 
             dataContext.SaveChanges();
 
-            dto.Id = train.Id;
+            var trainDto = new TrainDto
+            {
+                Id = train.Id,
+                Name = train.Name,
+                Status = train.Status,
+                Capacity = train.Capacity
+            };
 
-            return Ok(dto);
+            return Ok(trainDto);
         }//end UpdateTrain
 
         [HttpDelete("{id}")]
