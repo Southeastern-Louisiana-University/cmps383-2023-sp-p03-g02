@@ -59,8 +59,6 @@ namespace SP23.P03.Web.Controllers
         {
             var train = trains.FirstOrDefault(x => x.Id == id);
 
-            //BadRequest if Name is bad
-            //BadRequest if Capacity is Invalid
             if (InvalidCreateTrainDto(createTrainDto))
             {
                 return BadRequest();
@@ -141,8 +139,7 @@ namespace SP23.P03.Web.Controllers
         private bool InvalidCreateTrainDto(CreateTrainDto createTrainDto) =>
            createTrainDto == null
            || String.IsNullOrEmpty(createTrainDto.Name)
-           || String.IsNullOrEmpty(createTrainDto.Status)
-           || createTrainDto.Capacity == 0;
+           || String.IsNullOrEmpty(createTrainDto.Status);
 
         private static IQueryable<TrainDto> GetTrainDtos(IQueryable<Train> trains)
         {
