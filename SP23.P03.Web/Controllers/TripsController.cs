@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using SP23.P03.Web.Data;
 using SP23.P03.Web.Extensions;
 using SP23.P03.Web.Features.Authorization;
+using SP23.P03.Web.Features.Trains;
+using SP23.P03.Web.Features.TrainStations;
 using SP23.P03.Web.Features.Trips;
 
 namespace SP23.P03.Web.Controllers;
@@ -43,7 +45,7 @@ public class TripsController : ControllerBase
     }
 
     [HttpPost]
-    //[Authorize(Roles = RoleNames.Admin)]
+    [Authorize(Roles = RoleNames.Admin)]
     public ActionResult<CreateTripDto> CreateTrip([FromBody] CreateTripDto dto)
     {
         if (InvalidCreateTripDto(dto))
@@ -78,6 +80,45 @@ public class TripsController : ControllerBase
         return CreatedAtAction(nameof(GetTripById), new { id = tripDto.Id }, tripDto);
     }
 
+    [HttpPut("{id}")]
+    [Authorize(Roles = RoleNames.Admin)]
+    public ActionResult<TripDto> UpdateTrip([FromBody] CreateTripDto dto, [FromRoute] int id)
+    {
+        var trip = trips.FirstOrDefault(x => x.Id == id);
+
+        if (trip == null)
+        {
+            return NotFound();
+        }
+
+        if (InvalidCreateTripDto(dto))
+        {
+            return BadRequest();
+        }
+
+        trip.TrainId = dto.TrainId;
+        trip.FromStationId = dto.FromStationId;
+        trip.ToStationId = dto.ToStationId;
+        trip.Departure = dto.Departure;
+        trip.Arrival = dto.Arrival;
+        trip.BasePrice = dto.BasePrice;
+
+        dataContext.SaveChanges();
+
+        var tripDto = new TripDto
+        {
+            Id = trip.Id,
+            TrainId = trip.TrainId,
+            FromStationId = trip.FromStationId,
+            ToStationId = trip.ToStationId,
+            Departure = trip.Departure,
+            Arrival = trip.Arrival,
+            BasePrice = trip.BasePrice,
+        };
+
+        return Ok(tripDto);
+    }
+
     [HttpDelete("{id}")]
     [Authorize(Roles = RoleNames.Admin)]
     public ActionResult DeleteTrip([FromRoute] int id)
@@ -97,7 +138,7 @@ public class TripsController : ControllerBase
 
     private bool InvalidCreateTripDto(CreateTripDto dto)
     {
-        return false;
+        return false;   
     }
 
     private static IQueryable<TripDto> GetTripDtos(IQueryable<Trip> trips)
