@@ -17,12 +17,16 @@ namespace SP23.P03.Web.Controllers;
 public class TripsController : ControllerBase
 {
     private readonly DbSet<Trip> trips;
+    private readonly DbSet<Train> trains;
+    private readonly DbSet<TrainStation> stations;
     private readonly DataContext dataContext;
 
     public TripsController(DataContext dataContext)
     {
         this.dataContext = dataContext;
         trips = dataContext.Set<Trip>();
+        trains = dataContext.Set<Train>();
+        stations = dataContext.Set<TrainStation>();
     }
 
     [HttpGet]
@@ -138,7 +142,22 @@ public class TripsController : ControllerBase
 
     private bool InvalidCreateTripDto(CreateTripDto dto)
     {
-        return false;   
+        bool isInvalid = false;
+        var train = trains.FirstOrDefault(x => x.Id == dto.TrainId);
+        var fromStation = stations.FirstOrDefault(x => x.Id == dto.FromStationId);
+        var toStation = stations.FirstOrDefault(x => x.Id == dto.ToStationId);
+
+        if (train == null ||
+            fromStation == null ||
+            toStation == null ||
+            (dto.FromStationId == dto.ToStationId) ||
+            dto.Arrival.CompareTo(dto.Departure) <= 0 ||
+            dto.BasePrice < 0) 
+        {
+            isInvalid = true;
+        }
+
+        return isInvalid;
     }
 
     private static IQueryable<TripDto> GetTripDtos(IQueryable<Trip> trips)
