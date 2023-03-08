@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.Passengers;
+using SP23.P03.Web.Features.Trains;
 using SP23.P03.Web.Features.TrainStations;
 
 namespace SP23.P03.Web.Data;
@@ -18,6 +19,7 @@ public static class SeedHelper
         await AddUsers(serviceProvider);
 
         await AddTrainStation(dataContext);
+        await AddTrains(serviceProvider, dataContext);
         await AddPassengers(serviceProvider, dataContext);
     }
 
@@ -92,6 +94,39 @@ public static class SeedHelper
 
         await dataContext.SaveChangesAsync();
     }
+
+    public static async Task AddTrains(IServiceProvider serviceProvider, DataContext dataContext)
+    {
+        var trains = dataContext.Set<Train>();
+
+        if (await trains.AnyAsync())
+        {
+            return;
+        }
+
+        trains.AddRange(
+            new Train
+            {
+                Name = "Hammond Train",
+                Status = "In Use",
+                Capacity = 98
+            },
+            new Train
+            {
+                Name = "Slidell Train",
+                Status = "Out",
+                Capacity = 120
+            },
+            new Train
+            {
+                Name = "NOLA Train",
+                Status = "Repair",
+                Capacity = 111
+            });
+
+        await dataContext.SaveChangesAsync();
+
+    }//end AddTrains()
 
     private static async Task AddPassengers(IServiceProvider serviceProvider, DataContext dataContext)
     {
