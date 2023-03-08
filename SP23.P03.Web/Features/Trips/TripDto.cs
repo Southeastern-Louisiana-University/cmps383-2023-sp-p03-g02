@@ -8,7 +8,7 @@
         public int ToStationId { get; set; }
         public DateTimeOffset Departure { get; set; }
         public DateTimeOffset Arrival { get; set; }
-        public float BasePrice { get; set; }
+        public int BasePrice { get; set; }
     }
 
     public class CreateTripDto
@@ -18,6 +18,6 @@
         public int ToStationId { get; set; }
         public DateTimeOffset Departure { get; set; }
         public DateTimeOffset Arrival { get; set; }
-        public float BasePrice { get; set; }
+        public int BasePrice { get; set; }
     }
 }

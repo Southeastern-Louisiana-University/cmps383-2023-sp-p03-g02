@@ -14,5 +14,5 @@ public class Trip
     public TrainStation? ToStation { get; set; }
     public DateTimeOffset Departure { get; set; }
     public DateTimeOffset Arrival { get; set; }
-    public float BasePrice { get; set; }
+    public int BasePrice { get; set; }
 }
