@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SP23.P03.Web.Data;
 
@@ -11,9 +12,11 @@ using SP23.P03.Web.Data;
 namespace SP23.P03.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230308192026_AddTrips")]
+    partial class AddTrips
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -251,7 +254,7 @@ namespace SP23.P03.Web.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Passenger", (string)null);
+                    b.ToTable("Passenger");
                 });
 
             modelBuilder.Entity("SP23.P03.Web.Features.TrainStations.TrainStation", b =>
@@ -278,7 +281,7 @@ namespace SP23.P03.Web.Migrations
 
                     b.HasIndex("ManagerId");
 
-                    b.ToTable("TrainStation", (string)null);
+                    b.ToTable("TrainStation");
                 });
 
             modelBuilder.Entity("SP23.P03.Web.Features.Trains.Train", b =>
@@ -304,7 +307,7 @@ namespace SP23.P03.Web.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Train", (string)null);
+                    b.ToTable("Train");
                 });
 
             modelBuilder.Entity("SP23.P03.Web.Features.Trips.Trip", b =>
@@ -341,7 +344,7 @@ namespace SP23.P03.Web.Migrations
 
                     b.HasIndex("TrainId");
 
-                    b.ToTable("Trip", (string)null);
+                    b.ToTable("Trip");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>
