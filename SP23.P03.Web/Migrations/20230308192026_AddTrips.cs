@@ -31,17 +31,20 @@ namespace SP23.P03.Web.Migrations
                         name: "FK_Trip_TrainStation_FromStationId",
                         column: x => x.FromStationId,
                         principalTable: "TrainStation",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Trip_TrainStation_ToStationId",
                         column: x => x.ToStationId,
                         principalTable: "TrainStation",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Trip_Train_TrainId",
                         column: x => x.TrainId,
                         principalTable: "Train",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
