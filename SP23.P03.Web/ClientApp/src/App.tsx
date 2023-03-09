@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/Home/HomePage';
-import { NotFound } from './pages/NotFound/NotFound'
+import { NotFoundPage } from './pages/NotFound/NotFoundPage'
 
 export const routes = {
   home : '/',
@@ -14,7 +14,7 @@ export function App() : React.ReactElement {
           <Route path={routes.home} element={<HomePage />} />
 
           {/* If the path does not exist */}
-          <Route path="*" element={<NotFound />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
     </div>
   );
