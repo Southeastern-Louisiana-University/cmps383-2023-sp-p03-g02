@@ -9,11 +9,11 @@ namespace SP23.P03.Web.Features.BoardingPasses;
 public class BoardingPass
 {
     public int Id { get; set; }
-    public string Code { get; set; } = string.Empty;
+    public required string Code { get; set; }
     public int OwnerId { get; set; }
-    public User Owner { get; set; }
+    public required User Owner { get; set; }
     public int TripId { get; set; }
-    public Trip Trip { get; set; }
+    public required Trip Trip { get; set; }
     public ICollection<Passenger> Passengers { get; set; } = new List<Passenger>();
 
     public static string HashCode(string unhashedCode)
