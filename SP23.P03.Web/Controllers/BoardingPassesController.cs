@@ -144,12 +144,19 @@ namespace SP23.P03.Web.Controllers
                 return BadRequest();
             }
 
-            var boardingPassengers = passengers.Where(x => createBoardingPassDto.PassengerIds.Any(id => x.Id == id));
+            if (!createBoardingPassDto.PassengerIds.Any())
+            {
+                return BadRequest();
+            }
+
+            var passengerIds = createBoardingPassDto.PassengerIds.Distinct();
+
+            var boardingPassengers = passengers.Where(x => passengerIds.Any(id => x.Id == id));
 
             // Passenger error checker
-            foreach (int id in createBoardingPassDto.PassengerIds)
+            foreach (int passengerId in passengerIds)
             {
-                var boardingPassenger = boardingPassengers.FirstOrDefault(x => x.Id == id);
+                var boardingPassenger = boardingPassengers.FirstOrDefault(x => x.Id == passengerId);
 
                 if(boardingPassenger == null)
                 {
@@ -186,7 +193,7 @@ namespace SP23.P03.Web.Controllers
                 PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
             };
 
-            return CreatedAtAction(nameof(GetBoardingPassByCode), boardingPassDto);
+            return CreatedAtAction(nameof(GetBoardingPassByCode), new { code = boardingPassDto.Code }, boardingPassDto);
         }
 
         [HttpPost("for/{userId}")]
@@ -207,10 +214,17 @@ namespace SP23.P03.Web.Controllers
                 return BadRequest();
             }
 
-            var boardingPassengers = passengers.Where(x => createBoardingPassDto.PassengerIds.Any(id => x.Id == id));
+            if (!createBoardingPassDto.PassengerIds.Any())
+            {
+                return BadRequest();
+            }
+
+            var passengerIds = createBoardingPassDto.PassengerIds.Distinct();
+
+            var boardingPassengers = passengers.Where(x => passengerIds.Any(id => x.Id == id));
 
             // Passenger error checker
-            foreach (int passengerId in createBoardingPassDto.PassengerIds)
+            foreach (int passengerId in passengerIds)
             {
                 var boardingPassenger = boardingPassengers.FirstOrDefault(x => x.Id == passengerId);
 
@@ -249,7 +263,7 @@ namespace SP23.P03.Web.Controllers
                 PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
             };
 
-            return CreatedAtAction(nameof(GetBoardingPassByCode), boardingPassDto);
+            return CreatedAtAction(nameof(GetBoardingPassByCode), new { code = boardingPassDto.Code }, boardingPassDto);
         }
 
         [HttpPut("{id}")]
@@ -272,10 +286,17 @@ namespace SP23.P03.Web.Controllers
                 return BadRequest();
             }
 
-            var boardingPassengers = passengers.Where(x => createBoardingPassDto.PassengerIds.Any(id => x.Id == id));
+            if (!createBoardingPassDto.PassengerIds.Any())
+            {
+                return BadRequest();
+            }
+
+            var passengerIds = createBoardingPassDto.PassengerIds.Distinct();
+
+            var boardingPassengers = passengers.Where(x => passengerIds.Any(id => x.Id == id));
 
             // Passenger error checker
-            foreach (int passengerId in createBoardingPassDto.PassengerIds)
+            foreach (int passengerId in passengerIds)
             {
                 var boardingPassenger = boardingPassengers.FirstOrDefault(x => x.Id == passengerId);
 
@@ -310,7 +331,7 @@ namespace SP23.P03.Web.Controllers
         [Authorize(Roles = RoleNames.Admin)]
         public ActionResult DeleteBoardingPass([FromRoute] int id)
         {
-            var boardingPass = boardingPasses.FirstOrDefault(x => x.Id == id);
+            var boardingPass = boardingPasses.Include(x => x.Passengers).FirstOrDefault(x => x.Id == id);
 
             if (boardingPass == null)
             {
