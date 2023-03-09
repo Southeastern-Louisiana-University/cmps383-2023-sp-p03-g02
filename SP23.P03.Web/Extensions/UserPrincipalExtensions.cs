@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Identity;
+using SP23.P03.Web.Features.Authorization;
 using System.Security.Claims;
 
 namespace SP23.P03.Web.Extensions;
@@ -18,5 +20,10 @@ public static class UserPrincipalExtensions
     {
         // same as: claimsPrincipal.FindFirstValue(ClaimTypes.Name)
         return claimsPrincipal.Identity?.Name;
+    }
+
+    public static async Task<User?> GetCurrentUserAsync(this ClaimsPrincipal claimsPrincipal, UserManager<User> userManager)
+    {
+        return await userManager.GetUserAsync(claimsPrincipal);
     }
 }
