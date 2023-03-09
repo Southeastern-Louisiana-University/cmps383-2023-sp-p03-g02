@@ -287,8 +287,8 @@ public static class SeedHelper
             throw new NullReferenceException("Users required for seeding Passengers not found.");
         }
 
-        var trip1 = await trips.FirstAsync(x => x.Id == 1);
-        var trip2 = await trips.FirstAsync(x => x.Id == 2);
+        var trip1 = await trips.FirstAsync();
+        var trip2 = await trips.Skip(1).FirstAsync();
 
         var offset = TimeZoneInfo.Local.BaseUtcOffset;
 
