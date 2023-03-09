@@ -28,7 +28,6 @@ namespace SP23.P03.Web.Controllers
         }//end GetAllTrains
 
         [HttpGet("{id}")]
-        [Authorize]
         public ActionResult<TrainDto> GetTrainById([FromRoute] int id)
         {
             var train = trains.FirstOrDefault(x => x.Id == id);
@@ -51,9 +50,8 @@ namespace SP23.P03.Web.Controllers
 
         [HttpPost]
         [Authorize(Roles = RoleNames.Admin)]
-        public ActionResult<CreateTrainDto> CreateTrain(CreateTrainDto createTrainDto, int id)
+        public ActionResult<TrainDto> CreateTrain(CreateTrainDto createTrainDto)
         {
-            var train = trains.FirstOrDefault(x => x.Id == id);
 
             if (InvalidCreateTrainDto(createTrainDto))
             {
@@ -134,8 +132,9 @@ namespace SP23.P03.Web.Controllers
 
         private bool InvalidCreateTrainDto(CreateTrainDto createTrainDto) =>
            createTrainDto == null
-           || String.IsNullOrEmpty(createTrainDto.Name)
-           || String.IsNullOrEmpty(createTrainDto.Status);
+           || String.IsNullOrWhiteSpace(createTrainDto.Name)
+           || String.IsNullOrWhiteSpace(createTrainDto.Status)
+           || createTrainDto.Capacity > 0;
 
         private static IQueryable<TrainDto> GetTrainDtos(IQueryable<Train> trains)
         {
