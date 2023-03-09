@@ -8,8 +8,6 @@ using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.BoardingPasses;
 using SP23.P03.Web.Features.Passengers;
 using SP23.P03.Web.Features.Trips;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace SP23.P03.Web.Controllers
 {
@@ -171,7 +169,7 @@ namespace SP23.P03.Web.Controllers
             var timestamp = DateTimeOffset.Now;
 
             string unhashedCode = $"ENTRACK_{user.NormalizedUserName}_{trip.Id}_{timestamp}";
-            string hashedCode = HashCode(unhashedCode);
+            string hashedCode = BoardingPass.HashCode(unhashedCode);
 
             var boardingPass = new BoardingPass
             {
@@ -241,7 +239,7 @@ namespace SP23.P03.Web.Controllers
             var timestamp = DateTimeOffset.Now;
 
             string unhashedCode = $"ENTRACK_{user.NormalizedUserName}_{trip.Id}_{timestamp}";
-            string hashedCode = HashCode(unhashedCode);
+            string hashedCode = BoardingPass.HashCode(unhashedCode);
 
             var boardingPass = new BoardingPass
             {
@@ -344,11 +342,5 @@ namespace SP23.P03.Web.Controllers
             return Ok();
         }
 
-        private string HashCode(string unhashedCode)
-        {
-            byte[] unhashedCodeBytes = Encoding.UTF8.GetBytes(unhashedCode);
-            byte[] hashedCodeBytes = SHA256.HashData(unhashedCodeBytes);
-            return Convert.ToHexString(hashedCodeBytes);
-        }
     }
 }
