@@ -7,14 +7,16 @@ public class BoardingPassengerConfiguration : IEntityTypeConfiguration<BoardingP
 {
     public void Configure(EntityTypeBuilder<BoardingPassenger> builder)
     {
+        builder.HasKey(x => new { x.BoardingPassId, x.PassengerId });
+
         builder.HasOne(x => x.BoardingPass)
                .WithMany()
                .HasForeignKey(x => x.BoardingPassId)
-               .IsRequired();
+               .OnDelete(DeleteBehavior.ClientCascade);
 
         builder.HasOne(x => x.Passenger)
                .WithMany()
                .HasForeignKey(x => x.PassengerId)
-               .IsRequired();
+               .OnDelete(DeleteBehavior.ClientCascade);
     }
 }
