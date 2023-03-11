@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using SP23.P03.Web.Features.Authorization;
+using SP23.P03.Web.Features.BoardingPasses;
 using SP23.P03.Web.Features.Passengers;
 using SP23.P03.Web.Features.Trains;
 using SP23.P03.Web.Features.TrainStations;
@@ -23,6 +24,7 @@ public static class SeedHelper
         await AddTrains(serviceProvider, dataContext);
         await AddTrips(dataContext);
         await AddPassengers(serviceProvider, dataContext);
+        await AddBoardingPasses(serviceProvider, dataContext);
     }
 
     private static async Task AddUsers(IServiceProvider serviceProvider)
@@ -260,6 +262,52 @@ public static class SeedHelper
                 BasePrice = 30
             }
         );
+
+        await dataContext.SaveChangesAsync();
+    }
+
+    private static async Task AddBoardingPasses(IServiceProvider serviceProvider, DataContext dataContext)
+    {
+        var boardingPasses = dataContext.Set<BoardingPass>();
+        var trips = dataContext.Set<Trip>();
+        var passengers = dataContext.Set<Passenger>();
+
+        var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+
+        if (await boardingPasses.AnyAsync())
+        {
+            return;
+        }
+
+        var user1 = await userManager.FindByNameAsync("bob");
+        var user2 = await userManager.FindByNameAsync("sue");
+
+        if (user1 == null || user2 == null)
+        {
+            throw new NullReferenceException("Users required for seeding Passengers not found.");
+        }
+
+        var trip1 = await trips.FirstAsync();
+        var trip2 = await trips.Skip(1).FirstAsync();
+
+        var offset = TimeZoneInfo.Local.BaseUtcOffset;
+
+        boardingPasses.AddRange(
+            new BoardingPass
+            {
+                Code = BoardingPass.HashCode($"ENTRACK_{user1.NormalizedUserName}_{trip1.Id}_{new DateTimeOffset(2023, 03, 09, 0, 25, 00, offset)}"),
+                Owner = user1,
+                Trip = trip1,
+                Passengers = passengers.Where(x => x.OwnerId == user1.Id).ToList(),
+            },
+            new BoardingPass
+            {
+                Code = BoardingPass.HashCode($"ENTRACK_{user2.NormalizedUserName}_{trip2.Id}_{new DateTimeOffset(2023, 02, 22, 22, 22, 22, offset)}"),
+                Owner = user2,
+                Trip = trip2,
+                Passengers = passengers.Where(x => x.OwnerId == user2.Id).ToList(),
+            }
+        );;
 
         await dataContext.SaveChangesAsync();
     }
