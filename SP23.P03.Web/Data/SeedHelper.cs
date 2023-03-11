@@ -4,6 +4,7 @@ using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.Passengers;
 using SP23.P03.Web.Features.Trains;
 using SP23.P03.Web.Features.TrainStations;
+using SP23.P03.Web.Features.Trips;
 
 namespace SP23.P03.Web.Data;
 
@@ -20,6 +21,7 @@ public static class SeedHelper
 
         await AddTrainStation(dataContext);
         await AddTrains(serviceProvider, dataContext);
+        await AddTrips(dataContext);
         await AddPassengers(serviceProvider, dataContext);
     }
 
@@ -82,15 +84,22 @@ public static class SeedHelper
             return;
         }
 
-        for (int i = 0; i < 3; i++)
-        {
-            dataContext.Set<TrainStation>()
-                .Add(new TrainStation
-                {
-                    Name = "Hammond",
-                    Address = "1234 Place st"
-                });
-        }
+        trainStations.AddRange(
+            new TrainStation
+            {
+                Name = "Hammond Station",
+                Address = "Hammond, LA"
+            },
+            new TrainStation
+            {
+                Name = "Slidell Station",
+                Address = "Slidell, LA"
+            },
+            new TrainStation
+            {
+                Name = "NOLA Station",
+                Address = "New Orleans, LA"
+            });
 
         await dataContext.SaveChangesAsync();
     }
@@ -197,6 +206,58 @@ public static class SeedHelper
                 FirstName = "Gary",
                 LastName = "Thompson",
                 Birthday = new DateTimeOffset(1950, 1, 2, 0, 44, 7, offset)
+            }
+        );
+
+        await dataContext.SaveChangesAsync();
+    }
+
+    private static async Task AddTrips(DataContext dataContext)
+    {
+        var trips = dataContext.Set<Trip>();
+
+        if (await trips.AnyAsync())
+        {
+            return;
+        }
+
+        var offset = TimeZoneInfo.Local.BaseUtcOffset;
+
+        var stations = dataContext.Set<TrainStation>();
+        var hammondStation = await stations.FirstAsync(x => x.Name == "Hammond Station");
+        var slidellStation = await stations.FirstAsync(x => x.Name == "Slidell Station");
+        var nolaStation = await stations.FirstAsync(x => x.Name == "NOLA Station");
+
+        var trains = dataContext.Set<Train>();
+        var hammondTrain = await trains.FirstAsync(x => x.Name == "Hammond Train");
+
+        trips.AddRange(
+            new Trip
+            {
+                TrainId = hammondTrain.Id,
+                FromStationId = hammondStation.Id,
+                ToStationId = slidellStation.Id,
+                Departure = new DateTimeOffset(2023, 03, 13, 13, 00, 00, offset),
+                Arrival = new DateTimeOffset(2023, 03, 13, 13, 30, 00, offset),
+                BasePrice = 35
+            },
+            new Trip
+            {
+                TrainId = hammondTrain.Id,
+                FromStationId = slidellStation.Id,
+                ToStationId = nolaStation.Id,
+                Departure = new DateTimeOffset(2023, 03, 13, 13, 45, 00, offset),
+                Arrival = new DateTimeOffset(2023, 03, 13, 13, 55, 00, offset),
+                BasePrice = 10
+            },
+            new Trip
+            {
+                TrainId = hammondTrain.Id,
+                FromStationId = nolaStation.Id,
+                ToStationId = hammondStation.Id,
+                Departure = new DateTimeOffset(2023, 03, 13, 14, 15, 00, offset),
+                Arrival = new DateTimeOffset(2023, 03, 13, 14, 35, 00, offset),
+                BasePrice = 30
             }
         );
 
