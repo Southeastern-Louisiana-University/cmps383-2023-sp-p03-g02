@@ -224,12 +224,12 @@ public static class SeedHelper
         var offset = TimeZoneInfo.Local.BaseUtcOffset;
 
         var stations = dataContext.Set<TrainStation>();
-        var hammondStation = await stations.FirstOrDefaultAsync(x => x.Name == "Hammond Station");
-        var slidellStation = await stations.FirstOrDefaultAsync(x => x.Name == "Slidell Station");
-        var nolaStation = await stations.FirstOrDefaultAsync(x => x.Name == "NOLA Station");
+        var hammondStation = await stations.FirstAsync(x => x.Name == "Hammond Station");
+        var slidellStation = await stations.FirstAsync(x => x.Name == "Slidell Station");
+        var nolaStation = await stations.FirstAsync(x => x.Name == "NOLA Station");
 
         var trains = dataContext.Set<Train>();
-        var hammondTrain = await trains.FirstOrDefaultAsync(x => x.Name == "Hammond Train");
+        var hammondTrain = await trains.FirstAsync(x => x.Name == "Hammond Train");
 
         trips.AddRange(
             new Trip

@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SP23.P03.Web.Data;
-using SP23.P03.Web.Extensions;
 using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.Trains;
 using SP23.P03.Web.Features.TrainStations;
@@ -50,7 +48,7 @@ public class TripsController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = RoleNames.Admin)]
-    public ActionResult<CreateTripDto> CreateTrip([FromBody] CreateTripDto dto)
+    public ActionResult<TripDto> CreateTrip([FromBody] CreateTripDto dto)
     {
         if (InvalidCreateTripDto(dto))
         {
