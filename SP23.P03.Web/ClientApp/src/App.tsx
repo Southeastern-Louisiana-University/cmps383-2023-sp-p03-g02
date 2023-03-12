@@ -2,10 +2,7 @@ import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/Home/HomePage';
 import { NotFoundPage } from './pages/NotFound/NotFoundPage'
-
-export const routes = {
-  home : '/',
-}
+import { routes } from './constants/routeconfig'
 
 export function App() : React.ReactElement {
   return (
