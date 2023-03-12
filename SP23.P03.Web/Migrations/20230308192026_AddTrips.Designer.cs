@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SP23.P03.Web.Data;
 
@@ -11,9 +12,11 @@ using SP23.P03.Web.Data;
 namespace SP23.P03.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20230308192026_AddTrips")]
+    partial class AddTrips
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -223,49 +226,6 @@ namespace SP23.P03.Web.Migrations
                     b.ToTable("AspNetUserRoles", (string)null);
                 });
 
-            modelBuilder.Entity("SP23.P03.Web.Features.BoardingPasses.BoardingPass", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Code")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<int>("OwnerId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TripId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OwnerId");
-
-                    b.HasIndex("TripId");
-
-                    b.ToTable("BoardingPass");
-                });
-
-            modelBuilder.Entity("SP23.P03.Web.Features.BoardingPasses.BoardingPassenger", b =>
-                {
-                    b.Property<int>("BoardingPassId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("PassengerId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BoardingPassId", "PassengerId");
-
-                    b.HasIndex("PassengerId");
-
-                    b.ToTable("BoardingPassenger");
-                });
-
             modelBuilder.Entity("SP23.P03.Web.Features.Passengers.Passenger", b =>
                 {
                     b.Property<int>("Id")
@@ -440,44 +400,6 @@ namespace SP23.P03.Web.Migrations
                     b.Navigation("Role");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("SP23.P03.Web.Features.BoardingPasses.BoardingPass", b =>
-                {
-                    b.HasOne("SP23.P03.Web.Features.Authorization.User", "Owner")
-                        .WithMany()
-                        .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("SP23.P03.Web.Features.Trips.Trip", "Trip")
-                        .WithMany()
-                        .HasForeignKey("TripId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Owner");
-
-                    b.Navigation("Trip");
-                });
-
-            modelBuilder.Entity("SP23.P03.Web.Features.BoardingPasses.BoardingPassenger", b =>
-                {
-                    b.HasOne("SP23.P03.Web.Features.BoardingPasses.BoardingPass", "BoardingPass")
-                        .WithMany()
-                        .HasForeignKey("BoardingPassId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.HasOne("SP23.P03.Web.Features.Passengers.Passenger", "Passenger")
-                        .WithMany()
-                        .HasForeignKey("PassengerId")
-                        .OnDelete(DeleteBehavior.ClientCascade)
-                        .IsRequired();
-
-                    b.Navigation("BoardingPass");
-
-                    b.Navigation("Passenger");
                 });
 
             modelBuilder.Entity("SP23.P03.Web.Features.Passengers.Passenger", b =>
