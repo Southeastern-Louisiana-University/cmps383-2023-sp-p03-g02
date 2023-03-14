@@ -3,11 +3,13 @@ import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/Home/HomePage';
 import { NotFoundPage } from './pages/NotFound/NotFoundPage'
 import { routes } from './constants/routeconfig'
-import { Navbar } from './components/Navbar';
+import { Navbar } from './components/Nav/Navbar';
+import { PageHeader } from './components/Header/PageHeader';
 
 export function App() : React.ReactElement {
   return (
     <div>
+        <PageHeader />
         <Navbar />
         <Routes>
           <Route path={routes.home} element={<HomePage />} />
