@@ -18,3 +18,8 @@
     background-color: #01a0b6 !important;
     color: white !important;
 }
+
+.main-logo {
+    height: 2em;
+    padding: 4px;
+}
