@@ -1,11 +1,14 @@
 
 .nav-container {
     background-color: white !important;
-    padding: 1px;
+    position: relative;
+    box-shadow: 0 -100vw 40px 100vw black;
 }
 
 .item-container {
-    background-color: #22d3ee !important;
+    background-color: var(--main-color) !important;
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
 }
 
 .item {
