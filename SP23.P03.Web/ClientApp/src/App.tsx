@@ -9,7 +9,6 @@ import { PageHeader } from './components/Header/PageHeader';
 export function App() : React.ReactElement {
   return (
     <div>
-        <PageHeader />
         <Navbar />
         <Routes>
           <Route path={routes.home} element={<HomePage />} />
