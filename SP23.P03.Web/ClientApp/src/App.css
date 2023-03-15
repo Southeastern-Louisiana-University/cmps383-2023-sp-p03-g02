@@ -1,3 +1,13 @@
+:root {
+  --main-color: #22d3ee;
+}
+
+.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
 .App {
   text-align: center;
 }
