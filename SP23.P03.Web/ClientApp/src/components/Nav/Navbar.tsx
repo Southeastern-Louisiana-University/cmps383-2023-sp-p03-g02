@@ -13,7 +13,7 @@ export function Navbar() : React.ReactElement {
             className="item-container">
                 
                 <Menu.Item
-                    name='EnTrack'
+                    content='EnTrack'
                     icon="train"
                     as={NavLink}
                     to={routes.home}
