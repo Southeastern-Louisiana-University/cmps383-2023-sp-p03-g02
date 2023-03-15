@@ -1,0 +1,17 @@
+.home-page {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    background-size: cover;
+    background-position: center;
+    background-image: url("../../assets/home-background-compressed.jpg");
+}
+
+.home-page > header {
+    font-size: 4em;
+    color: white;
+    display: block;
+    padding-bottom: 0.5em;
+}
