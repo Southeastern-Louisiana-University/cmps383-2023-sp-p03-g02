@@ -9,12 +9,12 @@ export function Navbar() : React.ReactElement {
         <nav className="nav-container">
 
             <Menu
-            secondary pointing
+            borderless pointing
             className="item-container">
                 
                 <Menu.Item
-                    name='Home'
-                    icon="home"
+                    name='EnTrack'
+                    icon="train"
                     as={NavLink}
                     to={routes.home}
                 />
@@ -37,10 +37,10 @@ export function Navbar() : React.ReactElement {
 
                 { /* will need to update path */}
                 <Menu.Item position="right"
-                    name='Cart'
-                    icon="shopping cart"
+                    name='Login'
+                    icon="sign-in"
                     as={NavLink}
-                    to="/cart"
+                    to="/login"
                 />
                 
             </Menu>
