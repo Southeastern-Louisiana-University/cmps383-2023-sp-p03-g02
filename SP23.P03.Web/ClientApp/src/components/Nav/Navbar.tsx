@@ -10,7 +10,7 @@ export function Navbar() : React.ReactElement {
         <nav className="nav-container">
 
             <Menu
-            borderless pointing
+            borderless
             className="item-container">
                 
                 <Menu.Item
