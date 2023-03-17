@@ -6,23 +6,39 @@
 }
 
 .item-container {
-    background-color: var(--main-color) !important;
+    background-color: black !important;
     border-radius: 0 !important;
     margin-bottom: 0 !important;
 }
 
 .item {
-    color: white !important;
+    color: var(--main-color) !important;
     font-family: Arial, Helvetica, sans-serif;
     font-size: medium;
+    border-radius: 0 !important;
 }
 
 .item:hover {
-    background-color: #01a0b6 !important;
-    color: white !important;
+    background-color: var(--main-color) !important;
+    color: black !important;
 }
 
 .main-logo {
     height: 2em;
+    width: 259px;
+    background-color: var(--main-color);
+    mask-image: url("../../assets/EnTrack_HomeLogo.png");
+    mask-size: cover;
+    mask-clip: content-box;
+    mask-origin: content-box;
     padding: 4px;
+}
+
+.item:hover > .main-logo {
+    background-color: black;
+}
+
+.item-container > .item.active {
+    background-image: linear-gradient(black 95%, var(--main-color) 95%) !important;
+    background-blend-mode: lighten !important;
 }

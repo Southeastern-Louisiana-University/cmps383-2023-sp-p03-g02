@@ -1,8 +1,7 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Image, Menu } from "semantic-ui-react"; 
+import { Menu } from "semantic-ui-react"; 
 import { routes } from "../../constants/routeconfig";
-import HomeLogo from '../../assets/EnTrack_HomeLogo.png';
 import "./NavbarStyling.css"; 
 
 export function Navbar() : React.ReactElement {
@@ -15,7 +14,7 @@ export function Navbar() : React.ReactElement {
                 
                 <Menu.Item
                     style={{ padding: 0 }}
-                    content={<Image className="main-logo" src={HomeLogo} />}
+                    content={<div className="main-logo" />}
                     as={NavLink}
                     to={routes.home}
                 />
