@@ -6,6 +6,12 @@
     font-style: italic;
 }
 
+.grid-position {
+    display: flex;
+    justify-content: center;
+    padding-top: 20em;
+}
+
 .info-box-position {
     position: relative;
     left: 5em;
