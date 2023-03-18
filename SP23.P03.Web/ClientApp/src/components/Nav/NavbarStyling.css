@@ -2,17 +2,17 @@
 .nav-container {
     background-color: white !important;
     position: relative;
-    box-shadow: 0 -100vw 40px 100vw black;
+    
 }
 
 .item-container {
-    background-color: black !important;
+    background-color: #FFFCFC !important;
     border-radius: 0 !important;
     margin-bottom: 0 !important;
 }
 
 .item {
-    color: var(--main-color) !important;
+    color: black !important;
     font-family: Arial, Helvetica, sans-serif;
     font-size: medium;
     border-radius: 0 !important;
@@ -39,6 +39,6 @@
 }
 
 .item-container > .item.active {
-    background-image: linear-gradient(black 95%, var(--main-color) 95%) !important;
+    background-image: linear-gradient(#FFFCFC 95%, var(--main-color) 95%) !important;
     background-blend-mode: lighten !important;
 }

@@ -9,7 +9,7 @@ import './App.css';
 export function App() : React.ReactElement {
   return (
     <div className="page-container"
-    style={{backgroundColor: '#FAF9F6'}}>
+    style={{backgroundColor: '#FFFCFC'}}>
         <Navbar />
         <Routes>
           <Route path={routes.home} element={<HomePage />} />
