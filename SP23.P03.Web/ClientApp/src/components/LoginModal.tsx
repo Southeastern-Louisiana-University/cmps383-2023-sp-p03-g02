@@ -1,6 +1,6 @@
 import { Field, Form, Formik, FormikHelpers } from "formik";
 import React, { useState } from "react";
-import { Button, Input, Modal, ModalProps } from "semantic-ui-react";
+import { Button, Icon, Input, Modal, ModalProps } from "semantic-ui-react";
 import useSubscription, { notify } from "../hooks/useSubscription";
 import { LoginDto } from "../types/authentication";
 import { loginUser } from "./AuthProvider";
@@ -32,6 +32,7 @@ const LoginModal = (props: ModalProps) => {
     return (
         <Formik initialValues={INITIAL_VALUES} onSubmit={onSubmit}>
             <Modal {...props}
+                closeIcon
                 size='tiny'
                 open={loginOpen}
                 onOpen={() => setLoginOpen(true)}
@@ -52,7 +53,12 @@ const LoginModal = (props: ModalProps) => {
                     <Field as={Input} id="password" name="password" type="password" className="field" />
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button type="submit">Login</Button>
+                    <Button type="submit" color="green">
+                        <Icon name="sign in" /> Login
+                    </Button>
+                    <Button onClick={() => setLoginOpen(false)}>
+                        <Icon name="x" /> Cancel
+                    </Button>
                 </Modal.Actions>
             </Modal>
         </Formik>
