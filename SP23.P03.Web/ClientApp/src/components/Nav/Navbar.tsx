@@ -2,9 +2,13 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { Menu } from "semantic-ui-react"; 
 import { routes } from "../../constants/routeconfig";
+import { logoutUser, useUser } from "../AuthProvider";
+import { openLoginModal } from "../LoginModal";
 import "./NavbarStyling.css"; 
 
 export function Navbar() : React.ReactElement {
+    const user = useUser();
+
     return (
         <nav className="nav-container">
 
@@ -35,13 +39,19 @@ export function Navbar() : React.ReactElement {
                     to="/mytrips"
                 />
 
-                { /* will need to update path */}
-                <Menu.Item position="right"
-                    name='Login'
-                    icon="sign-in"
-                    as={NavLink}
-                    to="/login"
-                />
+                {user ? (
+                    <Menu.Item position="right"
+                        name='Logout'
+                        icon='sign-out'
+                        onClick={logoutUser}
+                    />
+                ) : (
+                    <Menu.Item position="right"
+                        name='Login'
+                        icon="sign-in"
+                        onClick={openLoginModal}
+                    />
+                )}
                 
             </Menu>
 
