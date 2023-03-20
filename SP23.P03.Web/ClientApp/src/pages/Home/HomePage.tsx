@@ -1,6 +1,6 @@
 import React from 'react';
 import { useUser } from '../../components/AuthProvider';
-import { Grid, Header, Segment } from 'semantic-ui-react';
+import { Button, Divider, Grid, Header, Icon, Input, Segment } from 'semantic-ui-react';
 import './HomePage.css';
 
 export function HomePage(): React.ReactElement {
@@ -13,64 +13,90 @@ export function HomePage(): React.ReactElement {
                 Let's Get {user?.userName ?? "You"} Entrack
             </h2>
 
-            <main className="grid-position">
-            <Grid container class='ui center aligned'>
-                <Grid.Row columns={3}>
+            <div className="container-center">
+                <Segment padded className="resizing">
+                    <Grid columns={2} stackable container textAlign='center'>
 
-                    <Grid.Column>
-                        <Segment compact emphasis padded
-                        className="info-box">
-                            <Header>
-                                Why Choose EnTrack?
-                            </Header>
+                        <Divider vertical>
+                             <Icon name="arrow right"/>
+                        </Divider>
 
-                            <p className="info-box-content">
-                            We strive to make your traveling experience
-                            the best that it can be. At much cheaper prices,
-                            and an easier experience, let us be your first
-                            option!
-                            </p>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <h1 className="box-header"> Starting From: </h1>
+                                <Input type="text" placeholder="New Orleans" />
+                            </Grid.Column>
 
-                        </Segment>
-                    </Grid.Column>
+                            <Grid.Column>
+                                <h1 className="box-header"> Going To: </h1>
+                                <Input type="text" placeholder="Houston" />
+                            </Grid.Column>
+                        </Grid.Row>
 
-                    <Grid.Column>
-                        <Segment compact emphasis padded
-                        className="info-box">
-                            <Header>
-                                Download the App!
-                            </Header>
+                    </Grid>
+                </Segment>
+            </div>
+            
+            <div className="btn-center">
+                <Button content="Book Now!" />
+            </div>
 
-                            <p className="info-box-content">
-                            With our mobile app, traveling has never been
-                            easier! View all your trip information on the
-                            go, as well as pull up your tickets anytime and
-                            anywhere!
-                            </p>
+            <div className="boxes-center">
+                <Segment basic className="resizing">
+                    <Grid columns={3} stackable
+                    textAlign='left'>
 
-                        </Segment>
-                    </Grid.Column>
+                        <Grid.Row>
+                            <Grid.Column>
+                                <Segment padded className="info-box">
+                                    <img src="../../assets/train01.jpg" alt="train" />
+                                    <Header>
+                                        Why Choose EnTrack?
+                                    </Header>
 
-                    <Grid.Column>
-                        <Segment compact emphasis padded
-                        className="info-box">
-                            <Header>
-                                Why Wait?
-                            </Header>
+                                    <p>
+                                        We strive to make your traveling experience
+                                        the best that it can be. At much cheaper prices,
+                                        and an easier experience, let us be your first
+                                        option!
+                                    </p>
+                                </Segment>
+                            </Grid.Column>
 
-                            <p className="info-box-content">
-                            Let's get you EnTrack and headed to your
-                            next destination. All you have to do is 
-                            click book now and we'll take it from
-                            there!
-                            </p>
+                            <Grid.Column>
+                                <Segment padded className="info-box">
+                                    <Header>
+                                        Download the App!
+                                    </Header>
 
-                        </Segment>
-                    </Grid.Column>
+                                    <p>
+                                        With our mobile app, traveling has never been
+                                        easier! View all your trip information on the
+                                        go, as well as pull up your tickets anytime and
+                                        anywhere!
+                                    </p>
+                                </Segment>
+                            </Grid.Column>
 
-                </Grid.Row>
-            </Grid>
-            </main>
+                            <Grid.Column>
+                                <Segment padded className="info-box">
+                                    <Header>
+                                        Why Wait?
+                                    </Header>
+
+                                    <p>
+                                        Let's get you EnTrack and headed to your
+                                        next destination. All you have to do is 
+                                        click book now and we'll take it from
+                                        there!
+                                    </p>
+                                </Segment>
+                            </Grid.Column>
+
+                        </Grid.Row>
+                    </Grid>
+                </Segment>
+            </div>
 
         </div>
     );
