@@ -57,15 +57,15 @@ public class TripsController : ControllerBase
             .Where(b => b.Arrival.CompareTo(arrival) < 0)
             .FirstOrDefault();
 
-        if (routeDtos == null)
-        {
-            return NotFound();
-        }
-
         if ((fromStationId == toStationId) ||
             (departure.CompareTo(arrival) > 0))
         {
             return BadRequest();
+        }
+
+        if (routeDtos == null)
+        {
+            return NotFound();
         }
 
         return Ok(routeDtos);
