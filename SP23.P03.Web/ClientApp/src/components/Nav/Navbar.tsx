@@ -28,7 +28,7 @@ export function Navbar() : React.ReactElement {
                     name='Route Planning'
                     icon="map outline"
                     as={NavLink}
-                    to="/routeplanning"
+                    to={routes.route_planning}
                 />
 
                 { /* will need to update path */ }
