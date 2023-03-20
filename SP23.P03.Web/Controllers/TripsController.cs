@@ -46,6 +46,21 @@ public class TripsController : ControllerBase
         return Ok(tripDtos);
     }
 
+    [HttpGet]
+    [Route("search/{fromStationId}/{toStationId}/{departure}/{arrival}")]
+    public ActionResult<TripDto> GetRoute(int fromStationId, int toStationId/*, DateTimeOffset departure, DateTimeOffset arrival*/)
+    {
+        var routeDtos = GetTripDtos(trips.Where(x => x.FromStationId == fromStationId).Where(y => y.ToStationId == toStationId)).FirstOrDefault();
+
+        if (routeDtos == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(routeDtos);
+    }
+
+
     [HttpPost]
     [Authorize(Roles = RoleNames.Admin)]
     public ActionResult<TripDto> CreateTrip([FromBody] CreateTripDto dto)
