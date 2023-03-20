@@ -1,17 +1,45 @@
-.home-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
-    background-size: cover;
-    background-position: center;
-    background-image: url("../../assets/home-background-compressed.jpg");
+
+.slogan {
+    text-align: center;
+    padding-top: 50px;
+    font-weight: lighter;
+    font-style: italic;
 }
 
-.home-page > header {
-    font-size: 4em;
-    color: white;
-    display: block;
-    padding-bottom: 0.5em;
+.container-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 5em;
+}
+
+.resizing {
+    max-width: 75em;
+}
+
+.btn-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 2em;
+}
+
+.info-box {
+    max-width: 18em;
+    text-align:start;
+}
+
+.boxes-center {
+    padding-left: 20em;
+    padding-top: 10em;
+}
+
+.box-header {
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+    
+}
+
+Input {
+    width: 30em;
 }

@@ -10,7 +10,8 @@ import LoginModal from './components/LoginModal';
 
 export function App() : React.ReactElement {
   return (
-    <div className="page-container">
+    <div className="page-container"
+    style={{backgroundColor: '#FFFCFC'}}>
         <LoginModal />
         <Navbar />
         <Routes>
