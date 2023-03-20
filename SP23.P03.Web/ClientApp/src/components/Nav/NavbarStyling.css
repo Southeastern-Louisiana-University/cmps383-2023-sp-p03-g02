@@ -2,25 +2,23 @@
 .nav-container {
     background-color: white !important;
     position: relative;
-    
 }
 
 .item-container {
-    background-color: #FFFCFC !important;
+    background-color: var(--main-background-color) !important;
     border-radius: 0 !important;
     margin-bottom: 0 !important;
 }
 
 .item {
-    color: black !important;
+    color: var(--main-color) !important;
     font-family: Arial, Helvetica, sans-serif;
     font-size: medium;
     border-radius: 0 !important;
 }
 
 .item:hover {
-    background-color: var(--main-color) !important;
-    color: black !important;
+    background-image: linear-gradient(var(--main-background-color) 95%, #01a0b6 95%) !important;
 }
 
 .main-logo {
@@ -34,11 +32,6 @@
     padding: 4px;
 }
 
-.item:hover > .main-logo {
-    background-color: black;
-}
-
 .item-container > .item.active {
-    background-image: linear-gradient(#FFFCFC 95%, var(--main-color) 95%) !important;
-    background-blend-mode: lighten !important;
+    background-image: linear-gradient(var(--main-background-color) 95%, var(--main-color) 95%) !important;
 }

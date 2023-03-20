@@ -5,11 +5,13 @@ import { NotFoundPage } from './pages/NotFound/NotFoundPage'
 import { routes } from './constants/routeconfig'
 import { Navbar } from './components/Nav/Navbar';
 import './App.css';
+import LoginModal from './components/LoginModal';
 
 export function App() : React.ReactElement {
   return (
     <div className="page-container"
     style={{backgroundColor: '#FFFCFC'}}>
+        <LoginModal />
         <Navbar />
         <Routes>
           <Route path={routes.home} element={<HomePage />} />
