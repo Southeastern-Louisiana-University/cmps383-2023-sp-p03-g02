@@ -5,6 +5,7 @@ import { RoutePlanning } from './pages/RoutePlanning/RoutePlanning';
 import { NotFoundPage } from './pages/NotFound/NotFoundPage';
 import { routes } from './constants/routeconfig';
 import { Navbar } from './components/Nav/Navbar';
+import { Footer } from './components/Footer/Footer';
 import './App.css';
 import LoginModal from './components/LoginModal';
 
@@ -21,6 +22,7 @@ export function App() : React.ReactElement {
           {/* If the path does not exist */}
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
+        <Footer />
     </div>
   );
 }
