@@ -2,7 +2,10 @@ import React from 'react';
 import { useUser } from '../../components/AuthProvider';
 import { Button, Divider, Grid, Header, Icon, Input, Segment } from 'semantic-ui-react';
 import './HomePage.css';
-//import { TrainOne } from '../../assets/train01.jpg';
+
+const TrainOne = require('../../assets/train01.jpg');
+const MobilePhone = require('../../assets/lookingatphone.png');
+const TrainTwo = require('../../assets/choochoo.jpg');
 
 export function HomePage(): React.ReactElement {
     const user = useUser();
@@ -10,12 +13,14 @@ export function HomePage(): React.ReactElement {
     return (
         <div className='home-page'>
             
-            <h2 className="slogan"> 
-                Let's Get {user?.userName ?? "You"} Entrack
-            </h2>
+            <div className="header-box">
+                <h2 className="slogan"> 
+                    Let's Get {user?.userName ?? "You"} Entrack
+                </h2>
+            
 
             <div className="container-center">
-                <Segment padded className="resizing">
+                <Segment padded raised className="resizing">
                     <Grid columns={2} stackable container textAlign='center'>
 
                         <Divider vertical>
@@ -42,6 +47,8 @@ export function HomePage(): React.ReactElement {
                 <Button content="Book Now!" />
             </div>
 
+            </div>
+
             <div className="boxes-center">
                 <Segment basic className="resizing">
                     <Grid columns={3} stackable
@@ -50,7 +57,12 @@ export function HomePage(): React.ReactElement {
                         <Grid.Row>
                             <Grid.Column>
                                 <Segment padded className="info-box">
-                                    
+                                    <div>
+                                        <img src={TrainOne} alt="train" width={200} />
+                                    </div>
+
+                                    <Divider />
+
                                     <Header>
                                         Why Choose EnTrack?
                                     </Header>
@@ -66,6 +78,12 @@ export function HomePage(): React.ReactElement {
 
                             <Grid.Column>
                                 <Segment padded className="info-box">
+                                    <div>
+                                        <img src={MobilePhone} alt="mobile app" width={200} height={150} />
+                                    </div>
+
+                                    <Divider />
+
                                     <Header>
                                         Download the App!
                                     </Header>
@@ -81,6 +99,12 @@ export function HomePage(): React.ReactElement {
 
                             <Grid.Column>
                                 <Segment padded className="info-box">
+                                    <div>
+                                        <img src={TrainTwo} alt="Hammond station" width={200} />
+                                    </div>
+
+                                    <Divider />
+
                                     <Header>
                                         Why Wait?
                                     </Header>

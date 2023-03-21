@@ -1,9 +1,19 @@
 
+.header-box {
+    padding-top: 75px;
+    padding-bottom: 75px;
+    background-size: cover;
+    background-position: center;
+    background-image: url("../../assets/hammondstation.jpg");
+}
+
 .slogan {
     text-align: center;
-    padding-top: 50px;
-    font-weight: lighter;
+    font-weight: bolder;
     font-style: italic;
+    color: #FFFCFC;
+    font-size: 3em;
+    text-shadow: .08em .08em #222222;
 }
 
 .container-center {
@@ -31,13 +41,13 @@
 
 .boxes-center {
     padding-left: 20em;
-    padding-top: 10em;
+    padding-top: 2em;
+    padding-bottom: 5em;
 }
 
 .box-header {
     font-size: large;
     font-family: Arial, Helvetica, sans-serif;
-    
 }
 
 Input {
