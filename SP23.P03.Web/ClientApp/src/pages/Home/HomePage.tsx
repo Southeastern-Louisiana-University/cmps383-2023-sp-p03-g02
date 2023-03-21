@@ -1,6 +1,6 @@
 import React from 'react';
 import { useUser } from '../../components/AuthProvider';
-import { Button, Divider, Grid, Header, Icon, Input, Segment } from 'semantic-ui-react';
+import { Divider, Grid, Header, Icon, Input, Segment } from 'semantic-ui-react';
 import './HomePage.css';
 
 const TrainOne = require('../../assets/train01.jpg');
@@ -15,17 +15,14 @@ export function HomePage(): React.ReactElement {
             
             <div className="header-box">
                 <h2 className="slogan"> 
-                    Let's Get {user?.userName ?? "You"} Entrack
+                    Let's Get {user?.userName ?? "You"} EnTrack
                 </h2>
+            </div>        
             
 
             <div className="container-center">
                 <Segment padded raised className="resizing">
                     <Grid columns={2} stackable container textAlign='center'>
-
-                        <Divider vertical>
-                             <Icon name="arrow right"/>
-                        </Divider>
 
                         <Grid.Row>
                             <Grid.Column>
@@ -33,20 +30,25 @@ export function HomePage(): React.ReactElement {
                                 <Input type="text" placeholder="New Orleans" />
                             </Grid.Column>
 
+                            <Divider vertical>
+                                <Icon name="arrow right"/>
+                            </Divider>
+
                             <Grid.Column>
                                 <h1 className="box-header"> Going To: </h1>
                                 <Input type="text" placeholder="Houston" />
                             </Grid.Column>
                         </Grid.Row>
 
+                        <Grid.Row>
+                            <div className="btn-center">
+                                <button className="btn-styling">
+                                    Book Now!
+                                </button>
+                            </div>
+                        </Grid.Row>
                     </Grid>
                 </Segment>
-            </div>
-            
-            <div className="btn-center">
-                <Button content="Book Now!" />
-            </div>
-
             </div>
 
             <div className="boxes-center">
