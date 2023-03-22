@@ -21,7 +21,7 @@
     align-items: center;
     justify-content: center;
     position: relative;
-    bottom: 4em;
+    bottom: 6em;
 }
 
 .resizing {
@@ -42,18 +42,27 @@
     font-family: Arial, Helvetica, sans-serif;
     font-size: 1.2em;
     background-color: #222222;
-    color: #22d3ee;
+    color: var(--main-color);
 }
 
 .btn-styling:hover {
-    background-color: #22d3ee;
+    background-color: var(--main-color);
     color: #222222;
+}
+
+.header-style {
+    color: var(--main-color) !important;
 }
 
 .info-box {
     max-width: 18em;
     height: 27em;
     text-align: start;
+    background-color: #333333 !important;
+    border-style: solid !important;
+    border-width: .1em !important;
+    border-color: var(--main-color) !important;
+    box-shadow: 7px 7px var(--main-color) !important;
 }
 
 .boxes-center {
@@ -68,4 +77,13 @@
 
 Input {
     width: 30em;
+    border-color: #222222 !important;
+}
+
+Input::placeholder {
+    color: #222222 !important;
+}
+
+Input:focus {
+    border-color: var(--main-color) !important;
 }

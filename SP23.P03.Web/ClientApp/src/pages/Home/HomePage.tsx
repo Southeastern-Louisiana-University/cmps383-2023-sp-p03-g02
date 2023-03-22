@@ -58,14 +58,14 @@ export function HomePage(): React.ReactElement {
 
                         <Grid.Row>
                             <Grid.Column>
-                                <Segment padded className="info-box">
+                                <Segment padded inverted className="info-box">
                                     <div>
                                         <img src={TrainOne} alt="train" width={200} />
                                     </div>
 
                                     <Divider />
 
-                                    <Header>
+                                    <Header className="header-style">
                                         Why Choose EnTrack?
                                     </Header>
 
@@ -79,14 +79,14 @@ export function HomePage(): React.ReactElement {
                             </Grid.Column>
 
                             <Grid.Column>
-                                <Segment padded className="info-box">
+                                <Segment padded inverted className="info-box">
                                     <div>
                                         <img src={MobilePhone} alt="mobile app" width={200} height={150} />
                                     </div>
 
                                     <Divider />
 
-                                    <Header>
+                                    <Header className="header-style">
                                         Download the App!
                                     </Header>
 
@@ -100,14 +100,14 @@ export function HomePage(): React.ReactElement {
                             </Grid.Column>
 
                             <Grid.Column>
-                                <Segment padded className="info-box">
+                                <Segment padded inverted className="info-box">
                                     <div>
                                         <img src={TrainTwo} alt="Hammond station" width={200} />
                                     </div>
 
                                     <Divider />
 
-                                    <Header>
+                                    <Header className="header-style">
                                         Why Wait?
                                     </Header>
 
