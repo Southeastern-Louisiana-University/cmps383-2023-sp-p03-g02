@@ -11,7 +11,7 @@ import LoginModal from './components/LoginModal';
 export function App() : React.ReactElement {
   return (
     <div className="page-container"
-    style={{backgroundColor: '#FFFCFC'}}>
+    style={{backgroundColor: '#222222'}}>
         <LoginModal />
         <Navbar />
         <Routes>
