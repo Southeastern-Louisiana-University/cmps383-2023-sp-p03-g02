@@ -11,18 +11,22 @@ export const openLoginModal = () => {
 
 const LoginModal = (props: ModalProps) => {
     const [loginOpen, setLoginOpen] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     useSubscription("open-login-modal", () => {
         setLoginOpen(true);
     });
 
     const onSubmit = async (values: LoginDto, formikHelpers: FormikHelpers<LoginDto>) => {
+        setLoading(true);
         loginUser(values)
             .then(() => {
+                setLoading(false);
                 setLoginOpen(false);
                 formikHelpers.resetForm();
             })
             .catch((error) => {
+                setLoading(false);
                 console.error(error);
                 alert("Login failed.");
             });
@@ -53,7 +57,7 @@ const LoginModal = (props: ModalProps) => {
                     <Field as={Input} id="password" name="password" type="password" className="field" />
                 </Modal.Content>
                 <Modal.Actions>
-                    <Button type="submit" color="green">
+                    <Button type="submit" color="green" loading={loading}>
                         <Icon name="sign in" /> Login
                     </Button>
                     <Button onClick={() => setLoginOpen(false)}>
