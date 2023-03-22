@@ -1,30 +1,29 @@
 import React from "react";
-import { Divider, Grid, Header, Segment } from "semantic-ui-react";
+import { Grid, Header, Segment } from "semantic-ui-react";
 
 export function Footer() : React.ReactElement {
     return (
         <div>
-            <Segment placeholder>
+            <Segment inverted padded>
                     <Grid columns={2}>
-
-                        <Divider vertical />
 
                         <Grid.Row>
                             <Grid.Column>
-                                <Header> EnTrack </Header>
+                                <Header className="header-style"> EnTrack </Header>
+
                                 <p>
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
-                                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
-                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris 
-                                nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in
-                                reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
-                                pariatur. Excepteur sint occaecat cupidatat non proident, sunt in 
-                                culpa qui officia deserunt mollit anim id est laborum.
+                                    is a transportation service located in the southern states
+                                    of the United States of America. Our focus is on making
+                                    the traveling experience, whether that be for work, personal,
+                                    or vacation, as convenient as it can be. As one of the luxury
+                                    transportation services, we take the hassle out of booking
+                                    tickets and boarding. Our goal is to make traveling by train
+                                    easier than traveling by airplane!
                                 </p>
                             </Grid.Column>
 
                             <Grid.Column>
-                                <Header>
+                                <Header className="header-style">
                                     Need Something?
                                 </Header>
                                 
@@ -32,14 +31,21 @@ export function Footer() : React.ReactElement {
                                 <p> Mobile App </p>
                                 <p> Contact Us </p>
                             </Grid.Column>
-                            
+                        </Grid.Row>
+
+                        <Grid.Row padded centered className="header-style">
+                            <div>
+                                © 2023 EnTrack Transportation Corporation
+                            </div>
                         </Grid.Row>
                     </Grid>
                 </Segment>
 
-                <Grid padded centered>
+{/*
+                <Grid padded centered className="header-style">
                     © 2023 EnTrack Transportation Corporation
                 </Grid>
+ */}
         </div>
     );
 }
