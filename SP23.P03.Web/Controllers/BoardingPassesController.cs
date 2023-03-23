@@ -7,6 +7,7 @@ using SP23.P03.Web.Extensions;
 using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.BoardingPasses;
 using SP23.P03.Web.Features.Passengers;
+using SP23.P03.Web.Features.TrainStations;
 using SP23.P03.Web.Features.Trips;
 
 namespace SP23.P03.Web.Controllers
@@ -40,14 +41,7 @@ namespace SP23.P03.Web.Controllers
                 return Unauthorized("Your user could not be identified.");
             }
 
-            var myBoardingPasses = boardingPasses.Where(x => x.OwnerId == myId).Select(x => new BoardingPassDto
-            {
-                Id = x.Id,
-                Code = x.Code,
-                OwnerId = x.OwnerId,
-                TripId = x.TripId,
-                PassengerIds = x.Passengers.Select(x => x.Id).ToList(),
-            }).ToList();
+            var myBoardingPasses = GetBoardingPassDtos(boardingPasses.Where(x => x.OwnerId == myId)).ToList();
 
             return Ok(myBoardingPasses);
         }
@@ -61,14 +55,7 @@ namespace SP23.P03.Web.Controllers
                 return NotFound();
             }
 
-            var ownedBoardingPasses = boardingPasses.Where(x => x.OwnerId == userId).Select(x => new BoardingPassDto
-            {
-                Id = x.Id,
-                Code = x.Code,
-                OwnerId = x.OwnerId,
-                TripId = x.TripId,
-                PassengerIds = x.Passengers.Select(x => x.Id).ToList(),
-            }).ToList();
+            var ownedBoardingPasses = GetBoardingPassDtos(boardingPasses.Where(x => x.OwnerId == userId)).ToList();
 
             return Ok(ownedBoardingPasses);
         }
@@ -77,26 +64,17 @@ namespace SP23.P03.Web.Controllers
         [Authorize]
         public ActionResult<BoardingPassDto> GetBoardingPassByCode([FromRoute] string code)
         {
-            var boardingPass = boardingPasses.Include(x => x.Passengers).FirstOrDefault(x => x.Code == code);
+            var boardingPassDto = GetBoardingPassDtos(boardingPasses.Where(x => x.Code == code)).FirstOrDefault();
 
-            if (boardingPass == null)
+            if (boardingPassDto == null)
             {
                 return NotFound();
             }
 
-            if (!(User.IsInRole(RoleNames.Admin) || boardingPass.OwnerId == User.GetCurrentUserId()))
+            if (!(User.IsInRole(RoleNames.Admin) || boardingPassDto.OwnerId == User.GetCurrentUserId()))
             {
                 return Forbid();
             }
-
-            var boardingPassDto = new BoardingPassDto
-            {
-                Id = boardingPass.Id,
-                Code = boardingPass.Code,
-                OwnerId = boardingPass.OwnerId,
-                TripId = boardingPass.TripId,
-                PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
-            };
 
             return Ok(boardingPassDto);
         }
@@ -105,21 +83,12 @@ namespace SP23.P03.Web.Controllers
         [Authorize(Roles = RoleNames.Admin)]
         public ActionResult<BoardingPassDto> GetBoardingPassById([FromRoute] int id)
         {
-            var boardingPass = boardingPasses.Include(x => x.Passengers).FirstOrDefault(x => x.Id == id);
+            var boardingPassDto = GetBoardingPassDtos(boardingPasses.Where(x => x.Id == id)).FirstOrDefault();
 
-            if (boardingPass == null)
+            if (boardingPassDto == null)
             {
                 return NotFound();
             }
-
-            var boardingPassDto = new BoardingPassDto
-            {
-                Id = boardingPass.Id,
-                Code = boardingPass.Code,
-                OwnerId = boardingPass.OwnerId,
-                TripId = boardingPass.TripId,
-                PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
-            };
 
             return Ok(boardingPassDto);
         }
@@ -182,14 +151,7 @@ namespace SP23.P03.Web.Controllers
             boardingPasses.Add(boardingPass);
             dataContext.SaveChanges();
 
-            var boardingPassDto = new BoardingPassDto
-            {
-                Id = boardingPass.Id,
-                Code = boardingPass.Code,
-                OwnerId = boardingPass.OwnerId,
-                TripId = boardingPass.TripId,
-                PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
-            };
+            var boardingPassDto = GetBoardingPassDtos(boardingPasses.Where(x => x == boardingPass)).First();
 
             return CreatedAtAction(nameof(GetBoardingPassByCode), new { code = boardingPassDto.Code }, boardingPassDto);
         }
@@ -252,14 +214,7 @@ namespace SP23.P03.Web.Controllers
             boardingPasses.Add(boardingPass);
             dataContext.SaveChanges();
 
-            var boardingPassDto = new BoardingPassDto
-            {
-                Id = boardingPass.Id,
-                Code = boardingPass.Code,
-                OwnerId = boardingPass.OwnerId,
-                TripId = boardingPass.TripId,
-                PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
-            };
+            var boardingPassDto = GetBoardingPassDtos(boardingPasses.Where(x => x == boardingPass)).First();
 
             return CreatedAtAction(nameof(GetBoardingPassByCode), new { code = boardingPassDto.Code }, boardingPassDto);
         }
@@ -313,14 +268,7 @@ namespace SP23.P03.Web.Controllers
 
             dataContext.SaveChanges();
 
-            var boardingPassDto = new BoardingPassDto
-            {
-                Id = boardingPass.Id,
-                Code = boardingPass.Code,
-                OwnerId = boardingPass.OwnerId,
-                TripId = boardingPass.TripId,
-                PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
-            };
+            var boardingPassDto = GetBoardingPassDtos(boardingPasses.Where(x => x == boardingPass)).First();
 
             return Ok(boardingPassDto);
         }
@@ -342,5 +290,45 @@ namespace SP23.P03.Web.Controllers
             return Ok();
         }
 
+
+        private static IQueryable<BoardingPassDto> GetBoardingPassDtos(IQueryable<BoardingPass> boardingPasses) =>
+            boardingPasses.Select(x => new BoardingPassDto
+            {
+                Id = x.Id,
+                Code = x.Code,
+                OwnerId = x.OwnerId,
+                Trip = new TripDto
+                {
+                    Id = x.Trip.Id,
+                    TrainId = x.Trip.TrainId,
+                    FromStation = new TrainStationDto
+                    {
+                        Id = x.Trip.FromStation.Id,
+                        Name = x.Trip.FromStation.Name,
+                        Address = x.Trip.FromStation.Address,
+                        ManagerId = x.Trip.FromStation.ManagerId,
+                    },
+                    ToStation = new TrainStationDto
+                    {
+                        Id = x.Trip.ToStation.Id,
+                        Name = x.Trip.ToStation.Name,
+                        Address = x.Trip.ToStation.Address,
+                        ManagerId = x.Trip.ToStation.ManagerId,
+                    },
+                    Departure = x.Trip.Departure,
+                    Arrival = x.Trip.Arrival,
+                    BasePrice = x.Trip.BasePrice,
+                },
+                Passengers = x.Passengers.Select(x => new PassengerDto
+                {
+                    Id = x.Id,
+                    OwnerId = x.OwnerId,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Birthday = x.Birthday,
+                    Age = x.Age,
+                    AgeGroup = x.AgeGroup,
+                }).ToList(),
+            });
     }
 }
