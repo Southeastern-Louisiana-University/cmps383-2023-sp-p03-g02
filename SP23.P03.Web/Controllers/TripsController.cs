@@ -79,8 +79,20 @@ public class TripsController : ControllerBase
         {
             Id = createdTrip.Id,
             TrainId = createdTrip.TrainId,
-            FromStationId = createdTrip.FromStationId,
-            ToStationId = createdTrip.ToStationId,
+            FromStation = new TrainStationDto
+            {
+                Id = createdTrip.FromStation.Id,
+                Name = createdTrip.FromStation.Name,
+                Address = createdTrip.FromStation.Address,
+                ManagerId = createdTrip.FromStation.ManagerId,
+            },
+            ToStation = new TrainStationDto
+            {
+                Id = createdTrip.ToStation.Id,
+                Name = createdTrip.ToStation.Name,
+                Address = createdTrip.ToStation.Address,
+                ManagerId = createdTrip.ToStation.ManagerId,
+            },
             Departure = createdTrip.Departure,
             Arrival = createdTrip.Arrival,
             BasePrice = createdTrip.BasePrice
@@ -125,8 +137,20 @@ public class TripsController : ControllerBase
         {
             Id = trip.Id,
             TrainId = trip.TrainId,
-            FromStationId = trip.FromStationId,
-            ToStationId = trip.ToStationId,
+            FromStation = new TrainStationDto
+            {
+                Id = trip.FromStation.Id,
+                Name = trip.FromStation.Name,
+                Address = trip.FromStation.Address,
+                ManagerId = trip.FromStation.ManagerId,
+            },
+            ToStation = new TrainStationDto
+            {
+                Id = trip.ToStation.Id,
+                Name = trip.ToStation.Name,
+                Address = trip.ToStation.Address,
+                ManagerId = trip.ToStation.ManagerId,
+            },
             Departure = trip.Departure,
             Arrival = trip.Arrival,
             BasePrice = trip.BasePrice,
@@ -173,8 +197,20 @@ public class TripsController : ControllerBase
             {
                 Id = x.Id,
                 TrainId = x.TrainId,
-                FromStationId = x.FromStationId,
-                ToStationId = x.ToStationId,
+                FromStation = new TrainStationDto
+                {
+                    Id = x.FromStation.Id,
+                    Name = x.FromStation.Name,
+                    Address = x.FromStation.Address,
+                    ManagerId = x.FromStation.ManagerId,
+                },
+                ToStation = new TrainStationDto
+                {
+                    Id = x.ToStation.Id,
+                    Name = x.ToStation.Name,
+                    Address = x.ToStation.Address,
+                    ManagerId = x.ToStation.ManagerId,
+                },
                 Departure = x.Departure,
                 Arrival = x.Arrival,
                 BasePrice = x.BasePrice
