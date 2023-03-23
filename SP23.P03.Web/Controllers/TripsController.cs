@@ -50,16 +50,23 @@ public class TripsController : ControllerBase
     [Authorize(Roles = RoleNames.Admin)]
     public ActionResult<TripDto> CreateTrip([FromBody] CreateTripDto dto)
     {
-        if (InvalidCreateTripDto(dto))
+        var train = trains.FirstOrDefault(x => x.Id == dto.TrainId);
+        var fromStation = stations.FirstOrDefault(x => x.Id == dto.FromStationId);
+        var toStation = stations.FirstOrDefault(x => x.Id == dto.ToStationId);
+
+        if (InvalidCreateTripDto(dto)
+            || train == null
+            || fromStation == null
+            || toStation == null)
         {
             return BadRequest();
         }
 
         var createdTrip = new Trip
         {
-            TrainId = dto.TrainId,
-            FromStationId = dto.FromStationId,
-            ToStationId = dto.ToStationId,
+            Train = train,
+            FromStation = fromStation,
+            ToStation = toStation,
             Departure = dto.Departure,
             Arrival = dto.Arrival,
             BasePrice = dto.BasePrice
@@ -93,14 +100,21 @@ public class TripsController : ControllerBase
             return NotFound();
         }
 
-        if (InvalidCreateTripDto(dto))
+        var train = trains.FirstOrDefault(x => x.Id == dto.TrainId);
+        var fromStation = stations.FirstOrDefault(x => x.Id == dto.FromStationId);
+        var toStation = stations.FirstOrDefault(x => x.Id == dto.ToStationId);
+
+        if (InvalidCreateTripDto(dto)
+            || train == null
+            || fromStation == null
+            || toStation == null)
         {
             return BadRequest();
         }
 
-        trip.TrainId = dto.TrainId;
-        trip.FromStationId = dto.FromStationId;
-        trip.ToStationId = dto.ToStationId;
+        trip.Train = train;
+        trip.FromStation = fromStation;
+        trip.ToStation = toStation;
         trip.Departure = dto.Departure;
         trip.Arrival = dto.Arrival;
         trip.BasePrice = dto.BasePrice;
@@ -138,17 +152,11 @@ public class TripsController : ControllerBase
         return Ok();
     }
 
-    private bool InvalidCreateTripDto(CreateTripDto dto)
+    private static bool InvalidCreateTripDto(CreateTripDto dto)
     {
         bool isInvalid = false;
-        var train = trains.FirstOrDefault(x => x.Id == dto.TrainId);
-        var fromStation = stations.FirstOrDefault(x => x.Id == dto.FromStationId);
-        var toStation = stations.FirstOrDefault(x => x.Id == dto.ToStationId);
 
-        if (train == null ||
-            fromStation == null ||
-            toStation == null ||
-            (dto.FromStationId == dto.ToStationId) ||
+        if (dto.FromStationId == dto.ToStationId ||
             dto.Arrival.CompareTo(dto.Departure) <= 0 ||
             dto.BasePrice < 0) 
         {

@@ -236,27 +236,27 @@ public static class SeedHelper
         trips.AddRange(
             new Trip
             {
-                TrainId = hammondTrain.Id,
-                FromStationId = hammondStation.Id,
-                ToStationId = slidellStation.Id,
+                Train = hammondTrain,
+                FromStation = hammondStation,
+                ToStation = slidellStation,
                 Departure = new DateTimeOffset(2023, 03, 13, 13, 00, 00, offset),
                 Arrival = new DateTimeOffset(2023, 03, 13, 13, 30, 00, offset),
                 BasePrice = 35
             },
             new Trip
             {
-                TrainId = hammondTrain.Id,
-                FromStationId = slidellStation.Id,
-                ToStationId = nolaStation.Id,
+                Train = hammondTrain,
+                FromStation = slidellStation,
+                ToStation = nolaStation,
                 Departure = new DateTimeOffset(2023, 03, 13, 13, 45, 00, offset),
                 Arrival = new DateTimeOffset(2023, 03, 13, 13, 55, 00, offset),
                 BasePrice = 10
             },
             new Trip
             {
-                TrainId = hammondTrain.Id,
-                FromStationId = nolaStation.Id,
-                ToStationId = hammondStation.Id,
+                Train = hammondTrain,
+                FromStation = nolaStation,
+                ToStation = hammondStation,
                 Departure = new DateTimeOffset(2023, 03, 13, 14, 15, 00, offset),
                 Arrival = new DateTimeOffset(2023, 03, 13, 14, 35, 00, offset),
                 BasePrice = 30

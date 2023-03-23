@@ -9,7 +9,7 @@ namespace SP23.P03.Web.Features.Passengers
         public const int MinElderAge = 70;
         public int Id { get; set; }
         public int OwnerId { get; set; }
-        public virtual User Owner { get; set; }
+        public required virtual User Owner { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public DateTimeOffset Birthday { get; set; }
