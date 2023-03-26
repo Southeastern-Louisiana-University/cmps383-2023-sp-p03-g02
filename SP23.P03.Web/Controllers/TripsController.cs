@@ -48,25 +48,40 @@ public class TripsController : ControllerBase
 
     [HttpGet]
     [Route("search/{fromStationId}/{toStationId}/{departure}/{arrival}")]
-    public ActionResult<TripDto> GetRoute(int fromStationId, int toStationId, DateTimeOffset departure, DateTimeOffset arrival)
+    public ActionResult<ICollection<ICollection<TripDto>>> GetRoute(int fromStationId, int toStationId, DateTimeOffset departure, DateTimeOffset arrival)
     {
-        var routeDtos = GetTripDtos(trips
-            .Where(x => x.FromStationId == fromStationId)
-            .Where(y => y.ToStationId == toStationId))
-            .Where(a => a.Departure.CompareTo(departure) > 0)
-            .Where(b => b.Arrival.CompareTo(arrival) < 0)
-            .FirstOrDefault();
+        var routes = GenerateRoutes(trips, fromStationId, toStationId, departure, arrival);
 
-        if ((fromStationId == toStationId) ||
-            (departure.CompareTo(arrival) > 0))
+        if (routes == null)
         {
-            return BadRequest();
+            return NotFound("There were no valid routes.");
         }
 
-        if (routeDtos == null)
+        var routeDtos = routes.Select(r => r.Select(x => new TripDto
         {
-            return NotFound();
-        }
+            Id = x.Id,
+            TrainId = x.TrainId,
+            FromStation = new TrainStationDto
+            {
+                Id = x.FromStation.Id,
+                Name = x.FromStation.Name,
+                Address = x.FromStation.Address,
+                ManagerId = x.FromStation.ManagerId,
+            },
+            ToStation = new TrainStationDto
+            {
+                Id = x.ToStation.Id,
+                Name = x.ToStation.Name,
+                Address = x.ToStation.Address,
+                ManagerId = x.ToStation.ManagerId,
+            },
+            Departure = x.Departure,
+            Arrival = x.Arrival,
+            CoachPrice = x.CoachPrice,
+            FirstClassPrice = x.FirstClassPrice,
+            RoomletPrice = x.RoomletPrice,
+            SleeperPrice = x.SleeperPrice,
+        }));
 
         return Ok(routeDtos);
     }
@@ -259,5 +274,53 @@ public class TripsController : ControllerBase
                 RoomletPrice = x.RoomletPrice,
                 SleeperPrice = x.SleeperPrice,
             });
+    }
+
+    private static List<List<Trip>>? GenerateRoutes(IQueryable<Trip> trips, int fromStationId, int toStationId,
+                                                            DateTimeOffset departure, DateTimeOffset arrival)
+    {
+        var possibleTrips = trips.Include(x => x.FromStation)
+                                 .Include(x => x.ToStation)
+                                 .Where(x => x.FromStationId == fromStationId
+                                 && x.Departure.CompareTo(departure) >= 0
+                                 && x.Arrival.CompareTo(arrival) <= 0)
+                                 .ToList();
+
+        if (!possibleTrips.Any())
+        {
+            // No valid trips, give up
+            return null;
+        }
+
+        var routes = new List<List<Trip>>();
+
+        // Check each trip to see if we can make it to the destination
+        foreach ( var trip in possibleTrips )
+        {
+            List<List<Trip>>? generatedRoutes;
+            if(trip.ToStationId == toStationId)
+            {
+                // We made it to the destination with this trip!
+                routes.Add(new List<Trip>() { trip });
+            }
+            else if((generatedRoutes = GenerateRoutes(trips, trip.ToStationId, toStationId, trip.Arrival, arrival)) != null) {
+                // We couldn't make it to the destination with this trip, but there were future trips that could!
+                foreach (var generatedRoute in generatedRoutes)
+                {
+                    // Prepend the current trip
+                    generatedRoute.Insert(0, trip);
+                    routes.Add(generatedRoute);
+                }
+            }
+        }
+
+        if(!routes.Any())
+        {
+            // There are no valid routes.
+            return null;
+        }
+
+        // There was at least one valid route!
+        return routes;
     }
 }

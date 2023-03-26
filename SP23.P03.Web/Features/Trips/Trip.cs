@@ -16,10 +16,10 @@ public class Trip
     public required TrainStation ToStation { get; set; }
     public DateTimeOffset Departure { get; set; }
     public DateTimeOffset Arrival { get; set; }
-    public int CoachPrice { get; set; }
-    public int FirstClassPrice { get; set; }
-    public int RoomletPrice { get; set; }
-    public int SleeperPrice { get; set; }
+    public int CoachPrice { get; set; } = 0;
+    public int FirstClassPrice { get; set; } = 0;
+    public int RoomletPrice { get; set; } = 0;
+    public int SleeperPrice { get; set; } = 0;
     public ICollection<BoardingPass> BoardingPasses { get; set; } = new List<BoardingPass>();
 }
 

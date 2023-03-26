@@ -128,14 +128,14 @@ public static class SeedHelper
             new Train
             {
                 Name = "Slidell Train",
-                Status = "Out",
+                Status = "In Use",
                 CoachCapacity = 90,
                 FirstClassCapacity = 30,
             },
             new Train
             {
                 Name = "NOLA Train",
-                Status = "Repair",
+                Status = "Out",
                 CoachCapacity = 50,
                 FirstClassCapacity = 10,
                 RoomletCapacity = 20,
@@ -239,6 +239,7 @@ public static class SeedHelper
 
         var trains = dataContext.Set<Train>();
         var hammondTrain = await trains.FirstAsync(x => x.Name == "Hammond Train");
+        var slidellTrain = await trains.FirstAsync(x => x.Name == "Slidell Train");
 
         trips.AddRange(
             new Trip
@@ -246,8 +247,8 @@ public static class SeedHelper
                 Train = hammondTrain,
                 FromStation = hammondStation,
                 ToStation = slidellStation,
-                Departure = new DateTimeOffset(2023, 03, 13, 13, 00, 00, offset),
-                Arrival = new DateTimeOffset(2023, 03, 13, 13, 30, 00, offset),
+                Departure = new DateTimeOffset(2023, 06, 13, 13, 00, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 13, 30, 00, offset),
                 CoachPrice = 8000,
                 FirstClassPrice = 18000,
                 RoomletPrice = 25000,
@@ -258,8 +259,8 @@ public static class SeedHelper
                 Train = hammondTrain,
                 FromStation = slidellStation,
                 ToStation = nolaStation,
-                Departure = new DateTimeOffset(2023, 03, 13, 13, 45, 00, offset),
-                Arrival = new DateTimeOffset(2023, 03, 13, 13, 55, 00, offset),
+                Departure = new DateTimeOffset(2023, 06, 13, 13, 45, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 13, 55, 00, offset),
                 CoachPrice = 8500,
                 FirstClassPrice = 20000,
                 RoomletPrice = 27000,
@@ -270,12 +271,52 @@ public static class SeedHelper
                 Train = hammondTrain,
                 FromStation = nolaStation,
                 ToStation = hammondStation,
-                Departure = new DateTimeOffset(2023, 03, 13, 14, 15, 00, offset),
-                Arrival = new DateTimeOffset(2023, 03, 13, 14, 35, 00, offset),
+                Departure = new DateTimeOffset(2023, 06, 13, 14, 15, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 14, 35, 00, offset),
                 CoachPrice = 7500,
                 FirstClassPrice = 15000,
                 RoomletPrice = 22000,
                 SleeperPrice = 29000,
+            },
+            new Trip
+            {
+                Train = slidellTrain,
+                FromStation = slidellStation,
+                ToStation = nolaStation,
+                Departure = new DateTimeOffset(2023, 06, 13, 11, 50, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 12, 00, 00, offset),
+                CoachPrice = 5500,
+                FirstClassPrice = 13500,
+            },
+            new Trip
+            {
+                Train = slidellTrain,
+                FromStation = nolaStation,
+                ToStation = hammondStation,
+                Departure = new DateTimeOffset(2023, 06, 13, 12, 40, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 13, 00, 00, offset),
+                CoachPrice = 6000,
+                FirstClassPrice = 15000,
+            },
+            new Trip
+            {
+                Train = slidellTrain,
+                FromStation = hammondStation,
+                ToStation = slidellStation,
+                Departure = new DateTimeOffset(2023, 06, 13, 13, 15, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 13, 45, 00, offset),
+                CoachPrice = 6500,
+                FirstClassPrice = 18000,
+            },
+            new Trip
+            {
+                Train = slidellTrain,
+                FromStation = slidellStation,
+                ToStation = nolaStation,
+                Departure = new DateTimeOffset(2023, 06, 13, 14, 15, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 14, 25, 00, offset),
+                CoachPrice = 5500,
+                FirstClassPrice = 13000,
             }
         );
 
