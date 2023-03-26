@@ -2,6 +2,7 @@
 
 public class CreateBoardingPassDto
 {
-    public int TripId { get; set; }
+    public string TravelClass { get; set; } = string.Empty;
+    public ICollection<int> TripIds { get; set; } = new List<int>();
     public ICollection<int> PassengerIds { get; set; } = new List<int>();
 }

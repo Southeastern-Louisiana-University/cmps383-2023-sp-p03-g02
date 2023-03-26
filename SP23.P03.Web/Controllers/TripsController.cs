@@ -69,7 +69,10 @@ public class TripsController : ControllerBase
             ToStation = toStation,
             Departure = dto.Departure,
             Arrival = dto.Arrival,
-            BasePrice = dto.BasePrice
+            CoachPrice = dto.CoachPrice,
+            FirstClassPrice = dto.FirstClassPrice,
+            RoomletPrice = dto.RoomletPrice,
+            SleeperPrice = dto.SleeperPrice,
         };
 
         trips.Add(createdTrip);
@@ -95,7 +98,10 @@ public class TripsController : ControllerBase
             },
             Departure = createdTrip.Departure,
             Arrival = createdTrip.Arrival,
-            BasePrice = createdTrip.BasePrice
+            CoachPrice = createdTrip.CoachPrice,
+            FirstClassPrice = createdTrip.FirstClassPrice,
+            RoomletPrice = createdTrip.RoomletPrice,
+            SleeperPrice = createdTrip.SleeperPrice,
         };
 
         return CreatedAtAction(nameof(GetTripById), new { id = tripDto.Id }, tripDto);
@@ -129,7 +135,10 @@ public class TripsController : ControllerBase
         trip.ToStation = toStation;
         trip.Departure = dto.Departure;
         trip.Arrival = dto.Arrival;
-        trip.BasePrice = dto.BasePrice;
+        trip.CoachPrice = dto.CoachPrice;
+        trip.FirstClassPrice = dto.FirstClassPrice;
+        trip.RoomletPrice = dto.RoomletPrice;
+        trip.SleeperPrice = dto.SleeperPrice;
 
         dataContext.SaveChanges();
 
@@ -153,7 +162,10 @@ public class TripsController : ControllerBase
             },
             Departure = trip.Departure,
             Arrival = trip.Arrival,
-            BasePrice = trip.BasePrice,
+            CoachPrice = trip.CoachPrice,
+            FirstClassPrice = trip.FirstClassPrice,
+            RoomletPrice = trip.RoomletPrice,
+            SleeperPrice = trip.SleeperPrice,
         };
 
         return Ok(tripDto);
@@ -180,9 +192,12 @@ public class TripsController : ControllerBase
     {
         bool isInvalid = false;
 
-        if (dto.FromStationId == dto.ToStationId ||
-            dto.Arrival.CompareTo(dto.Departure) <= 0 ||
-            dto.BasePrice < 0) 
+        if (dto.FromStationId == dto.ToStationId
+            || dto.Arrival.CompareTo(dto.Departure) <= 0
+            || dto.CoachPrice < 0
+            || dto.FirstClassPrice < 0
+            || dto.RoomletPrice < 0
+            || dto.SleeperPrice < 0) 
         {
             isInvalid = true;
         }
@@ -213,7 +228,10 @@ public class TripsController : ControllerBase
                 },
                 Departure = x.Departure,
                 Arrival = x.Arrival,
-                BasePrice = x.BasePrice
+                CoachPrice = x.CoachPrice,
+                FirstClassPrice = x.FirstClassPrice,
+                RoomletPrice = x.RoomletPrice,
+                SleeperPrice = x.SleeperPrice,
             });
     }
 }

@@ -8,6 +8,7 @@ public class BoardingPassDto
     public int Id { get; set; }
     public string Code { get; set; } = string.Empty;
     public int OwnerId { get; set; }
-    public required TripDto Trip { get; set; }
+    public string TravelClass { get; set; } = string.Empty;
+    public ICollection<TripDto> Trips { get; set; } = new List<TripDto>();
     public ICollection<PassengerDto> Passengers { get; set; } = new List<PassengerDto>();
 }

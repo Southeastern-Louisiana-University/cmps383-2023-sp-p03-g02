@@ -10,7 +10,10 @@ namespace SP23.P03.Web.Features.Trips
         public required TrainStationDto ToStation { get; set; }
         public DateTimeOffset Departure { get; set; }
         public DateTimeOffset Arrival { get; set; }
-        public int BasePrice { get; set; }
+        public int CoachPrice { get; set; }
+        public int FirstClassPrice { get; set; }
+        public int RoomletPrice { get; set; }
+        public int SleeperPrice { get; set; }
     }
 
     public class CreateTripDto
@@ -20,6 +23,9 @@ namespace SP23.P03.Web.Features.Trips
         public int ToStationId { get; set; }
         public DateTimeOffset Departure { get; set; }
         public DateTimeOffset Arrival { get; set; }
-        public int BasePrice { get; set; }
+        public int CoachPrice { get; set; }
+        public int FirstClassPrice { get; set; }
+        public int RoomletPrice { get; set; }
+        public int SleeperPrice { get; set; }
     }
 }

@@ -42,7 +42,10 @@ namespace SP23.P03.Web.Controllers
                 Id = train.Id,
                 Name = train.Name,
                 Status = train.Status,
-                Capacity = train.Capacity
+                CoachCapacity = train.CoachCapacity,
+                FirstClassCapacity = train.FirstClassCapacity,
+                RoomletCapacity = train.RoomletCapacity,
+                SleeperCapacity = train.SleeperCapacity,
             };
 
             return Ok(trainDto);
@@ -62,7 +65,10 @@ namespace SP23.P03.Web.Controllers
             {
                 Name = createTrainDto.Name,
                 Status = createTrainDto.Status,
-                Capacity = createTrainDto.Capacity
+                CoachCapacity = createTrainDto.CoachCapacity,
+                FirstClassCapacity = createTrainDto.FirstClassCapacity,
+                RoomletCapacity = createTrainDto.RoomletCapacity,
+                SleeperCapacity = createTrainDto.SleeperCapacity,
             };
 
             trains.Add(createdTrain);
@@ -72,7 +78,10 @@ namespace SP23.P03.Web.Controllers
                 Id = createdTrain.Id,
                 Name = createdTrain.Name,
                 Status = createdTrain.Status,
-                Capacity = createdTrain.Capacity
+                CoachCapacity = createdTrain.CoachCapacity,
+                FirstClassCapacity = createdTrain.FirstClassCapacity,
+                RoomletCapacity = createdTrain.RoomletCapacity,
+                SleeperCapacity = createdTrain.SleeperCapacity,
             };
 
             return Ok(trainDto);
@@ -97,7 +106,10 @@ namespace SP23.P03.Web.Controllers
 
             train.Name = createTrainDto.Name;
             train.Status = createTrainDto.Status;
-            train.Capacity = createTrainDto.Capacity;
+            train.CoachCapacity = createTrainDto.CoachCapacity;
+            train.FirstClassCapacity = createTrainDto.FirstClassCapacity;
+            train.RoomletCapacity = createTrainDto.RoomletCapacity;
+            train.SleeperCapacity = createTrainDto.SleeperCapacity;
 
             dataContext.SaveChanges();
 
@@ -106,7 +118,10 @@ namespace SP23.P03.Web.Controllers
                 Id = train.Id,
                 Name = train.Name,
                 Status = train.Status,
-                Capacity = train.Capacity
+                CoachCapacity = train.CoachCapacity,
+                FirstClassCapacity = train.FirstClassCapacity,
+                RoomletCapacity = train.RoomletCapacity,
+                SleeperCapacity = train.SleeperCapacity,
             };
 
             return Ok(trainDto);
@@ -114,7 +129,7 @@ namespace SP23.P03.Web.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(Roles = RoleNames.Admin)]
-        public ActionResult DeleteTrain(int id, TrainDto dto)
+        public ActionResult DeleteTrain(int id)
         {
             var train = trains.FirstOrDefault(x => x.Id == id);
 
@@ -130,11 +145,14 @@ namespace SP23.P03.Web.Controllers
             return Ok();
         }
 
-        private bool InvalidCreateTrainDto(CreateTrainDto createTrainDto) =>
+        private static bool InvalidCreateTrainDto(CreateTrainDto createTrainDto) =>
            createTrainDto == null
            || String.IsNullOrWhiteSpace(createTrainDto.Name)
            || String.IsNullOrWhiteSpace(createTrainDto.Status)
-           || createTrainDto.Capacity > 0;
+           || createTrainDto.CoachCapacity > 0
+           || createTrainDto.FirstClassCapacity > 0
+           || createTrainDto.RoomletCapacity > 0
+           || createTrainDto.SleeperCapacity > 0;
 
         private static IQueryable<TrainDto> GetTrainDtos(IQueryable<Train> trains)
         {
@@ -144,7 +162,10 @@ namespace SP23.P03.Web.Controllers
                     Id = x.Id,
                     Name = x.Name,
                     Status = x.Status,
-                    Capacity = x.Capacity,
+                    CoachCapacity = x.CoachCapacity,
+                    FirstClassCapacity = x.FirstClassCapacity,
+                    RoomletCapacity = x.RoomletCapacity,
+                    SleeperCapacity = x.SleeperCapacity,
                 });
         }//end GetTrainDtos
 
