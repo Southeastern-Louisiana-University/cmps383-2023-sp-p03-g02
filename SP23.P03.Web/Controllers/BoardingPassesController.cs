@@ -122,7 +122,7 @@ namespace SP23.P03.Web.Controllers
             Trip? prevTrip = null;
             foreach(var trip in boardingPassTrips)
             {
-                if(trip.GetRemainingCapacity(trips, travelClass) <= 0)
+                if(trip.GetRemainingCapacityForTravelClass(trips, travelClass) <= 0)
                 {
                     return BadRequest("One of the trips is full.");
                 }
@@ -212,7 +212,7 @@ namespace SP23.P03.Web.Controllers
             Trip? prevTrip = null;
             foreach (var trip in boardingPassTrips)
             {
-                if (trip.GetRemainingCapacity(trips, travelClass) <= 0)
+                if (trip.GetRemainingCapacityForTravelClass(trips, travelClass) <= 0)
                 {
                     return BadRequest("One of the trips is full.");
                 }
@@ -304,7 +304,7 @@ namespace SP23.P03.Web.Controllers
             Trip? prevTrip = null;
             foreach (var trip in boardingPassTrips)
             {
-                if (trip.GetRemainingCapacity(trips, travelClass) <= 0)
+                if (trip.GetRemainingCapacityForTravelClass(trips, travelClass) <= 0)
                 {
                     return BadRequest("One of the trips is full.");
                 }

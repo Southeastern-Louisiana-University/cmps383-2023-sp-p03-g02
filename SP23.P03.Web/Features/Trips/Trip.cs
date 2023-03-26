@@ -25,7 +25,11 @@ public class Trip
 
 public static class TripExtensions
 {
-    public static int GetRemainingCapacity(this Trip trip, DbSet<Trip> trips, TravelClass travelClass)
+    public static int GetCoachCapacity(this Trip trip, DbSet<Trip> trips) => GetRemainingCapacityForTravelClass(trip, trips, TravelClass.Coach);
+    public static int GetFirstClassCapacity(this Trip trip, DbSet<Trip> trips) => GetRemainingCapacityForTravelClass(trip, trips, TravelClass.FirstClass);
+    public static int GetRoomletCapacity(this Trip trip, DbSet<Trip> trips) => GetRemainingCapacityForTravelClass(trip, trips, TravelClass.Roomlet);
+    public static int GetSleeperCapacity(this Trip trip, DbSet<Trip> trips) => GetRemainingCapacityForTravelClass(trip, trips, TravelClass.Sleeper);
+    public static int GetRemainingCapacityForTravelClass(this Trip trip, DbSet<Trip> trips, TravelClass travelClass)
     {
         trips.Entry(trip)
              .Reference(x => x.Train)
@@ -35,6 +39,8 @@ public static class TripExtensions
             .Collection(x => x.BoardingPasses)
             .Query()
             .Where(x => x.TravelClass == travelClass)
+            .Include(x => x.Passengers)
+            .AsEnumerable()
             .Aggregate(0, (count, x) => count + x.Passengers.Count);
 
         var train = trip.Train;
@@ -46,6 +52,26 @@ public static class TripExtensions
             TravelClass.Sleeper => trip.Train.SleeperCapacity - takenCapacity,
             _ => 0,
         };
+    }
+    /// <summary>
+    /// Only use this if <paramref name="trip"/>.BoardingPasses.Passengers is loaded.
+    /// </summary>
+    /// <param name="trip"></param>
+    /// <param name="travelClass"></param>
+    /// <returns>The number of passengers in <paramref name="travelClass"/></returns>
+    public static int CountPassengers(this Trip trip, TravelClass travelClass) => trip.BoardingPasses.Where(x => x.TravelClass == travelClass).Aggregate(0, (count, x) => count + x.Passengers.Count);
+    public static int GetRemainingCapacity(this Trip trip, DbSet<Trip> trips)
+    {
+        trips.Entry(trip)
+             .Reference(x => x.Train)
+             .Load();
+
+        return trip.Train.TotalCapacity - trips.Entry(trip)
+                                               .Collection(x => x.BoardingPasses)
+                                               .Query()
+                                               .Include(x => x.Passengers)
+                                               .AsEnumerable()
+                                               .Aggregate(0, (count, x) => count + x.Passengers.Count);
     }
     public static int GetPrice(this Trip trip, TravelClass travelClass)
     {

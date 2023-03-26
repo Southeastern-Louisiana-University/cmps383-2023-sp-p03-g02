@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SP23.P03.Web.Data;
 using SP23.P03.Web.Features.Authorization;
+using SP23.P03.Web.Features.BoardingPasses;
 using SP23.P03.Web.Features.Trains;
 using SP23.P03.Web.Features.TrainStations;
 using SP23.P03.Web.Features.Trips;
@@ -28,14 +29,14 @@ public class TripsController : ControllerBase
     }
 
     [HttpGet]
-    public IQueryable<TripDto> GetAllTrips()
+    public IQueryable<TripWithCapacityDto> GetAllTrips()
     {
         return GetTripDtos(trips);
     }
 
     [HttpGet]
     [Route("{id}")]
-    public ActionResult<TripDto> GetTripById(int id)
+    public ActionResult<TripWithCapacityDto> GetTripById(int id)
     {
         var tripDtos = GetTripDtos(trips.Where(x => x.Id == id)).FirstOrDefault();
         if (tripDtos == null)
@@ -47,17 +48,25 @@ public class TripsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("search/{fromStationId}/{toStationId}/{departure}/{arrival}")]
-    public ActionResult<ICollection<ICollection<TripDto>>> GetRoute(int fromStationId, int toStationId, DateTimeOffset departure, DateTimeOffset arrival)
+    [Route("search/{fromStationId}/{toStationId}/{departure}/{arrival}/{travelClass}")]
+    public ActionResult<IEnumerable<IEnumerable<TripWithCapacityDto>>> GetRoute(int fromStationId, int toStationId,
+                                                                    DateTimeOffset departure, DateTimeOffset arrival,
+                                                                    string travelClass)
     {
-        var routes = GenerateRoutes(trips, fromStationId, toStationId, departure, arrival);
+        if (!(Enum.TryParse(travelClass, true, out TravelClass travelClassEnum) && Enum.IsDefined(travelClassEnum)))
+        {
+            return BadRequest("Invalid travel class.");
+        }
+
+        var routes = GenerateRoutes(trips, fromStationId, toStationId, departure, arrival)
+                     ?.Where(x => x.All(t => t.GetRemainingCapacityForTravelClass(trips, travelClassEnum) > 0));
 
         if (routes == null)
         {
             return NotFound("There were no valid routes.");
         }
 
-        var routeDtos = routes.Select(r => r.Select(x => new TripDto
+        var routeDtos = routes.Select(r => r.Select(x => new TripWithCapacityDto
         {
             Id = x.Id,
             TrainId = x.TrainId,
@@ -81,6 +90,10 @@ public class TripsController : ControllerBase
             FirstClassPrice = x.FirstClassPrice,
             RoomletPrice = x.RoomletPrice,
             SleeperPrice = x.SleeperPrice,
+            CoachCapacity = x.GetCoachCapacity(trips),
+            FirstClassCapacity = x.GetFirstClassCapacity(trips),
+            RoomletCapacity = x.GetRoomletCapacity(trips),
+            SleeperCapacity = x.GetSleeperCapacity(trips),
         }));
 
         return Ok(routeDtos);
@@ -89,7 +102,7 @@ public class TripsController : ControllerBase
 
     [HttpPost]
     [Authorize(Roles = RoleNames.Admin)]
-    public ActionResult<TripDto> CreateTrip([FromBody] CreateTripDto dto)
+    public ActionResult<TripWithCapacityDto> CreateTrip([FromBody] CreateTripDto dto)
     {
         var train = trains.FirstOrDefault(x => x.Id == dto.TrainId);
         var fromStation = stations.FirstOrDefault(x => x.Id == dto.FromStationId);
@@ -119,7 +132,7 @@ public class TripsController : ControllerBase
         trips.Add(createdTrip);
         dataContext.SaveChanges();
 
-        var tripDto = new TripDto
+        var tripDto = new TripWithCapacityDto
         {
             Id = createdTrip.Id,
             TrainId = createdTrip.TrainId,
@@ -143,6 +156,10 @@ public class TripsController : ControllerBase
             FirstClassPrice = createdTrip.FirstClassPrice,
             RoomletPrice = createdTrip.RoomletPrice,
             SleeperPrice = createdTrip.SleeperPrice,
+            CoachCapacity = createdTrip.GetCoachCapacity(trips),
+            FirstClassCapacity = createdTrip.GetFirstClassCapacity(trips),
+            RoomletCapacity = createdTrip.GetRoomletCapacity(trips),
+            SleeperCapacity = createdTrip.GetSleeperCapacity(trips),
         };
 
         return CreatedAtAction(nameof(GetTripById), new { id = tripDto.Id }, tripDto);
@@ -150,7 +167,7 @@ public class TripsController : ControllerBase
 
     [HttpPut("{id}")]
     [Authorize(Roles = RoleNames.Admin)]
-    public ActionResult<TripDto> UpdateTrip([FromBody] CreateTripDto dto, [FromRoute] int id)
+    public ActionResult<TripWithCapacityDto> UpdateTrip([FromBody] CreateTripDto dto, [FromRoute] int id)
     {
         var trip = trips.FirstOrDefault(x => x.Id == id);
 
@@ -183,7 +200,7 @@ public class TripsController : ControllerBase
 
         dataContext.SaveChanges();
 
-        var tripDto = new TripDto
+        var tripDto = new TripWithCapacityDto
         {
             Id = trip.Id,
             TrainId = trip.TrainId,
@@ -207,6 +224,10 @@ public class TripsController : ControllerBase
             FirstClassPrice = trip.FirstClassPrice,
             RoomletPrice = trip.RoomletPrice,
             SleeperPrice = trip.SleeperPrice,
+            CoachCapacity = trip.GetCoachCapacity(trips),
+            FirstClassCapacity = trip.GetFirstClassCapacity(trips),
+            RoomletCapacity = trip.GetRoomletCapacity(trips),
+            SleeperCapacity = trip.GetSleeperCapacity(trips),
         };
 
         return Ok(tripDto);
@@ -246,10 +267,12 @@ public class TripsController : ControllerBase
         return isInvalid;
     }
 
-    private static IQueryable<TripDto> GetTripDtos(IQueryable<Trip> trips)
+    private static IQueryable<TripWithCapacityDto> GetTripDtos(IQueryable<Trip> tripsQuery)
     {
-        return trips
-            .Select(x => new TripDto
+        return tripsQuery
+            .Include(x => x.BoardingPasses)
+            .ThenInclude(x => x.Passengers)
+            .Select(x => new TripWithCapacityDto
             {
                 Id = x.Id,
                 TrainId = x.TrainId,
@@ -273,6 +296,10 @@ public class TripsController : ControllerBase
                 FirstClassPrice = x.FirstClassPrice,
                 RoomletPrice = x.RoomletPrice,
                 SleeperPrice = x.SleeperPrice,
+                CoachCapacity = x.Train.CoachCapacity - x.CountPassengers(TravelClass.Coach),
+                FirstClassCapacity = x.Train.FirstClassCapacity - x.CountPassengers(TravelClass.FirstClass),
+                RoomletCapacity = x.Train.RoomletCapacity - x.CountPassengers(TravelClass.Roomlet),
+                SleeperCapacity = x.Train.SleeperCapacity - x.CountPassengers(TravelClass.Sleeper),
             });
     }
 
