@@ -112,7 +112,7 @@ namespace SP23.P03.Web.Controllers
 
             var tripIds = createBoardingPassDto.TripIds.Distinct();
 
-            var boardingPassTrips = trips.Where(x => tripIds.Any(id => x.Id == id)).OrderBy(x => x.Departure);
+            var boardingPassTrips = trips.Where(x => tripIds.Any(id => x.Id == id)).OrderBy(x => x.Departure).ToList();
 
             if(!boardingPassTrips.Any())
             {
@@ -202,7 +202,7 @@ namespace SP23.P03.Web.Controllers
 
             var tripIds = createBoardingPassDto.TripIds.Distinct();
 
-            var boardingPassTrips = trips.Where(x => tripIds.Any(id => x.Id == id)).OrderBy(x => x.Departure);
+            var boardingPassTrips = trips.Where(x => tripIds.Any(id => x.Id == id)).OrderBy(x => x.Departure).ToList();
 
             if (!boardingPassTrips.Any())
             {
@@ -235,7 +235,7 @@ namespace SP23.P03.Web.Controllers
 
             var passengerIds = createBoardingPassDto.PassengerIds.Distinct();
 
-            var boardingPassengers = passengers.Where(x => passengerIds.Any(id => x.Id == id));
+            var boardingPassengers = passengers.Where(x => passengerIds.Any(id => x.Id == id)).ToList();
 
             // Passenger error checker
             foreach (int passengerId in passengerIds)
