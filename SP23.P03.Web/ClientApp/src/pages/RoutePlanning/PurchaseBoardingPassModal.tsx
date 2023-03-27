@@ -33,7 +33,7 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
 
     const user = useUser();
 
-    const myPassengers = useMyPassengers();
+    const myPassengers = useMyPassengers(user);
 
     const { travelClass, trips } = props;
 
