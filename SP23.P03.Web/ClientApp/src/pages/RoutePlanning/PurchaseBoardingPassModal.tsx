@@ -102,7 +102,6 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
                         <Button as="div"
                             disabled={!user || selectedPassengers.length <= 0 || bookLoading}
                             labelPosition="left"
-                            floated="left"
                             onClick={onBook}
                         >
                             <Label color='green' basic pointing="right" as='a'>{formatUSD(totalPrice)}</Label>
