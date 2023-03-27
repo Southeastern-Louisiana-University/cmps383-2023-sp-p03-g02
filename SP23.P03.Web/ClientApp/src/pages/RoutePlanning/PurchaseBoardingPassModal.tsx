@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { DateTime } from 'luxon';
 import React, { useState } from 'react';
 import { Button, Checkbox, Header, Icon, Label, List, Modal, Popup, Segment } from 'semantic-ui-react';
 import { useUser } from '../../components/AuthProvider';
 import ExtraIcon from '../../components/ExtraIcon';
+import TripSummary from '../../components/TripSummary';
 import { formatUSD, getPassengerCostMultiplier, getTotalPassengerCostMultiplier } from '../../helpers/money';
 import { getPassengerIcon } from '../../helpers/passenger';
-import { getTravelClassCapacity, getTravelClassPrice } from '../../helpers/travelClass';
+import { getTravelClassPrice } from '../../helpers/travelClass';
 import useMyPassengers from '../../hooks/api/useMyPassengers';
 import { CreateBoardingPassDto, PassengerDto, TripWithCapacityDto } from '../../types/types';
 
@@ -60,26 +60,7 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
                 Trip
             </Modal.Header>
             <Modal.Content>
-                <Header attached="top">Trip Summary</Header>
-                <Segment attached="bottom">
-                    <List divided>
-                        {trips.map((trip, index) => (
-                            <List.Item key={trip.id}>
-                                <i className='icon'><ExtraIcon name="train" size='2x' /></i>
-                                <List.Content>
-                                    <List.Header>
-                                        ({index+1}/{trips.length}) {trip.train.name}
-                                    </List.Header>
-                                    <List.Description>
-                                        <div>{trip.fromStation.name} <Icon name='arrow right' /> {trip.toStation.name}</div>
-                                        <div>{DateTime.fromISO(trip.departure).toFormat('MMM dd t')} - {DateTime.fromISO(trip.arrival).toFormat('MMM dd t')} ({DateTime.fromISO(trip.arrival).diff(DateTime.fromISO(trip.departure)).toFormat("h'h' m'm'")})</div>
-                                        <div>{travelClass} | Fare: {formatUSD(getTravelClassPrice(trip, travelClass))} | Remaining Capacity: {getTravelClassCapacity(trip, travelClass)}</div>
-                                    </List.Description>
-                                </List.Content>
-                            </List.Item>
-                        ))}
-                    </List>
-                </Segment>
+                <TripSummary trips={trips} travelClass={travelClass} />
                 <Header attached="top">Passengers</Header>
                 <Segment attached="bottom">
                     <List divided>
