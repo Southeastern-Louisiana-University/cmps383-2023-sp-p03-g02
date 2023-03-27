@@ -69,7 +69,16 @@ public class TripsController : ControllerBase
         var routeDtos = routes.Select(r => r.Select(x => new TripWithCapacityDto
         {
             Id = x.Id,
-            TrainId = x.TrainId,
+            Train = new TrainDto
+            {
+                Id = x.Train.Id,
+                Name = x.Train.Name,
+                Status = x.Train.Status,
+                CoachCapacity = x.Train.CoachCapacity,
+                FirstClassCapacity = x.Train.FirstClassCapacity,
+                RoomletCapacity = x.Train.RoomletCapacity,
+                SleeperCapacity = x.Train.SleeperCapacity,
+            },
             FromStation = new TrainStationDto
             {
                 Id = x.FromStation.Id,
@@ -135,7 +144,16 @@ public class TripsController : ControllerBase
         var tripDto = new TripWithCapacityDto
         {
             Id = createdTrip.Id,
-            TrainId = createdTrip.TrainId,
+            Train = new TrainDto
+            {
+                Id = createdTrip.Train.Id,
+                Name = createdTrip.Train.Name,
+                Status = createdTrip.Train.Status,
+                CoachCapacity = createdTrip.Train.CoachCapacity,
+                FirstClassCapacity = createdTrip.Train.FirstClassCapacity,
+                RoomletCapacity = createdTrip.Train.RoomletCapacity,
+                SleeperCapacity = createdTrip.Train.SleeperCapacity,
+            },
             FromStation = new TrainStationDto
             {
                 Id = createdTrip.FromStation.Id,
@@ -203,7 +221,16 @@ public class TripsController : ControllerBase
         var tripDto = new TripWithCapacityDto
         {
             Id = trip.Id,
-            TrainId = trip.TrainId,
+            Train = new TrainDto
+            {
+                Id = trip.Train.Id,
+                Name = trip.Train.Name,
+                Status = trip.Train.Status,
+                CoachCapacity = trip.Train.CoachCapacity,
+                FirstClassCapacity = trip.Train.FirstClassCapacity,
+                RoomletCapacity = trip.Train.RoomletCapacity,
+                SleeperCapacity = trip.Train.SleeperCapacity,
+            },
             FromStation = new TrainStationDto
             {
                 Id = trip.FromStation.Id,
@@ -275,7 +302,16 @@ public class TripsController : ControllerBase
             .Select(x => new TripWithCapacityDto
             {
                 Id = x.Id,
-                TrainId = x.TrainId,
+                Train = new TrainDto
+                {
+                    Id = x.Train.Id,
+                    Name = x.Train.Name,
+                    Status = x.Train.Status,
+                    CoachCapacity = x.Train.CoachCapacity,
+                    FirstClassCapacity = x.Train.FirstClassCapacity,
+                    RoomletCapacity = x.Train.RoomletCapacity,
+                    SleeperCapacity = x.Train.SleeperCapacity,
+                },
                 FromStation = new TrainStationDto
                 {
                     Id = x.FromStation.Id,

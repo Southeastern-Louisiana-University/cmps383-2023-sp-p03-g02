@@ -1,11 +1,12 @@
-﻿using SP23.P03.Web.Features.TrainStations;
+﻿using SP23.P03.Web.Features.Trains;
+using SP23.P03.Web.Features.TrainStations;
 
 namespace SP23.P03.Web.Features.Trips
 {
     public class TripDto
     {
         public int Id { get; set; }
-        public int TrainId { get; set; }
+        public required TrainDto Train { get; set; }
         public required TrainStationDto FromStation { get; set; }
         public required TrainStationDto ToStation { get; set; }
         public DateTimeOffset Departure { get; set; }
@@ -19,7 +20,7 @@ namespace SP23.P03.Web.Features.Trips
     public class TripWithCapacityDto
     {
         public int Id { get; set; }
-        public int TrainId { get; set; }
+        public required TrainDto Train { get; set; }
         public required TrainStationDto FromStation { get; set; }
         public required TrainStationDto ToStation { get; set; }
         public DateTimeOffset Departure { get; set; }

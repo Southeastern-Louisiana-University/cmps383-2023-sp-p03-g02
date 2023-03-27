@@ -7,6 +7,7 @@ using SP23.P03.Web.Extensions;
 using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.BoardingPasses;
 using SP23.P03.Web.Features.Passengers;
+using SP23.P03.Web.Features.Trains;
 using SP23.P03.Web.Features.TrainStations;
 using SP23.P03.Web.Features.Trips;
 
@@ -382,7 +383,16 @@ namespace SP23.P03.Web.Controllers
                 Trips = x.Trips.Select(x => new TripDto
                 {
                     Id = x.Id,
-                    TrainId = x.TrainId,
+                    Train = new TrainDto
+                    {
+                        Id = x.Train.Id,
+                        Name = x.Train.Name,
+                        Status = x.Train.Status,
+                        CoachCapacity = x.Train.CoachCapacity,
+                        FirstClassCapacity = x.Train.FirstClassCapacity,
+                        RoomletCapacity = x.Train.RoomletCapacity,
+                        SleeperCapacity = x.Train.SleeperCapacity,
+                    },
                     FromStation = new TrainStationDto
                     {
                         Id = x.FromStation.Id,
