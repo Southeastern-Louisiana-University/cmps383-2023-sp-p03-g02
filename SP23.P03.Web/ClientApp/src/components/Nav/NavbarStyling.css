@@ -10,14 +10,14 @@
     margin-bottom: 0 !important;
 }
 
-.item {
+.item-container > .item {
     color: var(--main-color) !important;
     font-family: Arial, Helvetica, sans-serif;
     font-size: medium;
     border-radius: 0 !important;
 }
 
-.item:hover {
+.item-container > .item:hover {
     background-image: linear-gradient(var(--main-background-color) 95%, #01a0b6 95%) !important;
 }
 

@@ -120,19 +120,26 @@ public static class SeedHelper
             {
                 Name = "Hammond Train",
                 Status = "In Use",
-                Capacity = 98
+                CoachCapacity = 60,
+                FirstClassCapacity = 30,
+                RoomletCapacity = 10,
+                SleeperCapacity = 10,
             },
             new Train
             {
                 Name = "Slidell Train",
-                Status = "Out",
-                Capacity = 120
+                Status = "In Use",
+                CoachCapacity = 90,
+                FirstClassCapacity = 30,
             },
             new Train
             {
                 Name = "NOLA Train",
-                Status = "Repair",
-                Capacity = 111
+                Status = "Out",
+                CoachCapacity = 50,
+                FirstClassCapacity = 10,
+                RoomletCapacity = 20,
+                SleeperCapacity = 30,
             });
 
         await dataContext.SaveChangesAsync();
@@ -232,34 +239,84 @@ public static class SeedHelper
 
         var trains = dataContext.Set<Train>();
         var hammondTrain = await trains.FirstAsync(x => x.Name == "Hammond Train");
+        var slidellTrain = await trains.FirstAsync(x => x.Name == "Slidell Train");
 
         trips.AddRange(
             new Trip
             {
-                TrainId = hammondTrain.Id,
-                FromStationId = hammondStation.Id,
-                ToStationId = slidellStation.Id,
-                Departure = new DateTimeOffset(2023, 03, 13, 13, 00, 00, offset),
-                Arrival = new DateTimeOffset(2023, 03, 13, 13, 30, 00, offset),
-                BasePrice = 35
+                Train = hammondTrain,
+                FromStation = hammondStation,
+                ToStation = slidellStation,
+                Departure = new DateTimeOffset(2023, 06, 13, 13, 00, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 13, 30, 00, offset),
+                CoachPrice = 8000,
+                FirstClassPrice = 18000,
+                RoomletPrice = 25000,
+                SleeperPrice = 32000,
             },
             new Trip
             {
-                TrainId = hammondTrain.Id,
-                FromStationId = slidellStation.Id,
-                ToStationId = nolaStation.Id,
-                Departure = new DateTimeOffset(2023, 03, 13, 13, 45, 00, offset),
-                Arrival = new DateTimeOffset(2023, 03, 13, 13, 55, 00, offset),
-                BasePrice = 10
+                Train = hammondTrain,
+                FromStation = slidellStation,
+                ToStation = nolaStation,
+                Departure = new DateTimeOffset(2023, 06, 13, 13, 45, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 13, 55, 00, offset),
+                CoachPrice = 8500,
+                FirstClassPrice = 20000,
+                RoomletPrice = 27000,
+                SleeperPrice = 36000,
             },
             new Trip
             {
-                TrainId = hammondTrain.Id,
-                FromStationId = nolaStation.Id,
-                ToStationId = hammondStation.Id,
-                Departure = new DateTimeOffset(2023, 03, 13, 14, 15, 00, offset),
-                Arrival = new DateTimeOffset(2023, 03, 13, 14, 35, 00, offset),
-                BasePrice = 30
+                Train = hammondTrain,
+                FromStation = nolaStation,
+                ToStation = hammondStation,
+                Departure = new DateTimeOffset(2023, 06, 13, 14, 15, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 14, 35, 00, offset),
+                CoachPrice = 7500,
+                FirstClassPrice = 15000,
+                RoomletPrice = 22000,
+                SleeperPrice = 29000,
+            },
+            new Trip
+            {
+                Train = slidellTrain,
+                FromStation = slidellStation,
+                ToStation = nolaStation,
+                Departure = new DateTimeOffset(2023, 06, 13, 11, 50, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 12, 00, 00, offset),
+                CoachPrice = 5500,
+                FirstClassPrice = 13500,
+            },
+            new Trip
+            {
+                Train = slidellTrain,
+                FromStation = nolaStation,
+                ToStation = hammondStation,
+                Departure = new DateTimeOffset(2023, 06, 13, 12, 40, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 13, 00, 00, offset),
+                CoachPrice = 6000,
+                FirstClassPrice = 15000,
+            },
+            new Trip
+            {
+                Train = slidellTrain,
+                FromStation = hammondStation,
+                ToStation = slidellStation,
+                Departure = new DateTimeOffset(2023, 06, 13, 13, 15, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 13, 45, 00, offset),
+                CoachPrice = 6500,
+                FirstClassPrice = 18000,
+            },
+            new Trip
+            {
+                Train = slidellTrain,
+                FromStation = slidellStation,
+                ToStation = nolaStation,
+                Departure = new DateTimeOffset(2023, 06, 13, 14, 15, 00, offset),
+                Arrival = new DateTimeOffset(2023, 06, 13, 14, 25, 00, offset),
+                CoachPrice = 5500,
+                FirstClassPrice = 13000,
             }
         );
 
@@ -289,6 +346,7 @@ public static class SeedHelper
 
         var trip1 = await trips.FirstAsync();
         var trip2 = await trips.Skip(1).FirstAsync();
+        var trip3 = await trips.Skip(2).FirstAsync();
 
         var offset = TimeZoneInfo.Local.BaseUtcOffset;
 
@@ -297,14 +355,16 @@ public static class SeedHelper
             {
                 Code = BoardingPass.HashCode($"ENTRACK_{user1.NormalizedUserName}_{trip1.Id}_{new DateTimeOffset(2023, 03, 09, 0, 25, 00, offset)}"),
                 Owner = user1,
-                Trip = trip1,
+                TravelClass = TravelClass.Coach,
+                Trips = new List<Trip>(new Trip[] { trip1, trip2 }),
                 Passengers = passengers.Where(x => x.OwnerId == user1.Id).ToList(),
             },
             new BoardingPass
             {
                 Code = BoardingPass.HashCode($"ENTRACK_{user2.NormalizedUserName}_{trip2.Id}_{new DateTimeOffset(2023, 02, 22, 22, 22, 22, offset)}"),
                 Owner = user2,
-                Trip = trip2,
+                TravelClass = TravelClass.FirstClass,
+                Trips = new List<Trip>(new Trip[] { trip2, trip3 }),
                 Passengers = passengers.Where(x => x.OwnerId == user2.Id).ToList(),
             }
         );;
