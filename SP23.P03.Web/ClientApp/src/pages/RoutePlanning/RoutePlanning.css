@@ -5,3 +5,18 @@
 .route-planning-table {
     margin: 15px !important;
 }
+
+.ui.top.attached.segment.route-listing-segment {
+    padding-top: 22px;
+    margin: 15px 15px 0px 15px;
+    width: unset
+}
+
+.ui.bottom.attached.segment.route-listing-segment {
+    margin: 0px 15px 15px 15px;
+    width: unset
+}
+
+.trip-route-grid > .column {
+    width: unset !important;
+}
