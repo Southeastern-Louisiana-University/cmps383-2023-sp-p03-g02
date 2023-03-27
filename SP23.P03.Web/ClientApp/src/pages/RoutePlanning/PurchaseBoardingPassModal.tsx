@@ -20,6 +20,11 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
     const [bookLoading, setBookLoading] = useState(false);
     const [selectedPassengers, setSelectedPassengers] = useState<PassengerDto[]>([]);
 
+    const close = () => {
+        setSelectedPassengers([]);
+        setOpen(false);
+    }
+
     const onBook = async () => {
         if(bookLoading) return;
         const createBoardingPassDto: CreateBoardingPassDto = { travelClass, tripIds: trips.map(t => t.id), passengerIds: selectedPassengers.map(p => p.id) };
@@ -28,7 +33,7 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
             .then(() => alert("Your boarding pass was successfully booked!"))
             .catch(console.error);
         setBookLoading(false);
-        setOpen(false);
+        close();
     }
 
     const user = useUser();
@@ -48,7 +53,7 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
             closeIcon
             size='tiny'
             onOpen={() => setOpen(true)}
-            onClose={() => setOpen(false)}
+            onClose={() => close()}
             open={open}
             trigger={
                 <Button positive>
@@ -61,40 +66,44 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
             </Modal.Header>
             <Modal.Content>
                 <TripSummary trips={trips} travelClass={travelClass} />
-                <Header attached="top">Passengers</Header>
-                <Segment attached="bottom">
-                    <List divided>
-                        {myPassengers && myPassengers.length > 0 ? myPassengers.map((passenger) => (
-                            <List.Item key={passenger.id}>
-                                <i className='icon middle aligned'>
-                                    <div style={{ display: "flex", alignItems: "center" }}>
-                                        <Checkbox style={{ marginRight: "0.5em" }}
-                                            onChange={(e, data) => {
-                                                if(data.checked) {
-                                                    setSelectedPassengers(selectedPassengers.concat(passenger));
-                                                }
-                                                else {
-                                                    setSelectedPassengers(selectedPassengers.filter(p => p.id !== passenger.id));
-                                                }
-                                            }}
-                                        />
-                                        <ExtraIcon name={getPassengerIcon(passenger)} size='2x' />
-                                    </div>
-                                </i>
-                                <List.Content>
-                                    <List.Header>
-                                        {passenger.firstName} {passenger.lastName}
-                                    </List.Header>
-                                    <List.Description>
-                                        {passenger.ageGroup} ({formatUSD(pricePerPassenger * getPassengerCostMultiplier(passenger))})
-                                    </List.Description>
-                                </List.Content>
-                            </List.Item>
-                        )) : (
-                            <div>You haven't created any passengers yet!</div>
-                        )}
-                    </List>
-                </Segment>
+                {user && (
+                    <>
+                        <Header attached="top">Passengers</Header>
+                        <Segment attached="bottom">
+                            <List divided>
+                                {myPassengers && myPassengers.length > 0 ? myPassengers.map((passenger) => (
+                                    <List.Item key={passenger.id}>
+                                        <i className='icon middle aligned'>
+                                            <div style={{ display: "flex", alignItems: "center" }}>
+                                                <Checkbox style={{ marginRight: "0.5em" }}
+                                                    onChange={(e, data) => {
+                                                        if(data.checked) {
+                                                            setSelectedPassengers(selectedPassengers.concat(passenger));
+                                                        }
+                                                        else {
+                                                            setSelectedPassengers(selectedPassengers.filter(p => p.id !== passenger.id));
+                                                        }
+                                                    }}
+                                                />
+                                                <ExtraIcon name={getPassengerIcon(passenger)} size='2x' />
+                                            </div>
+                                        </i>
+                                        <List.Content>
+                                            <List.Header>
+                                                {passenger.firstName} {passenger.lastName}
+                                            </List.Header>
+                                            <List.Description>
+                                                {passenger.ageGroup} ({formatUSD(pricePerPassenger * getPassengerCostMultiplier(passenger))})
+                                            </List.Description>
+                                        </List.Content>
+                                    </List.Item>
+                                )) : (
+                                    <div>You haven't created any passengers yet!</div>
+                                )}
+                            </List>
+                        </Segment>
+                    </>
+                )}
             </Modal.Content>
             <Modal.Actions>
                 <Popup trigger={
@@ -117,7 +126,7 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
                         Please log in to book trips!
                     </Popup.Header>
                 </Popup>
-                <Button type="button" onClick={() => setOpen(false)}>
+                <Button type="button" onClick={() => close()}>
                     <Icon name="x" /> Close
                 </Button>
             </Modal.Actions>
