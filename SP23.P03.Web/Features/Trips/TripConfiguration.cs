@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
+using SP23.P03.Web.Features.BoardingPasses;
 
 namespace SP23.P03.Web.Features.Trips;
 
@@ -13,7 +14,16 @@ public class TripConfiguration : IEntityTypeConfiguration<Trip>
         builder.Property(x => x.Arrival)
                .IsRequired();
 
-        builder.Property(x => x.BasePrice)
+        builder.Property(x => x.CoachPrice)
+               .IsRequired();
+
+        builder.Property(x => x.FirstClassPrice)
+               .IsRequired();
+
+        builder.Property(x => x.RoomletPrice)
+               .IsRequired();
+
+        builder.Property(x => x.SleeperPrice)
                .IsRequired();
 
         builder.HasOne(x => x.Train)
@@ -30,5 +40,9 @@ public class TripConfiguration : IEntityTypeConfiguration<Trip>
                .WithMany()
                .HasForeignKey(x => x.ToStationId)
                .IsRequired();
+
+        builder.HasMany(x => x.BoardingPasses)
+               .WithMany(x => x.Trips)
+               .UsingEntity<BoardingPassTrip>();
     }
 }

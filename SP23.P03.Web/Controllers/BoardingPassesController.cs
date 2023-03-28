@@ -7,6 +7,8 @@ using SP23.P03.Web.Extensions;
 using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.BoardingPasses;
 using SP23.P03.Web.Features.Passengers;
+using SP23.P03.Web.Features.Trains;
+using SP23.P03.Web.Features.TrainStations;
 using SP23.P03.Web.Features.Trips;
 
 namespace SP23.P03.Web.Controllers
@@ -40,14 +42,7 @@ namespace SP23.P03.Web.Controllers
                 return Unauthorized("Your user could not be identified.");
             }
 
-            var myBoardingPasses = boardingPasses.Where(x => x.OwnerId == myId).Select(x => new BoardingPassDto
-            {
-                Id = x.Id,
-                Code = x.Code,
-                OwnerId = x.OwnerId,
-                TripId = x.TripId,
-                PassengerIds = x.Passengers.Select(x => x.Id).ToList(),
-            }).ToList();
+            var myBoardingPasses = GetBoardingPassDtos(boardingPasses.Where(x => x.OwnerId == myId)).ToList();
 
             return Ok(myBoardingPasses);
         }
@@ -61,14 +56,7 @@ namespace SP23.P03.Web.Controllers
                 return NotFound();
             }
 
-            var ownedBoardingPasses = boardingPasses.Where(x => x.OwnerId == userId).Select(x => new BoardingPassDto
-            {
-                Id = x.Id,
-                Code = x.Code,
-                OwnerId = x.OwnerId,
-                TripId = x.TripId,
-                PassengerIds = x.Passengers.Select(x => x.Id).ToList(),
-            }).ToList();
+            var ownedBoardingPasses = GetBoardingPassDtos(boardingPasses.Where(x => x.OwnerId == userId)).ToList();
 
             return Ok(ownedBoardingPasses);
         }
@@ -77,26 +65,17 @@ namespace SP23.P03.Web.Controllers
         [Authorize]
         public ActionResult<BoardingPassDto> GetBoardingPassByCode([FromRoute] string code)
         {
-            var boardingPass = boardingPasses.Include(x => x.Passengers).FirstOrDefault(x => x.Code == code);
+            var boardingPassDto = GetBoardingPassDtos(boardingPasses.Where(x => x.Code == code)).FirstOrDefault();
 
-            if (boardingPass == null)
+            if (boardingPassDto == null)
             {
                 return NotFound();
             }
 
-            if (!(User.IsInRole(RoleNames.Admin) || boardingPass.OwnerId == User.GetCurrentUserId()))
+            if (!(User.IsInRole(RoleNames.Admin) || boardingPassDto.OwnerId == User.GetCurrentUserId()))
             {
                 return Forbid();
             }
-
-            var boardingPassDto = new BoardingPassDto
-            {
-                Id = boardingPass.Id,
-                Code = boardingPass.Code,
-                OwnerId = boardingPass.OwnerId,
-                TripId = boardingPass.TripId,
-                PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
-            };
 
             return Ok(boardingPassDto);
         }
@@ -105,21 +84,12 @@ namespace SP23.P03.Web.Controllers
         [Authorize(Roles = RoleNames.Admin)]
         public ActionResult<BoardingPassDto> GetBoardingPassById([FromRoute] int id)
         {
-            var boardingPass = boardingPasses.Include(x => x.Passengers).FirstOrDefault(x => x.Id == id);
+            var boardingPassDto = GetBoardingPassDtos(boardingPasses.Where(x => x.Id == id)).FirstOrDefault();
 
-            if (boardingPass == null)
+            if (boardingPassDto == null)
             {
                 return NotFound();
             }
-
-            var boardingPassDto = new BoardingPassDto
-            {
-                Id = boardingPass.Id,
-                Code = boardingPass.Code,
-                OwnerId = boardingPass.OwnerId,
-                TripId = boardingPass.TripId,
-                PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
-            };
 
             return Ok(boardingPassDto);
         }
@@ -135,11 +105,37 @@ namespace SP23.P03.Web.Controllers
                 return Unauthorized();
             }
 
-            var trip = trips.FirstOrDefault(x => x.Id == createBoardingPassDto.TripId);
-
-            if(trip == null)
+            if (!(Enum.TryParse(createBoardingPassDto.TravelClass, true, out TravelClass travelClass) && Enum.IsDefined<TravelClass>(travelClass)))
             {
-                return BadRequest();
+                return BadRequest("Invalid travel class.");
+            }
+
+            var tripIds = createBoardingPassDto.TripIds.Distinct();
+
+            var boardingPassTrips = trips.Where(x => tripIds.Any(id => x.Id == id)).OrderBy(x => x.Departure).ToList();
+
+            if(!boardingPassTrips.Any())
+            {
+                return BadRequest("No valid trips.");
+            }
+
+            // Trip error checker
+            Trip? prevTrip = null;
+            foreach(var trip in boardingPassTrips)
+            {
+                if(trip.GetRemainingCapacityForTravelClass(trips, travelClass) <= 0)
+                {
+                    return BadRequest("One of the trips is full.");
+                }
+
+                if(prevTrip != null)
+                {
+                    if(prevTrip.Arrival.CompareTo(trip.Departure) > 0)
+                    {
+                        return BadRequest("Trips are not in a valid order.");
+                    }
+                }
+                prevTrip = trip;
             }
 
             if (!createBoardingPassDto.PassengerIds.Any())
@@ -168,28 +164,22 @@ namespace SP23.P03.Web.Controllers
 
             var timestamp = DateTimeOffset.Now;
 
-            string unhashedCode = $"ENTRACK_{user.NormalizedUserName}_{trip.Id}_{timestamp}";
+            string unhashedCode = $"ENTRACK_{user.NormalizedUserName}_{createBoardingPassDto.TravelClass}_{timestamp}";
             string hashedCode = BoardingPass.HashCode(unhashedCode);
 
             var boardingPass = new BoardingPass
             {
                 Code = hashedCode,
                 Owner = user,
-                Trip = trip,
+                TravelClass = travelClass,
+                Trips = boardingPassTrips.ToList(),
                 Passengers = boardingPassengers.ToList(),
             };
 
             boardingPasses.Add(boardingPass);
             dataContext.SaveChanges();
 
-            var boardingPassDto = new BoardingPassDto
-            {
-                Id = boardingPass.Id,
-                Code = boardingPass.Code,
-                OwnerId = boardingPass.OwnerId,
-                TripId = boardingPass.TripId,
-                PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
-            };
+            var boardingPassDto = GetBoardingPassDtos(boardingPasses.Where(x => x == boardingPass)).First();
 
             return CreatedAtAction(nameof(GetBoardingPassByCode), new { code = boardingPassDto.Code }, boardingPassDto);
         }
@@ -205,11 +195,37 @@ namespace SP23.P03.Web.Controllers
                 return NotFound();
             }
 
-            var trip = trips.FirstOrDefault(x => x.Id == createBoardingPassDto.TripId);
-
-            if (trip == null)
+            if (!(Enum.TryParse(createBoardingPassDto.TravelClass, true, out TravelClass travelClass) && Enum.IsDefined<TravelClass>(travelClass)))
             {
-                return BadRequest();
+                return BadRequest("Invalid travel class.");
+            }
+
+            var tripIds = createBoardingPassDto.TripIds.Distinct();
+
+            var boardingPassTrips = trips.Where(x => tripIds.Any(id => x.Id == id)).OrderBy(x => x.Departure).ToList();
+
+            if (!boardingPassTrips.Any())
+            {
+                return BadRequest("No valid trips.");
+            }
+
+            // Trip error checker
+            Trip? prevTrip = null;
+            foreach (var trip in boardingPassTrips)
+            {
+                if (trip.GetRemainingCapacityForTravelClass(trips, travelClass) <= 0)
+                {
+                    return BadRequest("One of the trips is full.");
+                }
+
+                if (prevTrip != null)
+                {
+                    if (prevTrip.Arrival.CompareTo(trip.Departure) > 0)
+                    {
+                        return BadRequest("Trips are not in a valid order.");
+                    }
+                }
+                prevTrip = trip;
             }
 
             if (!createBoardingPassDto.PassengerIds.Any())
@@ -219,7 +235,7 @@ namespace SP23.P03.Web.Controllers
 
             var passengerIds = createBoardingPassDto.PassengerIds.Distinct();
 
-            var boardingPassengers = passengers.Where(x => passengerIds.Any(id => x.Id == id));
+            var boardingPassengers = passengers.Where(x => passengerIds.Any(id => x.Id == id)).ToList();
 
             // Passenger error checker
             foreach (int passengerId in passengerIds)
@@ -238,28 +254,22 @@ namespace SP23.P03.Web.Controllers
 
             var timestamp = DateTimeOffset.Now;
 
-            string unhashedCode = $"ENTRACK_{user.NormalizedUserName}_{trip.Id}_{timestamp}";
+            string unhashedCode = $"ENTRACK_{user.NormalizedUserName}_{createBoardingPassDto.TravelClass}_{timestamp}";
             string hashedCode = BoardingPass.HashCode(unhashedCode);
 
             var boardingPass = new BoardingPass
             {
                 Code = hashedCode,
                 Owner = user,
-                Trip = trip,
+                TravelClass = travelClass,
+                Trips = boardingPassTrips.ToList(),
                 Passengers = boardingPassengers.ToList(),
             };
 
             boardingPasses.Add(boardingPass);
             dataContext.SaveChanges();
 
-            var boardingPassDto = new BoardingPassDto
-            {
-                Id = boardingPass.Id,
-                Code = boardingPass.Code,
-                OwnerId = boardingPass.OwnerId,
-                TripId = boardingPass.TripId,
-                PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
-            };
+            var boardingPassDto = GetBoardingPassDtos(boardingPasses.Where(x => x == boardingPass)).First();
 
             return CreatedAtAction(nameof(GetBoardingPassByCode), new { code = boardingPassDto.Code }, boardingPassDto);
         }
@@ -277,11 +287,37 @@ namespace SP23.P03.Web.Controllers
 
             var user = boardingPass.Owner;
 
-            var trip = trips.FirstOrDefault(x => x.Id == createBoardingPassDto.TripId);
-
-            if (trip == null)
+            if (!(Enum.TryParse(createBoardingPassDto.TravelClass, true, out TravelClass travelClass) && Enum.IsDefined<TravelClass>(travelClass)))
             {
-                return BadRequest();
+                return BadRequest("Invalid travel class.");
+            }
+
+            var tripIds = createBoardingPassDto.TripIds.Distinct();
+
+            var boardingPassTrips = trips.Where(x => tripIds.Any(id => x.Id == id)).OrderBy(x => x.Departure);
+
+            if (!boardingPassTrips.Any())
+            {
+                return BadRequest("No valid trips.");
+            }
+
+            // Trip error checker
+            Trip? prevTrip = null;
+            foreach (var trip in boardingPassTrips)
+            {
+                if (trip.GetRemainingCapacityForTravelClass(trips, travelClass) <= 0)
+                {
+                    return BadRequest("One of the trips is full.");
+                }
+
+                if (prevTrip != null)
+                {
+                    if (prevTrip.Arrival.CompareTo(trip.Departure) > 0)
+                    {
+                        return BadRequest("Trips are not in a valid order.");
+                    }
+                }
+                prevTrip = trip;
             }
 
             if (!createBoardingPassDto.PassengerIds.Any())
@@ -308,19 +344,13 @@ namespace SP23.P03.Web.Controllers
                 }
             }
 
-            boardingPass.Trip = trip;
+            boardingPass.TravelClass = travelClass;
+            boardingPass.Trips = boardingPassTrips.ToList();
             boardingPass.Passengers = boardingPassengers.ToList();
 
             dataContext.SaveChanges();
 
-            var boardingPassDto = new BoardingPassDto
-            {
-                Id = boardingPass.Id,
-                Code = boardingPass.Code,
-                OwnerId = boardingPass.OwnerId,
-                TripId = boardingPass.TripId,
-                PassengerIds = boardingPass.Passengers.Select(x => x.Id).ToList(),
-            };
+            var boardingPassDto = GetBoardingPassDtos(boardingPasses.Where(x => x == boardingPass)).First();
 
             return Ok(boardingPassDto);
         }
@@ -342,5 +372,58 @@ namespace SP23.P03.Web.Controllers
             return Ok();
         }
 
+
+        private static IQueryable<BoardingPassDto> GetBoardingPassDtos(IQueryable<BoardingPass> boardingPasses) =>
+            boardingPasses.Select(x => new BoardingPassDto
+            {
+                Id = x.Id,
+                Code = x.Code,
+                OwnerId = x.OwnerId,
+                TravelClass = x.TravelClass.ToString(),
+                Trips = x.Trips.Select(x => new TripDto
+                {
+                    Id = x.Id,
+                    Train = new TrainDto
+                    {
+                        Id = x.Train.Id,
+                        Name = x.Train.Name,
+                        Status = x.Train.Status,
+                        CoachCapacity = x.Train.CoachCapacity,
+                        FirstClassCapacity = x.Train.FirstClassCapacity,
+                        RoomletCapacity = x.Train.RoomletCapacity,
+                        SleeperCapacity = x.Train.SleeperCapacity,
+                    },
+                    FromStation = new TrainStationDto
+                    {
+                        Id = x.FromStation.Id,
+                        Name = x.FromStation.Name,
+                        Address = x.FromStation.Address,
+                        ManagerId = x.FromStation.ManagerId,
+                    },
+                    ToStation = new TrainStationDto
+                    {
+                        Id = x.ToStation.Id,
+                        Name = x.ToStation.Name,
+                        Address = x.ToStation.Address,
+                        ManagerId = x.ToStation.ManagerId,
+                    },
+                    Departure = x.Departure,
+                    Arrival = x.Arrival,
+                    CoachPrice = x.CoachPrice,
+                    FirstClassPrice = x.FirstClassPrice,
+                    RoomletPrice = x.RoomletPrice,
+                    SleeperPrice = x.SleeperPrice
+                }).ToList(),
+                Passengers = x.Passengers.Select(x => new PassengerDto
+                {
+                    Id = x.Id,
+                    OwnerId = x.OwnerId,
+                    FirstName = x.FirstName,
+                    LastName = x.LastName,
+                    Birthday = x.Birthday,
+                    Age = x.Age,
+                    AgeGroup = x.AgeGroup,
+                }).ToList(),
+            });
     }
 }
