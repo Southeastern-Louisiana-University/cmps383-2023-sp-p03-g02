@@ -74,16 +74,3 @@
     font-size: large;
     font-family: Arial, Helvetica, sans-serif;
 }
-
-Input {
-    width: 30em;
-    border-color: #222222 !important;
-}
-
-Input::placeholder {
-    color: #222222 !important;
-}
-
-Input:focus {
-    border-color: var(--main-color) !important;
-}
