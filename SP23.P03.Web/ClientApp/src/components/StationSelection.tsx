@@ -1,5 +1,6 @@
 import React from "react";
 import { Select } from "semantic-ui-react";
+import useFindStation from "../hooks/api/useFindStation";
 
 interface StationSelectProps {
     label: string;
@@ -8,7 +9,15 @@ interface StationSelectProps {
     setValue: (value: string | null) => void;
 };
 
-export function StationSelection({ label, placeholder, value, setValue }: StationSelectProps): React.ReactElement {
+export function StationSelection({ label, value }: StationSelectProps): React.ReactElement {
+
+    const findStation = useFindStation();
+    const data = findStation.map((station) => {
+        return {
+            value: station.name,
+            label: `${station.name} | ${station.address}`,
+        };
+    });
 
     return (
         <>
@@ -18,9 +27,9 @@ export function StationSelection({ label, placeholder, value, setValue }: Statio
                 }}
                 placeholder="Enter City"
                 label={label}
+                options={data}
                 search
-                clearable 
-                options={[]}
+                clearable
                 />
         </>
     );
