@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useUser } from '../../components/AuthProvider';
-import { Divider, Grid, Header, Icon, Input, Segment } from 'semantic-ui-react';
+import { Divider, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 import './HomePage.css';
+import { StationSelection } from '../../components/StationSelection';
 
 const TrainOne = require('../../assets/train01.jpg');
 const MobilePhone = require('../../assets/lookingatphone.png');
@@ -9,6 +10,11 @@ const TrainTwo = require('../../assets/choochoo.jpg');
 
 export function HomePage(): React.ReactElement {
     const user = useUser();
+    const [selectedStation, setSelectedStation] = useState<string | null>(null);
+
+    const updateSelectedStation = (value: string | null) => {
+        setSelectedStation(value);
+    }
 
     return (
         <div className='home-page'>
@@ -17,8 +23,7 @@ export function HomePage(): React.ReactElement {
                 <h2 className="slogan"> 
                     Let's Get {user?.userName ?? "You"} EnTrack
                 </h2>
-            </div>        
-            
+            </div>
 
             <div className="container-center">
                 <Segment padded raised className="resizing">
@@ -27,7 +32,13 @@ export function HomePage(): React.ReactElement {
                         <Grid.Row>
                             <Grid.Column>
                                 <h1 className="box-header"> Starting From: </h1>
-                                <Input type="text" placeholder="New Orleans" />
+
+                                <StationSelection label={'Starting From:'}
+                                                  value={selectedStation} 
+                                                  setValue={updateSelectedStation} 
+                                                  placeholder={"New Orleans"}
+                                />
+
                             </Grid.Column>
 
                             <Divider vertical>
@@ -36,7 +47,13 @@ export function HomePage(): React.ReactElement {
 
                             <Grid.Column>
                                 <h1 className="box-header"> Going To: </h1>
-                                <Input type="text" placeholder="Houston" />
+
+                                <StationSelection label={'Going To:'}
+                                                  value={selectedStation}
+                                                  setValue={updateSelectedStation} 
+                                                  placeholder={'Houston'}
+                                />
+
                             </Grid.Column>
                         </Grid.Row>
 

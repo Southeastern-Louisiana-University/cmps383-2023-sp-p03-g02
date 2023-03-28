@@ -1,4 +1,7 @@
-export type StationGetDto = {
+
+export type TrainStationDto = {
     id: number;
-    Name: string;
+    name: string;
+    address: string;
+    managerId: number;
 }
