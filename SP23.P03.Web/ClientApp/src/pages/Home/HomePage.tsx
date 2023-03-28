@@ -33,10 +33,9 @@ export function HomePage(): React.ReactElement {
                             <Grid.Column>
                                 <h1 className="box-header"> Starting From: </h1>
 
-                                <StationSelection label={'Starting From:'}
-                                                  value={selectedStation} 
-                                                  setValue={updateSelectedStation} 
-                                                  placeholder={"New Orleans"}
+                                <StationSelection 
+                                    value={selectedStation}
+                                    setValue={updateSelectedStation}
                                 />
 
                             </Grid.Column>
@@ -48,10 +47,9 @@ export function HomePage(): React.ReactElement {
                             <Grid.Column>
                                 <h1 className="box-header"> Going To: </h1>
 
-                                <StationSelection label={'Going To:'}
-                                                  value={selectedStation}
-                                                  setValue={updateSelectedStation} 
-                                                  placeholder={'Houston'}
+                                <StationSelection
+                                    value={selectedStation}
+                                    setValue={updateSelectedStation}
                                 />
 
                             </Grid.Column>
