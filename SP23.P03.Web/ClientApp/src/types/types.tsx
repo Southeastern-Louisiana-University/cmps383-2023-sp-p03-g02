@@ -19,8 +19,8 @@ export type TrainDto = {
 export type TripDto = {
     id: number;
     train: TrainDto;
-    fromStation: StationGetDto;
-    toStation: StationGetDto;
+    fromStation: TrainStationDto;
+    toStation: TrainStationDto;
     departure: string;
     arrival: string;
     coachPrice: number;
