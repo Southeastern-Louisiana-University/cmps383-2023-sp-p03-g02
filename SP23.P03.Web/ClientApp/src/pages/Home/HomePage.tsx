@@ -1,7 +1,10 @@
 import React from 'react';
 import { useUser } from '../../components/AuthProvider';
-import { Divider, Grid, Header, Icon, Input, Segment } from 'semantic-ui-react';
+import { Divider, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 import './HomePage.css';
+import { StationSelection } from '../../components/StationSelection';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '../../constants/routeconfig'
 
 const TrainOne = require('../../assets/train01.jpg');
 const MobilePhone = require('../../assets/lookingatphone.png');
@@ -9,6 +12,16 @@ const TrainTwo = require('../../assets/choochoo.jpg');
 
 export function HomePage(): React.ReactElement {
     const user = useUser();
+    const navigate = useNavigate();
+
+    /*
+    * need to change route to
+    * /route-planning/${fromStationId}/${toStationId}/${departure}/${arrival}/${travelClass}
+    * but for now....its fine lol
+    */
+    const navigateToRoutePlanning = () => {
+        navigate(routes.route_planning);
+    };
 
     return (
         <div className='home-page'>
@@ -17,8 +30,7 @@ export function HomePage(): React.ReactElement {
                 <h2 className="slogan"> 
                     Let's Get {user?.userName ?? "You"} EnTrack
                 </h2>
-            </div>        
-            
+            </div>
 
             <div className="container-center">
                 <Segment padded raised className="resizing">
@@ -27,7 +39,11 @@ export function HomePage(): React.ReactElement {
                         <Grid.Row>
                             <Grid.Column>
                                 <h1 className="box-header"> Starting From: </h1>
-                                <Input type="text" placeholder="New Orleans" />
+
+                                <StationSelection
+                                    
+                                />
+
                             </Grid.Column>
 
                             <Divider vertical>
@@ -36,13 +52,18 @@ export function HomePage(): React.ReactElement {
 
                             <Grid.Column>
                                 <h1 className="box-header"> Going To: </h1>
-                                <Input type="text" placeholder="Houston" />
+
+                                <StationSelection
+                                    
+                                    
+                                />
+
                             </Grid.Column>
                         </Grid.Row>
 
                         <Grid.Row>
                             <div className="btn-center">
-                                <button className="btn-styling">
+                                <button className="btn-styling" onClick={navigateToRoutePlanning}>
                                     Book Now!
                                 </button>
                             </div>
