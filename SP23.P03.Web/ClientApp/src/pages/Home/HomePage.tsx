@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useUser } from '../../components/AuthProvider';
 import { Divider, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 import './HomePage.css';
@@ -13,11 +13,6 @@ const TrainTwo = require('../../assets/choochoo.jpg');
 export function HomePage(): React.ReactElement {
     const user = useUser();
     const navigate = useNavigate();
-    const [selectedStation, setSelectedStation] = useState<string | null>(null);
-
-    const updateSelectedStation = (value: string | null) => {
-        setSelectedStation(value);
-    }
 
     /*
     * need to change route to
@@ -46,8 +41,7 @@ export function HomePage(): React.ReactElement {
                                 <h1 className="box-header"> Starting From: </h1>
 
                                 <StationSelection
-                                    value={selectedStation}
-                                    setValue={updateSelectedStation}
+                                    
                                 />
 
                             </Grid.Column>
@@ -60,8 +54,8 @@ export function HomePage(): React.ReactElement {
                                 <h1 className="box-header"> Going To: </h1>
 
                                 <StationSelection
-                                    value={selectedStation}
-                                    setValue={updateSelectedStation}
+                                    
+                                    
                                 />
 
                             </Grid.Column>
