@@ -16,11 +16,7 @@
     text-shadow: .08em .08em #222222;
 }
 
-.container-center {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
+.home-page > .route-planner {
     bottom: 6em;
 }
 

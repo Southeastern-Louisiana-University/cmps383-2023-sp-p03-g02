@@ -20,3 +20,7 @@
 .trip-route-grid > .column {
     width: unset !important;
 }
+
+.route-planning > .route-planner {
+    margin: 3em;
+}
