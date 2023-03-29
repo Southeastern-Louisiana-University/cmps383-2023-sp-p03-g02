@@ -7,7 +7,7 @@ interface StationSelectProps {
     setValue: (value: string | null) => void;
 };
 
-export function StationSelection({ value }: StationSelectProps): React.ReactElement {
+export function StationSelection({ value, setValue }: StationSelectProps): React.ReactElement {
 
     const findStation = useFindStation();
     const data = findStation.map((station) => {
@@ -25,6 +25,8 @@ export function StationSelection({ value }: StationSelectProps): React.ReactElem
                 }}
                 placeholder="Enter City"
                 options={data}
+                value
+                setValue
                 search
                 clearable
                 />

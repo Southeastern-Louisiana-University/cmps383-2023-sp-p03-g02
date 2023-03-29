@@ -3,6 +3,8 @@ import { useUser } from '../../components/AuthProvider';
 import { Divider, Grid, Header, Icon, Segment } from 'semantic-ui-react';
 import './HomePage.css';
 import { StationSelection } from '../../components/StationSelection';
+import { useNavigate } from 'react-router-dom';
+import { routes } from '../../constants/routeconfig'
 
 const TrainOne = require('../../assets/train01.jpg');
 const MobilePhone = require('../../assets/lookingatphone.png');
@@ -10,11 +12,21 @@ const TrainTwo = require('../../assets/choochoo.jpg');
 
 export function HomePage(): React.ReactElement {
     const user = useUser();
+    const navigate = useNavigate();
     const [selectedStation, setSelectedStation] = useState<string | null>(null);
 
     const updateSelectedStation = (value: string | null) => {
         setSelectedStation(value);
     }
+
+    /*
+    * need to change route to
+    * /route-planning/${fromStationId}/${toStationId}/${departure}/${arrival}/${travelClass}
+    * but for now....its fine lol
+    */
+    const navigateToRoutePlanning = () => {
+        navigate(routes.route_planning);
+    };
 
     return (
         <div className='home-page'>
@@ -33,7 +45,7 @@ export function HomePage(): React.ReactElement {
                             <Grid.Column>
                                 <h1 className="box-header"> Starting From: </h1>
 
-                                <StationSelection 
+                                <StationSelection
                                     value={selectedStation}
                                     setValue={updateSelectedStation}
                                 />
@@ -57,7 +69,7 @@ export function HomePage(): React.ReactElement {
 
                         <Grid.Row>
                             <div className="btn-center">
-                                <button className="btn-styling">
+                                <button className="btn-styling" onClick={navigateToRoutePlanning}>
                                     Book Now!
                                 </button>
                             </div>
