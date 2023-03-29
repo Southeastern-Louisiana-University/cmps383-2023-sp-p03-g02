@@ -1,17 +1,89 @@
-.home-page {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-grow: 1;
+
+.header-box {
+    padding-top: 12em;
+    padding-bottom: 10em;
     background-size: cover;
     background-position: center;
-    background-image: url("../../assets/home-background-compressed.jpg");
+    background-image: url("../../assets/hammondstation.jpg");
 }
 
-.home-page > header {
-    font-size: 4em;
-    color: white;
-    display: block;
-    padding-bottom: 0.5em;
+.slogan {
+    text-align: center;
+    font-weight: bolder;
+    font-style: italic;
+    color: #FFFCFC;
+    font-size: 3em;
+    text-shadow: .08em .08em #222222;
+}
+
+.container-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    bottom: 6em;
+}
+
+.resizing {
+    max-width: 75em;
+}
+
+.btn-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-styling {
+    width: 8em;
+    height: 3em;
+    border: none;
+    border-radius: 2em;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2em;
+    background-color: #222222;
+    color: var(--main-color);
+}
+
+.btn-styling:hover {
+    background-color: var(--main-color);
+    color: #222222;
+}
+
+.header-style {
+    color: var(--main-color) !important;
+}
+
+.info-box {
+    max-width: 18em;
+    height: 27em;
+    text-align: start;
+    background-color: #333333 !important;
+    border-style: solid !important;
+    border-width: .1em !important;
+    border-color: var(--main-color) !important;
+    box-shadow: 7px 7px var(--main-color) !important;
+}
+
+.boxes-center {
+    padding-left: 20em;
+    padding-bottom: 5em;
+}
+
+.box-header {
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+Input {
+    width: 30em;
+    border-color: #222222 !important;
+}
+
+Input::placeholder {
+    color: #222222 !important;
+}
+
+Input:focus {
+    border-color: var(--main-color) !important;
 }

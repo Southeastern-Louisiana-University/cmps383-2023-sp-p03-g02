@@ -5,11 +5,11 @@ namespace SP23.P03.Web.Features.Passengers
 {
     public class Passenger
     {
-        public const int MaxChildAge = 10;
-        public const int MinElderAge = 70;
+        public const int MaxChildAge = 13;
+        public const int MinSeniorAge = 65;
         public int Id { get; set; }
         public int OwnerId { get; set; }
-        public virtual User Owner { get; set; }
+        public required virtual User Owner { get; set; }
         public string FirstName { get; set; } = string.Empty;
         public string LastName { get; set; } = string.Empty;
         public DateTimeOffset Birthday { get; set; }
@@ -22,7 +22,7 @@ namespace SP23.P03.Web.Features.Passengers
             get
             {
                 var age = Age;
-                return age <= MaxChildAge ? "Child" : age >= MinElderAge ? "Elder" : "Adult";
+                return age <= MaxChildAge ? "Child" : age >= MinSeniorAge ? "Senior" : "Adult";
             }
         }
     }

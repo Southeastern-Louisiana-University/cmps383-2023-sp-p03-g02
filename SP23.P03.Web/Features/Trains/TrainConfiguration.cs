@@ -14,8 +14,16 @@ namespace SP23.P03.Web.Features.Trains
             builder.Property(x => x.Status)
                 .IsRequired();
 
-            builder.Property(x => x.Capacity)
-                .HasMaxLength(150)
+            builder.Property(x => x.CoachCapacity)
+                .IsRequired();
+
+            builder.Property(x => x.FirstClassCapacity)
+                .IsRequired();
+
+            builder.Property(x => x.RoomletCapacity)
+                .IsRequired();
+
+            builder.Property(x => x.SleeperCapacity)
                 .IsRequired();
         }
     }
