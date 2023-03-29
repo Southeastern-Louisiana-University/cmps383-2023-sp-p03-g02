@@ -1,10 +1,9 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
 import { Button, StyleSheet, Text, View } from 'react-native';
-import MainLogo from '../components/MainLogo';
-import AnimatedBar from '../components/AnimatedBar';
 import EnTrackColors from '../style/colors';
 import { logoutUser, useUser } from '../components/AuthProvider';
+import BoardingPassList from '../components/BoardingPassList';
 
 /*
  * THIS IS A PLACEHOLDER SCREEN
@@ -15,18 +14,15 @@ export default function LogoutScreen() {
 
   return (
     <View style={styles.container}>
-      <MainLogo />
-      <AnimatedBar />
-      <View>
-        <Text style={{ color: EnTrackColors.mainColor, fontSize: 32 }}>
-          Hi {user.userName}
-        </Text>
-        <Button
-          title='Logout'
-          color={EnTrackColors.mainColor}
-          onPress={logoutUser}
-        />
-      </View>
+      <Text style={{ color: EnTrackColors.mainColor, fontSize: 32 }}>
+        Hi {user.userName}
+      </Text>
+      <Button
+        title='Logout'
+        color={EnTrackColors.mainColor}
+        onPress={logoutUser}
+      />
+      <BoardingPassList />
       <StatusBar style="light" />
     </View>
   );
@@ -35,7 +31,7 @@ export default function LogoutScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: EnTrackColors.darkBackground,
+    alignSelf: 'stretch',
     alignItems: 'center',
     justifyContent: 'center',
   },

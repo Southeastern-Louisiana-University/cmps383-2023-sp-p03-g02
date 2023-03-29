@@ -1,8 +1,10 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import LoginScreen from '../screens/LoginScreen';
 import LogoutScreen from '../screens/LogoutScreen';
+import EnTrackColors from '../style/colors';
 import { useUser } from './AuthProvider';
+import MainLogo from './MainLogo';
 
 const ScreenRouter: React.FC = () => {
     const user = useUser();
@@ -10,8 +12,11 @@ const ScreenRouter: React.FC = () => {
     return (
         user ?
         (
-            <LogoutScreen />
-            
+            <>
+                <MainLogo />
+                <View style={ styles.divider } />
+                <LogoutScreen />
+            </>
         ) : (
             <LoginScreen />
         )
@@ -19,3 +24,12 @@ const ScreenRouter: React.FC = () => {
 }
 
 export default ScreenRouter;
+
+const styles = StyleSheet.create({
+    divider: {
+        width: "100%",
+        borderTopColor: EnTrackColors.mainColor,
+        borderTopWidth: 3,
+        marginBottom: 1,
+    }
+});
