@@ -1,10 +1,8 @@
 import React from 'react';
 import { useUser } from '../../components/AuthProvider';
-import { Divider, Grid, Header, Icon, Segment } from 'semantic-ui-react';
+import { Divider, Grid, Header, Segment } from 'semantic-ui-react';
 import './HomePage.css';
-import { StationSelection } from '../../components/StationSelection';
-import { useNavigate } from 'react-router-dom';
-import { routes } from '../../constants/routeconfig'
+import RoutePlanner from '../../components/RoutePlanner/RoutePlanner';
 
 const TrainOne = require('../../assets/train01.jpg');
 const MobilePhone = require('../../assets/lookingatphone.png');
@@ -12,16 +10,12 @@ const TrainTwo = require('../../assets/choochoo.jpg');
 
 export function HomePage(): React.ReactElement {
     const user = useUser();
-    const navigate = useNavigate();
 
     /*
     * need to change route to
     * /route-planning/${fromStationId}/${toStationId}/${departure}/${arrival}/${travelClass}
     * but for now....its fine lol
     */
-    const navigateToRoutePlanning = () => {
-        navigate(routes.route_planning);
-    };
 
     return (
         <div className='home-page'>
@@ -32,45 +26,7 @@ export function HomePage(): React.ReactElement {
                 </h2>
             </div>
 
-            <div className="container-center">
-                <Segment padded raised className="resizing">
-                    <Grid columns={2} stackable container textAlign='center'>
-
-                        <Grid.Row>
-                            <Grid.Column>
-                                <h1 className="box-header"> Starting From: </h1>
-
-                                <StationSelection
-                                    
-                                />
-
-                            </Grid.Column>
-
-                            <Divider vertical>
-                                <Icon name="arrow right"/>
-                            </Divider>
-
-                            <Grid.Column>
-                                <h1 className="box-header"> Going To: </h1>
-
-                                <StationSelection
-                                    
-                                    
-                                />
-
-                            </Grid.Column>
-                        </Grid.Row>
-
-                        <Grid.Row>
-                            <div className="btn-center">
-                                <button className="btn-styling" onClick={navigateToRoutePlanning}>
-                                    Book Now!
-                                </button>
-                            </div>
-                        </Grid.Row>
-                    </Grid>
-                </Segment>
-            </div>
+            <RoutePlanner />
 
             <div className="boxes-center">
                 <Segment basic className="resizing">

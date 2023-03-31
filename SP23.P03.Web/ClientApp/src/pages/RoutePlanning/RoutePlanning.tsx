@@ -1,6 +1,7 @@
 import React from "react";
 import { useMatch } from "react-router-dom";
 import { Divider } from "semantic-ui-react";
+import RoutePlanner from "../../components/RoutePlanner/RoutePlanner";
 import RouteListing from "./RouteListing";
 import './RoutePlanning.css';
 
@@ -9,8 +10,8 @@ export function RoutePlanning(): React.ReactElement {
 
     return (
         <div>
-            <div>
-                {/* Add future RoutePlanner component here */}
+            <div className="route-planning">
+                <RoutePlanner />
                 <Divider />
             </div>
             <div>
