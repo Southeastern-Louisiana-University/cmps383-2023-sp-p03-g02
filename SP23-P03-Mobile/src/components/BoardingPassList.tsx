@@ -1,32 +1,21 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, Text, View, ViewProps } from 'react-native';
+import React from 'react';
+import { ActivityIndicator, FlatList, Text, View, ViewProps } from 'react-native';
 import QRCode from 'react-qr-code';
-import { deployedAppURL } from '../constants/api';
-import EnTrackColors from '../style/colors';
 import { BoardingPassDto } from '../types/boardingpasses';
-import { DateTime } from 'luxon';
+import styles from '../style/styles';
 
 
 
-type BoardingPassProps = ViewProps;
+type BoardingPassProps = ViewProps & { boardingPasses: BoardingPassDto[] };
 
 const BoardingPassList: React.FC<BoardingPassProps> = (props) => {
-    const [myBoardingPasses, setMyBoardingPasses] = useState<BoardingPassDto[]>();
-
-
-    useEffect(() => {
-        axios.get<BoardingPassDto[]>(`${deployedAppURL}/api/boardingpasses/me`).then((response) => {
-            setMyBoardingPasses(response.data);
-        });
-    }, []);
+    const { boardingPasses } = props;
 
     return (
-        <View style={[styles.borderedView, { flex: 1, alignSelf: "stretch", margin: 5 }]}>
-            
-            {myBoardingPasses ? (
+        <View style={[styles.borderedView, { flex: 1, alignSelf: "stretch", margin: 5 }]} {...props}>
+            {boardingPasses ? (
                 <FlatList
-                    data={myBoardingPasses}
+                    data={boardingPasses}
                     keyExtractor={item => `${item.id}`}
                     renderItem={({ item: boardingPass }) => {
                             const firstTrip = boardingPass.trips[0];
@@ -55,15 +44,3 @@ const BoardingPassList: React.FC<BoardingPassProps> = (props) => {
 }
 
 export default BoardingPassList;
-
-const styles = StyleSheet.create({
-    borderedView: {
-        padding: 10,
-        borderRadius: 10,
-        borderWidth: 2,
-        borderColor: EnTrackColors.mainColor,
-    },
-    text: {
-        color: "#FFFFFF"
-    }
-});
