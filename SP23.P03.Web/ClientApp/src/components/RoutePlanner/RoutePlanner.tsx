@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Segment, Grid, Divider, Icon } from 'semantic-ui-react';
+import { Segment, Grid, Divider, Icon, Input } from 'semantic-ui-react';
 import { routes } from '../../constants/routeconfig';
 import './RoutePlanner.css';
 import { StationSelection } from '../StationSelection';
@@ -20,9 +20,7 @@ const RoutePlanner: React.FC = () => {
                         <Grid.Column>
                             <h1 className="box-header"> Starting From: </h1>
 
-                            <StationSelection
-                                
-                            />
+                            <StationSelection />
 
                         </Grid.Column>
 
@@ -33,11 +31,31 @@ const RoutePlanner: React.FC = () => {
                         <Grid.Column>
                             <h1 className="box-header"> Going To: </h1>
 
-                            <StationSelection
-                                
-                                
-                            />
+                            <StationSelection />
 
+                        </Grid.Column>
+                    </Grid.Row>
+
+                    <Grid.Row>
+                        <Grid.Column>
+                            <h1 className="box-header"> Departure: </h1>
+                            <Input />
+                        </Grid.Column>
+
+                        <Divider vertical>
+                            <Icon name="arrow right"/>
+                        </Divider>
+
+                        <Grid.Column>
+                            <h1 className="box-header"> Arrival: </h1>
+                            <Input />
+                        </Grid.Column>
+                    </Grid.Row>
+
+                    <Grid.Row>
+                        <Grid.Column>
+                            <h1 className="box-header"> Class Type: </h1>
+                            <Input />
                         </Grid.Column>
                     </Grid.Row>
 
