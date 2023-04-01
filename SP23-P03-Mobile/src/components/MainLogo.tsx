@@ -1,6 +1,6 @@
 import React from 'react';
 import { Image, View } from "react-native";
-import homeLogo from '../../assets/EnTrack_HomeLogo.png';
+import homeLogo from '../../assets/EnTrack_Logo_white.png';
 import EnTrackColors from '../style/colors';
 
 
