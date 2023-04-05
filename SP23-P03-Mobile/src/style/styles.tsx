@@ -2,6 +2,13 @@ import { StyleSheet } from "react-native";
 import EnTrackColors from "./colors";
 
 const styles = StyleSheet.create({
+    absoluteFill: {
+        position: "absolute",
+        left: 0, right: 0, bottom: 0, top: 0
+    },
+    background: {
+        backgroundColor: EnTrackColors.darkBackground
+    },
     container: {
         flex: 1,
         alignSelf: 'stretch',

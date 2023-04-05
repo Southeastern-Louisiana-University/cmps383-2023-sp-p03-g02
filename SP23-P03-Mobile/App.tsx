@@ -9,7 +9,7 @@ import styles from './src/style/styles';
 
 export default function App() {
   return (
-    <View style={[{ backgroundColor: EnTrackColors.darkBackground }, styles.container]}>
+    <View style={[styles.background, styles.container]}>
       <AuthProvider loginElement={<LoginScreen />}>
         <ScreenWrapper>
           <ScreenRouter />
