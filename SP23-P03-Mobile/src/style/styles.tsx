@@ -23,6 +23,14 @@ const styles = StyleSheet.create({
         borderTopWidth: 3,
         marginBottom: 1,
     },
+    topDivider: {
+        borderTopColor: EnTrackColors.mainColor,
+        borderTopWidth: 2,
+    },
+    bottomDivider: {
+        borderBottomColor: EnTrackColors.mainColor,
+        borderBottomWidth: 2,
+    },
     borderedView: {
         padding: 10,
         borderRadius: 10,
