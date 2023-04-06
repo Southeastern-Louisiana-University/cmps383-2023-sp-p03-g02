@@ -1,17 +1,6 @@
 :root {
   --main-color: #22d3ee;
-}
-
-@media (prefers-color-scheme: light) {
-  :root {
-    --main-background-color: #FFFCFC
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --main-background-color: #222222
-  }
+  --main-background-color: #222222;
 }
 
 .page-container {
