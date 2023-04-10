@@ -24,8 +24,10 @@ export const logoutUser = () => axios.post(`${deployedAppURL}/api/authentication
     return response;
 });
 
-export const AuthProvider: React.FC<React.PropsWithChildren> = (props) => {
-    const [user, setUser] = useState<AuthData>(null);
+type AuthProviderProps = React.PropsWithChildren<{ loginElement: React.ReactNode }>;
+
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children, loginElement }) => {
+    const [user, setUser] = useState<AuthData>();
 
     useEffect(() => {
         fetchUser(setUser);
@@ -40,9 +42,15 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = (props) => {
     });
 
     return (
-        <AuthContext.Provider value={user}>
-            {props.children}
-        </AuthContext.Provider>
+        user !== undefined && (user ? (
+            <AuthContext.Provider value={user}>
+                {children}
+            </AuthContext.Provider>
+        ) : (
+            <>
+                {loginElement}
+            </>
+        ))
     );
 }
 
