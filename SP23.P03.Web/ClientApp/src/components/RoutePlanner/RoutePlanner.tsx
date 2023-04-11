@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Segment, Grid, Divider, Icon } from 'semantic-ui-react';
+import { Segment, Grid, Divider, Icon, Input, Dropdown } from 'semantic-ui-react';
 import './RoutePlanner.css';
 import { StationSelection } from '../StationSelection';
 import { RoutePlanningQuery, navigateToRoutePlanning } from '../../helpers/navigation';
@@ -11,6 +11,13 @@ const RoutePlanner: React.FC = () => {
     const onSubmit = (query: RoutePlanningQuery) => {
         navigateToRoutePlanning(navigate, query);
     };
+
+    const fareType = [
+        { text: "Coach", value: "Coach"},
+        { text: "First Class", value: "First Class" },
+        { text: "Roomlet", value: "Roomlet" },
+        { text: "Sleeper", value: "Sleeper" },
+    ];
 
     const EXAMPLE_ROUTE_PLANNING_QUERY = { 
         fromStationId: 1,
@@ -64,7 +71,13 @@ const RoutePlanner: React.FC = () => {
                     <Grid.Row>
                         <Grid.Column>
                             <h1 className="box-header"> Class Type: </h1>
-                            <Input />
+                            
+                                <Dropdown 
+                                    selection 
+                                    placeholder='Select'
+                                    options={fareType}
+                                />
+                            
                         </Grid.Column>
                     </Grid.Row>
 
