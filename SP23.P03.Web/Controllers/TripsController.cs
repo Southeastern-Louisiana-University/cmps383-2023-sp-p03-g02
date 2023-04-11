@@ -48,10 +48,11 @@ public class TripsController : ControllerBase
     }
 
     [HttpGet]
-    [Route("search/{fromStationId}/{toStationId}/{departure}/{arrival}/{travelClass}")]
-    public ActionResult<IEnumerable<IEnumerable<TripWithCapacityDto>>> GetRoute(int fromStationId, int toStationId,
-                                                                    DateTimeOffset departure, DateTimeOffset arrival,
-                                                                    string travelClass)
+    [Route("search")]
+    public ActionResult<IEnumerable<IEnumerable<TripWithCapacityDto>>> GetRoute(
+        [FromQuery] int fromStationId, [FromQuery] int toStationId,
+        [FromQuery] DateTimeOffset departure, [FromQuery] DateTimeOffset arrival,
+        [FromQuery] string travelClass = "Coach")
     {
         if (!(Enum.TryParse(travelClass, true, out TravelClass travelClassEnum) && Enum.IsDefined(travelClassEnum)))
         {

@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { TrainStationDto } from '../../types/types';
 
-const useStation = (stationId?: string | number) => {
+const useStation = (stationId?: string | number | null) => {
     const [station, setStation] = useState<TrainStationDto>();
 
     useEffect(() => {
