@@ -1,16 +1,25 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Segment, Grid, Divider, Icon } from 'semantic-ui-react';
-import { routes } from '../../constants/routeconfig';
 import './RoutePlanner.css';
 import { StationSelection } from '../StationSelection';
+import { RoutePlanningQuery, navigateToRoutePlanning } from '../../helpers/navigation';
 
 const RoutePlanner: React.FC = () => {
     const navigate = useNavigate();
 
-    const navigateToRoutePlanning = () => {
-        navigate(routes.route_planning);
+    const onSubmit = (query: RoutePlanningQuery) => {
+        navigateToRoutePlanning(navigate, query);
     };
+
+    const EXAMPLE_ROUTE_PLANNING_QUERY = { 
+        fromStationId: 1,
+        toStationId: 2,
+        departure: "2023-04-01",
+        arrival: "2023-07-01",
+        travelClass: "Coach",
+    }; // This is an example route planning query since we don't have a Form for this component yet
+
     return (
         <div className="route-planner">
             <Segment padded raised className="resizing">
@@ -43,7 +52,9 @@ const RoutePlanner: React.FC = () => {
 
                     <Grid.Row>
                         <div className="btn-center">
-                            <button className="btn-styling" onClick={navigateToRoutePlanning}>
+                            <button className="btn-styling" onClick={
+                                () => onSubmit(EXAMPLE_ROUTE_PLANNING_QUERY)
+                            }>
                                 Book Now!
                             </button>
                         </div>
