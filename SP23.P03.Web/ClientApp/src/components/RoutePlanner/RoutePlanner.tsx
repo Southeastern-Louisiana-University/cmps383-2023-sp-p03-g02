@@ -1,9 +1,10 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Segment, Grid, Divider, Icon, Input, Dropdown } from 'semantic-ui-react';
+import { Segment, Grid, Divider, Icon, Dropdown } from 'semantic-ui-react';
 import './RoutePlanner.css';
 import { StationSelection } from '../StationSelection';
 import { RoutePlanningQuery, navigateToRoutePlanning } from '../../helpers/navigation';
+import { DateSelection } from '../DateSelection';
 
 const RoutePlanner: React.FC = () => {
     const navigate = useNavigate();
@@ -55,7 +56,9 @@ const RoutePlanner: React.FC = () => {
                     <Grid.Row>
                         <Grid.Column>
                             <h1 className="box-header"> Departure: </h1>
-                            <Input />
+                            
+                                <DateSelection />
+                            
                         </Grid.Column>
 
                         <Divider vertical>
@@ -64,18 +67,24 @@ const RoutePlanner: React.FC = () => {
 
                         <Grid.Column>
                             <h1 className="box-header"> Arrival: </h1>
-                            <Input />
+                            
+                                <DateSelection />
+
                         </Grid.Column>
                     </Grid.Row>
 
                     <Grid.Row>
                         <Grid.Column>
-                            <h1 className="box-header"> Class Type: </h1>
-                            
+                            <h1 className="box-header"> Travel Class: </h1>
+
                                 <Dropdown 
                                     selection 
-                                    placeholder='Select'
+                                    placeholder='Select Fare'
                                     options={fareType}
+                                    search
+                                    style={{
+                                        width: '75%'
+                                    }}
                                 />
                             
                         </Grid.Column>
