@@ -1,8 +1,9 @@
 import React from "react";
 import { Select } from "semantic-ui-react";
 import useFindStation from "../hooks/api/useFindStation";
+import { FieldProps } from "formik";
 
-export function StationSelection(): React.ReactElement {
+const StationSelection: React.FC<FieldProps> = ({ field, form }) => {
 
     const findStation = useFindStation();
     const data = findStation.map((station) => {
@@ -22,7 +23,13 @@ export function StationSelection(): React.ReactElement {
                 options={data}
                 search
                 clearable
+                name={field.name}
+                value={field.value}
+                onChange={option => form.setFieldValue(field.name, (option as any).value)}
+                onBlur={field.onBlur}
                 />
         </>
     );
 }
+
+export default StationSelection;
