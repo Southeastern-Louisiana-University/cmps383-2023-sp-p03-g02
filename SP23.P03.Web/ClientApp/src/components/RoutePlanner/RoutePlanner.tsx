@@ -27,7 +27,7 @@ const RoutePlanner: React.FC = () => {
         departure: "2023-04-01",
         arrival: "2023-07-01",
         travelClass: "Coach",
-    };
+    }; /* filler data for now */
 
     return (
         <div className="route-planner">
@@ -80,6 +80,7 @@ const RoutePlanner: React.FC = () => {
                         <Grid.Column>
                             <h1 className="box-header"> Travel Class: </h1>
 
+                            {/* unfortunately, the dropdown has to look this way */}
                             <Field name="travelClass" id="travelClass">
                                 {({ field, form}: FieldProps) => (
                                 <Dropdown

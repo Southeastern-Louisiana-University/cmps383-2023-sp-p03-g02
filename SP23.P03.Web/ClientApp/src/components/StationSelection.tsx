@@ -23,10 +23,13 @@ const StationSelection: React.FC<FieldProps> = ({ field, form }) => {
                 options={data}
                 search
                 clearable
-                name={field.name}
-                value={field.value}
-                onChange={option => form.setFieldValue(field.name, (option as any).value)}
-                onBlur={field.onBlur}
+
+                //these may need to be added in later -- will delete if not
+                // name={field.name}
+                // value={field.value}
+                // onChange={option => form.setFieldValue(field.name, (option as any).value)}
+                // onBlur={field.onBlur}
+                
                 />
         </>
     );
