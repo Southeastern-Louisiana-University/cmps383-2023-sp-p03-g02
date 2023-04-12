@@ -5,6 +5,15 @@ import './RoutePlanner.css';
 import { StationSelection } from '../StationSelection';
 import { RoutePlanningQuery, navigateToRoutePlanning } from '../../helpers/navigation';
 import { DateSelection } from '../DateSelection';
+import { Field, FieldProps, Form, Formik } from 'formik';
+
+interface FormValues {
+    fromStationId: number,
+    toStationId: number,
+    departure: string,
+    arrival: string,
+    travelClass: string,
+};
 
 const RoutePlanner: React.FC = () => {
     const navigate = useNavigate();
@@ -20,25 +29,33 @@ const RoutePlanner: React.FC = () => {
         { text: "Sleeper", value: "Sleeper" },
     ];
 
-    const EXAMPLE_ROUTE_PLANNING_QUERY = { 
+    const initialValues: FormValues = {
         fromStationId: 1,
         toStationId: 2,
         departure: "2023-04-01",
         arrival: "2023-07-01",
         travelClass: "Coach",
-    }; // This is an example route planning query since we don't have a Form for this component yet
+    };
 
     return (
         <div className="route-planner">
+            <Formik initialValues={initialValues}
+
+                    onSubmit={(values, actions) => {
+                        console.log({ values, actions });
+                        alert(JSON.stringify(values, null, 2));
+                        actions.setSubmitting(false);
+            }}>
+            
+            <Form>
+
             <Segment padded raised className="resizing">
                 <Grid columns={2} stackable container textAlign='center'>
 
                     <Grid.Row>
                         <Grid.Column>
                             <h1 className="box-header"> Starting From: </h1>
-
                             <StationSelection />
-
                         </Grid.Column>
 
                         <Divider vertical>
@@ -47,18 +64,14 @@ const RoutePlanner: React.FC = () => {
 
                         <Grid.Column>
                             <h1 className="box-header"> Going To: </h1>
-
                             <StationSelection />
-
                         </Grid.Column>
                     </Grid.Row>
 
                     <Grid.Row>
                         <Grid.Column>
                             <h1 className="box-header"> Departure: </h1>
-                            
-                                <DateSelection />
-                            
+                            <DateSelection />
                         </Grid.Column>
 
                         <Divider vertical>
@@ -67,9 +80,7 @@ const RoutePlanner: React.FC = () => {
 
                         <Grid.Column>
                             <h1 className="box-header"> Arrival: </h1>
-                            
-                                <DateSelection />
-
+                            <DateSelection />
                         </Grid.Column>
                     </Grid.Row>
 
@@ -77,15 +88,27 @@ const RoutePlanner: React.FC = () => {
                         <Grid.Column>
                             <h1 className="box-header"> Travel Class: </h1>
 
-                                <Dropdown 
-                                    selection 
+                            <Field name="travelClass" id="travelClass">
+                                {({ field, form}: FieldProps) => (
+                                <Dropdown
+                                    selection
+                                    clearable
                                     placeholder='Select Fare'
                                     options={fareType}
                                     search
                                     style={{
                                         width: '75%'
                                     }}
+                                    {...field}
+                                    onChange={(_, { name, value }) =>
+                                        form.setFieldValue(name, value)
+                                    }
+                                    onBlur={(_, { name, value}) =>
+                                        form.setFieldValue(name, value)
+                                    }
                                 />
+                                )}
+                            </Field>
                             
                         </Grid.Column>
                     </Grid.Row>
@@ -93,7 +116,7 @@ const RoutePlanner: React.FC = () => {
                     <Grid.Row>
                         <div className="btn-center">
                             <button className="btn-styling" onClick={
-                                () => onSubmit(EXAMPLE_ROUTE_PLANNING_QUERY)
+                                () => onSubmit(initialValues)
                             }>
                                 Book Now!
                             </button>
@@ -101,6 +124,9 @@ const RoutePlanner: React.FC = () => {
                     </Grid.Row>
                 </Grid>
             </Segment>
+
+            </Form>
+            </Formik>
         </div>
     );
 }
