@@ -63,7 +63,7 @@ const RoutePlanner: React.FC = () => {
                     <Grid.Row>
                         <Grid.Column>
                             <h1 className="box-header"> Departure: </h1>
-                            <DateSelection />
+                            <Field name="departure" id="departure" component={DateSelection} />
                         </Grid.Column>
 
                         <Divider vertical>
@@ -72,7 +72,7 @@ const RoutePlanner: React.FC = () => {
 
                         <Grid.Column>
                             <h1 className="box-header"> Arrival: </h1>
-                            <DateSelection />
+                            <Field name="arrival" id="arrival" component={DateSelection} />
                         </Grid.Column>
                     </Grid.Row>
 
