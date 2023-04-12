@@ -4,5 +4,5 @@
 
 export const routes = {
     home : '/',
-    route_planning : '/route-planning/*'
+    route_planning : '/route-planning'
   }

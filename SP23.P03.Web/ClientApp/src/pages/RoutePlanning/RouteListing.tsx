@@ -1,5 +1,4 @@
 import React from "react"
-import { PathMatch } from "react-router-dom";
 import { Grid, Header, Icon, Segment } from "semantic-ui-react";
 import useTripRoutes from "../../hooks/api/useTripRoutes";
 import { TripWithCapacityDto } from "../../types/types";
@@ -10,11 +9,16 @@ import { getTravelClassCapacity, getTravelClassPrice } from "../../helpers/trave
 import PurchaseBoardingPassModal from "./PurchaseBoardingPassModal";
 
 
-type RouteListingProps = { pathMatch: PathMatch<"fromStationId" | "toStationId" | "departure" | "arrival" | "travelClass"> };
+type RouteListingProps = { searchParams: URLSearchParams };
 
 const RouteListing: React.FC<RouteListingProps> = (props) => {
-    const { pathMatch } = props;
-    const { fromStationId, toStationId, departure, arrival, travelClass } = pathMatch.params;
+    const { searchParams } = props;
+
+    const fromStationId = searchParams.get("fromStation");
+    const toStationId = searchParams.get("toStation");
+    const departure = searchParams.get("departure");
+    const arrival = searchParams.get("arrival");
+    const travelClass = searchParams.get("travelClass") ?? "Coach";
 
     const tripRoutes = useTripRoutes(fromStationId ?? "", toStationId ?? "", departure ?? "", arrival ?? "", travelClass ?? "");
 
