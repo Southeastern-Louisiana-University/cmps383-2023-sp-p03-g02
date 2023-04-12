@@ -2,18 +2,10 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Segment, Grid, Divider, Icon, Dropdown } from 'semantic-ui-react';
 import './RoutePlanner.css';
-import { StationSelection } from '../StationSelection';
+import StationSelection from '../StationSelection';
 import { RoutePlanningQuery, navigateToRoutePlanning } from '../../helpers/navigation';
 import { DateSelection } from '../DateSelection';
 import { Field, FieldProps, Form, Formik } from 'formik';
-
-interface FormValues {
-    fromStationId: number,
-    toStationId: number,
-    departure: string,
-    arrival: string,
-    travelClass: string,
-};
 
 const RoutePlanner: React.FC = () => {
     const navigate = useNavigate();
@@ -29,7 +21,7 @@ const RoutePlanner: React.FC = () => {
         { text: "Sleeper", value: "Sleeper" },
     ];
 
-    const initialValues: FormValues = {
+    const initialValues = {
         fromStationId: 1,
         toStationId: 2,
         departure: "2023-04-01",
@@ -55,7 +47,7 @@ const RoutePlanner: React.FC = () => {
                     <Grid.Row>
                         <Grid.Column>
                             <h1 className="box-header"> Starting From: </h1>
-                            <StationSelection />
+                            <Field name="fromStationId" id="fromStationId" component={StationSelection} />
                         </Grid.Column>
 
                         <Divider vertical>
@@ -64,7 +56,7 @@ const RoutePlanner: React.FC = () => {
 
                         <Grid.Column>
                             <h1 className="box-header"> Going To: </h1>
-                            <StationSelection />
+                            <Field name="toStationId" id="toStationId" component={StationSelection} />
                         </Grid.Column>
                     </Grid.Row>
 
