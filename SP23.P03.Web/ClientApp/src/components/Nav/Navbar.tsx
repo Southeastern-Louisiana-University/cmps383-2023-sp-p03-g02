@@ -46,8 +46,8 @@ export function Navbar() : React.ReactElement {
                             text={user.userName}
                             icon={
                                 <>
-                                    <Icon name="user" fitted />
-                                    <Icon name="caret down" />
+                                    <Icon name="user" />
+                                    <Icon name="caret down" fitted />
                                 </>
                             }
                             item

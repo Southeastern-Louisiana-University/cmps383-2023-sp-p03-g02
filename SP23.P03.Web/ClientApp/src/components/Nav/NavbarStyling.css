@@ -8,17 +8,18 @@
     background-color: var(--main-background-color) !important;
     border-radius: 0 !important;
     margin-bottom: 0 !important;
+    border-bottom: 0 !important;
 }
 
-.item-container > .item {
+.item-container .item {
     color: var(--main-color) !important;
     font-family: Arial, Helvetica, sans-serif;
     font-size: medium;
     border-radius: 0 !important;
 }
 
-.item-container > .item:hover {
-    background-image: linear-gradient(var(--main-background-color) 95%, #01a0b6 95%) !important;
+.item-container .item:hover {
+    background-image: linear-gradient(transparent 95%, #01a0b6 95%) !important;
 }
 
 .main-logo {
@@ -32,8 +33,9 @@
     padding: 4px;
 }
 
-.item-container > .item.active {
-    background-image: linear-gradient(var(--main-background-color) 95%, var(--main-color) 95%) !important;
+.item-container .item.active,
+.item.dropdown:has(.menu a.active) {
+    background-image: linear-gradient(transparent 95%, var(--main-color) 95%) !important;
 }
 
 .menu .ui.item.dropdown.user-dropdown {
