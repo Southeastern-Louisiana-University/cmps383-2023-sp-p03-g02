@@ -73,7 +73,7 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
                             <List divided>
                                 {myPassengers && myPassengers.length > 0 ? myPassengers.map((passenger) => (
                                     <List.Item key={passenger.id}>
-                                        <i className='icon middle aligned'>
+                                        <List.Icon verticalAlign='middle'>
                                             <div style={{ display: "flex", alignItems: "center" }}>
                                                 <Checkbox style={{ marginRight: "0.5em" }}
                                                     onChange={(e, data) => {
@@ -87,7 +87,7 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
                                                 />
                                                 <ExtraIcon name={getPassengerIcon(passenger)} size='2x' />
                                             </div>
-                                        </i>
+                                        </List.Icon>
                                         <List.Content>
                                             <List.Header>
                                                 {passenger.firstName} {passenger.lastName}

@@ -35,3 +35,15 @@
 .item-container > .item.active {
     background-image: linear-gradient(var(--main-background-color) 95%, var(--main-color) 95%) !important;
 }
+
+.menu .ui.item.dropdown.user-dropdown {
+    color: var(--main-color);
+}
+
+.menu .ui.item.dropdown.user-dropdown:hover {
+    color: var(--main-color);
+}
+
+.menu .ui.item.dropdown.user-dropdown .divider.text {
+    margin-right: 6px;
+}

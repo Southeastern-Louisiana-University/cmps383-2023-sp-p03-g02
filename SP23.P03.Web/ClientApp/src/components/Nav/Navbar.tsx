@@ -1,10 +1,11 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { Menu } from "semantic-ui-react"; 
+import { Dropdown, Icon, Menu } from "semantic-ui-react"; 
 import { routes } from "../../constants/routeconfig";
 import { logoutUser, useUser } from "../AuthProvider";
 import { openLoginModal } from "../LoginModal";
 import "./NavbarStyling.css"; 
+import ExtraIcon from "../ExtraIcon";
 
 export function Navbar() : React.ReactElement {
     const user = useUser();
@@ -40,11 +41,39 @@ export function Navbar() : React.ReactElement {
                 />
 
                 {user ? (
-                    <Menu.Item position="right"
-                        name='Logout'
-                        icon='sign-out'
-                        onClick={logoutUser}
-                    />
+                    <Menu.Menu position="right">
+                        <Dropdown
+                            text={user.userName}
+                            icon={
+                                <>
+                                    <Icon name="user" fitted />
+                                    <Icon name="caret down" />
+                                </>
+                            }
+                            item
+                            className="user-dropdown"
+                        >
+                            <Dropdown.Menu>
+                                <Dropdown.Item
+                                    text='My Account'
+                                    icon="user"
+                                    as={NavLink}
+                                    to={routes.account}
+                                />
+                                <Dropdown.Item
+                                    text='My Passengers'
+                                    icon={<Icon><ExtraIcon size="xl" name="walking" /></Icon>}
+                                    as={NavLink}
+                                    to={routes.passengers}
+                                />
+                                <Dropdown.Item
+                                    text='Logout'
+                                    icon='sign-out'
+                                    onClick={logoutUser}
+                                />
+                            </Dropdown.Menu>
+                        </Dropdown>
+                    </Menu.Menu>
                 ) : (
                     <Menu.Item position="right"
                         name='Login'
