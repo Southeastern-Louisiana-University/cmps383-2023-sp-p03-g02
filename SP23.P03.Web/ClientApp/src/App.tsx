@@ -15,13 +15,15 @@ export function App() : React.ReactElement {
     style={{backgroundColor: '#222222'}}>
         <LoginModal />
         <Navbar />
-        <Routes>
-          <Route path={routes.home} element={<HomePage />} />
-          <Route path={routes.route_planning} element={<RoutePlanning />} />
+        <div className="page-content">
+          <Routes>
+            <Route path={routes.home} element={<HomePage />} />
+            <Route path={routes.route_planning} element={<RoutePlanning />} />
 
-          {/* If the path does not exist */}
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
+            {/* If the path does not exist */}
+            <Route path="*" element={<NotFoundPage />} />
+          </Routes>
+        </div>
         <Footer />
     </div>
   );
