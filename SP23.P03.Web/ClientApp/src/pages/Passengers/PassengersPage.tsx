@@ -58,11 +58,13 @@ const PassengersPage: React.FC = (props) => {
                                         <PassengerRow myPassengers={myPassengers} passenger={passenger} key={passenger.id} />
                                     ))
                                 ) : (
-                                    <Table.Cell colSpan={3}>
-                                        <Message>
-                                            You don't have any passengers yet!
-                                        </Message>
-                                    </Table.Cell>
+                                    <Table.Row>
+                                        <Table.Cell colSpan={3}>
+                                            <Message>
+                                                You don't have any passengers yet!
+                                            </Message>
+                                        </Table.Cell>
+                                    </Table.Row>
                                 )}
                             </Table.Body>
                         </Table>
