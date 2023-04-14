@@ -38,7 +38,7 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
 
     const user = useUser();
 
-    const myPassengers = useMyPassengers(user);
+    const { passengers } = useMyPassengers(user);
 
     const { travelClass, trips } = props;
 
@@ -71,7 +71,7 @@ const PurchaseBoardingPassModal: React.FC<PurchaseBoardingPassModalProps> = (pro
                         <Header attached="top">Passengers</Header>
                         <Segment attached="bottom">
                             <List divided>
-                                {myPassengers && myPassengers.length > 0 ? myPassengers.map((passenger) => (
+                                {passengers && passengers.length > 0 ? passengers.map((passenger) => (
                                     <List.Item key={passenger.id}>
                                         <List.Icon verticalAlign='middle'>
                                             <div style={{ display: "flex", alignItems: "center" }}>
