@@ -8,6 +8,7 @@ import { Navbar } from './components/Nav/Navbar';
 import { Footer } from './components/Footer/Footer';
 import './App.css';
 import LoginModal from './components/LoginModal';
+import PassengersPage from './pages/Passengers/PassengersPage';
 
 export function App() : React.ReactElement {
   return (
@@ -19,6 +20,7 @@ export function App() : React.ReactElement {
           <Routes>
             <Route path={routes.home} element={<HomePage />} />
             <Route path={routes.route_planning} element={<RoutePlanning />} />
+            <Route path={routes.passengers} element={<PassengersPage />} />
 
             {/* If the path does not exist */}
             <Route path="*" element={<NotFoundPage />} />
