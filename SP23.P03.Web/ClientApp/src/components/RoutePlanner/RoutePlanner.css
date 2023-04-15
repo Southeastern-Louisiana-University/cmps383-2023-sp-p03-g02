@@ -4,3 +4,35 @@
     justify-content: center;
     position: relative;
 }
+
+.btn-styling {
+    width: 8em;
+    height: 3em;
+    border: none;
+    border-radius: 2em;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2em;
+    background-color: #222222;
+    color: var(--main-color);
+    cursor: pointer;
+}
+
+.btn-styling:hover {
+    background-color: var(--main-color);
+    color: #222222;
+}
+
+.btn-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.resizing {
+    max-width: 75em;
+}
+
+.box-header {
+    font-size: large;
+    font-family: Arial, Helvetica, sans-serif;
+}
