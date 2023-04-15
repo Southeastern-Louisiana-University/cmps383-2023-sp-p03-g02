@@ -3,11 +3,11 @@ import React from 'react';
 import { Header, Segment, List, Icon } from 'semantic-ui-react';
 import { formatUSD } from '../helpers/money';
 import { getTravelClassPrice, getTravelClassCapacity } from '../helpers/travelClass';
-import { TripWithCapacityDto } from "../types/types"
+import { TripDto, TripWithCapacityDto } from "../types/types"
 import ExtraIcon from './ExtraIcon';
 
 type TripSummaryProps = {
-    trips: TripWithCapacityDto[];
+    trips: TripWithCapacityDto[] | TripDto[];
     travelClass: string;
 }
 
@@ -29,7 +29,7 @@ const TripSummary: React.FC<TripSummaryProps> = (props) => {
                                 <List.Description>
                                     <div>{trip.fromStation.name} <Icon name='arrow right' /> {trip.toStation.name}</div>
                                     <div>{DateTime.fromISO(trip.departure).toFormat('MMM dd t')} - {DateTime.fromISO(trip.arrival).toFormat('MMM dd t')} ({DateTime.fromISO(trip.arrival).diff(DateTime.fromISO(trip.departure)).toFormat("h'h' m'm'")})</div>
-                                    <div>{travelClass} | Fare: {formatUSD(getTravelClassPrice(trip, travelClass))} | Remaining Capacity: {getTravelClassCapacity(trip, travelClass)}</div>
+                                    <div>{travelClass} | Fare: {formatUSD(getTravelClassPrice(trip, travelClass))}{"coachCapacity" in trip && ` | Remaining Capacity: ${getTravelClassCapacity(trip, travelClass)}`}</div>
                                 </List.Description>
                             </List.Content>
                         </List.Item>
