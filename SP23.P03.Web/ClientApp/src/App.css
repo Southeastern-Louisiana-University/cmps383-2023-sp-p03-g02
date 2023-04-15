@@ -1,6 +1,7 @@
 :root {
   --main-color: #22d3ee;
   --main-background-color: #222222;
+  background-color: var(--main-background-color);
 }
 
 .page-container {
