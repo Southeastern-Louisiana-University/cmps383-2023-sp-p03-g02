@@ -23,7 +23,6 @@ export function Navbar() : React.ReactElement {
                     to={routes.home}
                 />
 
-                { /* will need to update the path when page is made */ }
                 <Menu.Item
                     name='Route Planning'
                     icon="map outline"
@@ -31,12 +30,11 @@ export function Navbar() : React.ReactElement {
                     to={routes.route_planning}
                 />
 
-                { /* will need to update path */ }
                 <Menu.Item 
-                    name='My Trips'
+                    name='My Boarding Passes'
                     icon="travel"
                     as={NavLink}
-                    to="/mytrips"
+                    to={routes.boardingpasses}
                 />
 
                 {user ? (
