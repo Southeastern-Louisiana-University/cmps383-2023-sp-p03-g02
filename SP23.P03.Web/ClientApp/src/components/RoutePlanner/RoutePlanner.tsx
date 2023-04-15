@@ -1,5 +1,5 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Segment, Grid, Divider, Icon, Dropdown, Input } from 'semantic-ui-react';
 import './RoutePlanner.css';
 import StationSelection from '../StationSelection';
@@ -8,6 +8,7 @@ import { Field, FieldProps, Form, Formik } from 'formik';
 import { toSimpleISO } from '../../helpers/time';
 
 const RoutePlanner: React.FC = () => {
+    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
     const onSubmit = (query: RoutePlanningQuery) => {
@@ -22,11 +23,11 @@ const RoutePlanner: React.FC = () => {
     ];
 
     const initialValues: RoutePlanningQuery = {
-        fromStationId: 0,
-        toStationId: 0,
-        departure: "",
-        arrival: "",
-        travelClass: "Coach",
+        fromStationId: Number(searchParams.get("fromStation")) ?? 0,
+        toStationId: Number(searchParams.get("toStation")) ?? 0,
+        departure: searchParams.get("departure") ?? "",
+        arrival: searchParams.get("arrival") ?? "",
+        travelClass: searchParams.get("travelClass") ?? "Coach",
     };
 
     return (
