@@ -12,16 +12,13 @@ const Login: React.FC = () => {
 
     const onSubmit = async (values: LoginDto) => {
         setLoginLoading(true);
-        loginUser(values)
-            .then(() => {
-                setLoginLoading(false);
-            })
+        await loginUser(values)
             .catch((error) => {
-                setLoginLoading(false);
                 if(axios.isAxiosError(error)){
                     ToastAndroid.show(`Login failed. (${error.code})`, ToastAndroid.LONG)
                 }
             });
+        setLoginLoading(false);
     }
 
     const INITIAL_VALUES: LoginDto = { userName: "", password: "" };
