@@ -28,13 +28,13 @@ export function HomePage(): React.ReactElement {
 
             <RoutePlanner />
 
-            <div className="boxes-center">
-                <Segment basic className="resizing">
+            <div className="info-boxes">
+                <Segment basic>
                     <Grid columns={3} stackable
                     textAlign='left'>
 
                         <Grid.Row>
-                            <Grid.Column>
+                            <Grid.Column textAlign='center'>
                                 <Segment padded inverted className="info-box">
                                     <div>
                                         <img src={TrainOne} alt="train" width={200} />
@@ -55,7 +55,7 @@ export function HomePage(): React.ReactElement {
                                 </Segment>
                             </Grid.Column>
 
-                            <Grid.Column>
+                            <Grid.Column textAlign='center'>
                                 <Segment padded inverted className="info-box">
                                     <div>
                                         <img src={MobilePhone} alt="mobile app" width={200} height={150} />
@@ -76,7 +76,7 @@ export function HomePage(): React.ReactElement {
                                 </Segment>
                             </Grid.Column>
 
-                            <Grid.Column>
+                            <Grid.Column textAlign='center'>
                                 <Segment padded inverted className="info-box">
                                     <div>
                                         <img src={TrainTwo} alt="Hammond station" width={200} />

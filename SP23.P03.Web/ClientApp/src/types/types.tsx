@@ -52,3 +52,9 @@ export type PassengerDto = {
     ageGroup: string;
     managerId: number;
 }
+
+export type CreatePassengerDto = {
+    firstName: string;
+    lastName: string;
+    birthday: string;
+}
