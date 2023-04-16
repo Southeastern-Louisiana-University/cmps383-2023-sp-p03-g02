@@ -1,34 +1,32 @@
 import React from 'react';
-import { Header, Icon, List, ListProps } from 'semantic-ui-react';
+import { Header, List, ListProps } from 'semantic-ui-react';
 import { TrainStationDto } from '../types/types';
 
 type StationListProps = ListProps & {
-    station: TrainStationDto[];
+    stations: TrainStationDto[];
 }
 
 const StationListingPage: React.FC<StationListProps> = (props) => {
-    const { station } = props; 
+    const { stations } = props;
 
     return (
-        <>
-        <List {...props}>
-            {station.map(station => (
+        <List>
+            {stations.map(station => (
                 <List.Item key={station.id}>
                     <List.Icon>
-                        <Icon>
-                            icon
-                        </Icon>
+                        <i className="map signs icon"/>
                     </List.Icon>
 
                     <List.Content>
                         <Header>
-                            {station.name} {station.address}
+                            {station.name}
                         </Header>
+
+                        {station.address}
                     </List.Content>
                 </List.Item>
             ))}
         </List>
-        </>
     );
 }
 

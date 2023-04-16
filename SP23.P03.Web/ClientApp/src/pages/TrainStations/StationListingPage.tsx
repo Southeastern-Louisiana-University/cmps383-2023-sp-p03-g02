@@ -1,24 +1,25 @@
 import React from 'react';
-import { Grid, Segment } from 'semantic-ui-react';
+import { Container, Divider, Grid, Segment } from 'semantic-ui-react';
+import StationList from '../../components/StationList';
+import useFindStation from '../../hooks/api/useFindStation';
 
 export function StationListingPage(): React.ReactElement {
 
+    const stations = useFindStation();
+    
     return (
-        <>
-            <Segment padded raised>
-                <Grid>
+        <Container>
+            <Segment>
+                <Grid.Column>
+                    <h1> Train Stations </h1>
+                </Grid.Column>
 
-                    <Grid.Row>
-                        <Grid.Column>
-                            <h1> Train Stations </h1>
-                        </Grid.Column>
-                    </Grid.Row>
+                <Divider />
 
-                    <Grid.Row>
-                       
-                    </Grid.Row>
-                </Grid>
+                <Grid.Row>
+                    <StationList stations={stations} />
+                </Grid.Row>
             </Segment>
-        </>
+        </Container>
     );
 }

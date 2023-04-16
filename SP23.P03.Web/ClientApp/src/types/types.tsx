@@ -1,5 +1,6 @@
 
 export type TrainStationDto = {
+    stations: TrainStationDto[];
     id: number;
     name: string;
     address: string;
