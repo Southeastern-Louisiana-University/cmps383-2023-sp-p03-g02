@@ -86,7 +86,7 @@ const TripRoute: React.FC<TripRouteProps> = (props) => {
                 </Grid.Column>
                 <Grid.Column>
                     <Header>
-                        {travelClass} Capacity: {trips.reduce((min, curr) => Math.min(min, getTravelClassCapacity(curr, travelClass)), 9999)}
+                        {travelClass} Seats Left: {trips.reduce((min, curr) => Math.min(min, getTravelClassCapacity(curr, travelClass)), 9999)}
                     </Header>
                 </Grid.Column>
                 <Grid.Column floated="right">
