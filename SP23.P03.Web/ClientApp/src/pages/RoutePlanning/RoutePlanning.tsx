@@ -14,8 +14,8 @@ export function RoutePlanning(): React.ReactElement {
                         searchParams.has("arrival");
 
     return (
-        <div>
-            <div className="route-planning">
+        <div className="route-planning">
+            <div>
                 <RoutePlanner />
                 <Divider />
             </div>

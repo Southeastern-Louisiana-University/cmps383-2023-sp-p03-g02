@@ -1,0 +1,13 @@
+.ui.container.boardingpasses {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.ui.card.boardingpass-card {
+    color: inherit;
+}
+
+/* .ui.divided.grid.boardingpass-grid .column {
+    width: unset;
+} */

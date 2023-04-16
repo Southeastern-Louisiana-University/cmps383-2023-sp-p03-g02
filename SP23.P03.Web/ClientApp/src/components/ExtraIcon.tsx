@@ -18,8 +18,7 @@ type ExtraIconProps = Omit<FontAwesomeIconProps, "icon"> & {
     name: keyof typeof EXTRA_ICONS;
 }
 
-
-const ExtraIcon = (props: ExtraIconProps) => {
+const ExtraIcon: React.FC<ExtraIconProps> = (props) => {
     const { name, ...rest } = props;
     return <FontAwesomeIcon icon={EXTRA_ICONS[name]} {...rest} />;
 }

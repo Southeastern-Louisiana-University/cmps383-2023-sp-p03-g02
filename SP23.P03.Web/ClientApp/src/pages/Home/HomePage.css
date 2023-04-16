@@ -24,11 +24,34 @@
     max-width: 75em;
 }
 
+.btn-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-styling {
+    width: 8em;
+    height: 3em;
+    border: none;
+    border-radius: 2em;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 1.2em;
+    background-color: #222222;
+    color: var(--main-color);
+}
+
+.btn-styling:hover {
+    background-color: var(--main-color);
+    color: #222222;
+}
+
 .header-style {
     color: var(--main-color) !important;
 }
 
 .info-box {
+    display: inline-block;
     max-width: 18em;
     height: 27em;
     text-align: start;
@@ -39,8 +62,9 @@
     box-shadow: 7px 7px var(--main-color) !important;
 }
 
-.boxes-center {
-    padding-left: 20em;
+.info-boxes {
+    padding-left: 10em;
+    padding-right: 10em;
     padding-bottom: 5em;
 }
 
