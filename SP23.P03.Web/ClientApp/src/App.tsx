@@ -18,14 +18,12 @@ export function App() : React.ReactElement {
     style={{backgroundColor: '#222222'}}>
         <LoginModal />
         <Navbar />
-        <Routes>
-          <Route path={routes.home} element={<HomePage />} />
-          <Route path={routes.route_planning} element={<RoutePlanning />} />
-          <Route path={routes.trainStation_listing} element={<StationListingPage />} />
+  
         <div className="page-content">
           <Routes>
             <Route path={routes.home} element={<HomePage />} />
             <Route path={routes.route_planning} element={<RoutePlanning />} />
+            <Route path={routes.trainStation_listing} element={<StationListingPage />} />
             <Route path={routes.passengers} element={<PassengersPage />} />
           	<Route path={routes.boardingpasses} element={<BoardingPassesPage />} />
 
