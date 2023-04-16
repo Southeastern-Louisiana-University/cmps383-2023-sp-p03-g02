@@ -36,13 +36,13 @@ const RouteListing: React.FC<RouteListingProps> = (props) => {
                     </Header>
             </Segment>
             <Segment attached="bottom" style={{ marginTop: "0px" }} className="route-listing-segment">
-                {tripRoutes && tripRoutes.length > 0 ? (
+                {tripRoutes && (tripRoutes.length > 0 ? (
                     tripRoutes.map((trips) => 
                         <TripRoute key={trips.map(trip => trip.id).toString()} trips={trips} travelClass={travelClass ?? ""} />
                     )
                 ) : (
                     <Header>No trips match the specified stations and date range.</Header>
-                )
+                ))
 
                 }
             </Segment>

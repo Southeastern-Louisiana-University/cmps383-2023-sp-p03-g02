@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ActivityIndicator, FlatList, GestureResponderEvent, Modal, Pressable, Text, View, ViewProps } from 'react-native';
+import { ActivityIndicator, FlatList, GestureResponderEvent, Modal, Pressable, ScrollView, Text, View, ViewProps } from 'react-native';
 import QRCode from 'react-qr-code';
 import { BoardingPassDto } from '../types/boardingpasses';
 import styles from '../style/styles';
@@ -27,38 +27,43 @@ const BoardingPassList: React.FC<BoardingPassProps> = (props) => {
                 animationType='slide'
             >
                 {selectedBoardingPass && (
-                    <Pressable
-                        style={[styles.container, styles.center]} 
-                        onPress={() => setSelectedBoardingPass(null)}
-                    >
-                        <View
+                    <View style={[styles.container, styles.center]}>
+                        <Pressable
                             style={[styles.absoluteFill, { backgroundColor: "#00000099" }]}
+                            onPress={() => setSelectedBoardingPass(null)}
                         />
                         <View style={[styles.background, styles.borderedView, styles.center, { alignItems: "center" }]}>
                             <View style={{ borderColor: "#FFFFFF", borderWidth: 8}}>
                                 <QRCode value={selectedBoardingPass.code} />
                             </View>
-
-                            <View style={[styles.borderedView, { marginTop: 8 }]}>
-                                <Text style={[styles.bigText, styles.bottomDivider, { marginBottom: 5, paddingBottom: 5 }]}>
-                                    {formatTripDate(selectedDeparture)} {"->"} {formatTripDate(selectedArrival)}
-                                </Text>
-                                {selectedBoardingPass.trips.map((trip, index) => (
-                                    <View style={[styles.bottomDivider, { marginBottom: 5, paddingBottom: 5 }]} key={trip.id}>
-                                        <Text style={styles.text}>Trip {index+1} - {trip.train.name}</Text>
-                                        <Text style={[styles.text]}>{trip.fromStation.name} {"->"} {trip.toStation.name}</Text>
-                                        <Text style={[styles.text]}>{formatTripDate(trip.departure)} {"->"} {formatTripDate(trip.arrival)}</Text>
-                                    </View>
-                                ))}
-                            </View>
-                            <View style={[styles.borderedView, { marginTop: 5, alignSelf: "stretch" }]}>
-                                <Text style={[styles.bigText, styles.bottomDivider, { marginBottom: 5, paddingBottom: 5 }]}>Passengers</Text>
-                                {selectedBoardingPass.passengers.map(passenger => (
-                                    <Text style={styles.text} key={passenger.id}>{passenger.firstName} {passenger.lastName}</Text>
-                                ))}
-                            </View>
+                            <ScrollView>
+                                <View style={[styles.borderedView, { marginTop: 8 }]}>
+                                    <Text style={[styles.bigText, styles.bottomDivider, { marginBottom: 5, paddingBottom: 5 }]}>
+                                        {formatTripDate(selectedDeparture)} {"->"} {formatTripDate(selectedArrival)}
+                                    </Text>
+                                    {selectedBoardingPass.trips.map((trip, index) => (
+                                        <View style={[styles.bottomDivider, { marginBottom: 5, paddingBottom: 5 }]} key={trip.id}>
+                                            <Text style={styles.text}>Trip {index+1} - {trip.train.name}</Text>
+                                            <Text style={[styles.text]}>{trip.fromStation.name} {"->"} {trip.toStation.name}</Text>
+                                            <Text style={[styles.text]}>{formatTripDate(trip.departure)} {"->"} {formatTripDate(trip.arrival)}</Text>
+                                        </View>
+                                    ))}
+                                </View>
+                                <View style={[styles.borderedView, { marginTop: 5, alignSelf: "stretch" }]}>
+                                    <Text style={[styles.bigText, styles.bottomDivider, { marginBottom: 5, paddingBottom: 5 }]}>Passengers</Text>
+                                    {selectedBoardingPass.passengers.map(passenger => (
+                                        <Text style={styles.text} key={passenger.id}>{passenger.firstName} {passenger.lastName}</Text>
+                                    ))}
+                                </View>
+                            </ScrollView>
+                            <Pressable
+                                style={[styles.borderedView, styles.center]}
+                                onPress={() => setSelectedBoardingPass(null)}
+                            >
+                                <Text style={styles.bigText}>Close</Text>
+                            </Pressable>
                         </View>
-                    </Pressable>
+                    </View>
                 )}
             </Modal>
             {boardingPasses ? (

@@ -36,6 +36,15 @@ export type TripWithCapacityDto = TripDto & {
     sleeperCapacity: number;
 }
 
+export type BoardingPassDto = {
+    id: number;
+    code: string;
+    ownerId: number;
+    travelClass: string;
+    trips: TripDto[];
+    passengers: PassengerDto[];
+}
+
 export type CreateBoardingPassDto = {
     travelClass: string;
     tripIds: number[];
@@ -51,4 +60,10 @@ export type PassengerDto = {
     age: number;
     ageGroup: string;
     managerId: number;
+}
+
+export type CreatePassengerDto = {
+    firstName: string;
+    lastName: string;
+    birthday: string;
 }

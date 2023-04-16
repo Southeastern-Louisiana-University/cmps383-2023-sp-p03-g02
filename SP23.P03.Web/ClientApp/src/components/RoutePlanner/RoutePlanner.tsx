@@ -1,66 +1,130 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { Segment, Grid, Divider, Icon } from 'semantic-ui-react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Segment, Grid, Divider, Icon, Dropdown, Input } from 'semantic-ui-react';
 import './RoutePlanner.css';
-import { StationSelection } from '../StationSelection';
+import StationSelection from '../StationSelection';
 import { RoutePlanningQuery, navigateToRoutePlanning } from '../../helpers/navigation';
+import { Field, FieldProps, Form, Formik } from 'formik';
+import { toSimpleISO } from '../../helpers/time';
 
 const RoutePlanner: React.FC = () => {
+    const [searchParams] = useSearchParams();
     const navigate = useNavigate();
 
     const onSubmit = (query: RoutePlanningQuery) => {
         navigateToRoutePlanning(navigate, query);
     };
 
-    const EXAMPLE_ROUTE_PLANNING_QUERY = { 
-        fromStationId: 1,
-        toStationId: 2,
-        departure: "2023-04-01",
-        arrival: "2023-07-01",
-        travelClass: "Coach",
-    }; // This is an example route planning query since we don't have a Form for this component yet
+    const fareType = [
+        { text: "Coach", value: "Coach"},
+        { text: "First Class", value: "FirstClass" },
+        { text: "Roomlet", value: "Roomlet" },
+        { text: "Sleeper", value: "Sleeper" },
+    ];
+
+    const initialValues: RoutePlanningQuery = {
+        fromStationId: Number(searchParams.get("fromStation")) ?? 0,
+        toStationId: Number(searchParams.get("toStation")) ?? 0,
+        departure: searchParams.get("departure") ?? "",
+        arrival: searchParams.get("arrival") ?? "",
+        travelClass: searchParams.get("travelClass") ?? "Coach",
+    };
 
     return (
         <div className="route-planner">
-            <Segment padded raised className="resizing">
-                <Grid columns={2} stackable container textAlign='center'>
+            <Formik initialValues={initialValues} onSubmit={onSubmit}>
+                <Form>
+                    <Segment padded raised className="resizing">
+                        <Grid columns={2} stackable container textAlign='center'>
 
-                    <Grid.Row>
-                        <Grid.Column>
-                            <h1 className="box-header"> Starting From: </h1>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <h1 className="box-header"> Starting From: </h1>
+                                    <Field name="fromStationId" id="fromStationId" component={StationSelection} />
+                                </Grid.Column>
 
-                            <StationSelection
-                                
-                            />
+                                <Divider vertical>
+                                    <Icon name="arrow right"/>
+                                </Divider>
 
-                        </Grid.Column>
+                                <Grid.Column>
+                                    <h1 className="box-header"> Going To: </h1>
+                                    <Field name="toStationId" id="toStationId" component={StationSelection} />
+                                </Grid.Column>
+                            </Grid.Row>
 
-                        <Divider vertical>
-                            <Icon name="arrow right"/>
-                        </Divider>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <h1 className="box-header"> Departure: </h1>
+                                    <Field name="departure" id="departure">
+                                        {({ field, form }: FieldProps<string, typeof initialValues>) => (
+                                            <Input
+                                                {...field}
+                                                type="date"
+                                                min={toSimpleISO(new Date())}
+                                                max={form.values.arrival}
+                                            />
+                                        )}
+                                    </Field>
+                                </Grid.Column>
 
-                        <Grid.Column>
-                            <h1 className="box-header"> Going To: </h1>
+                                <Divider vertical>
+                                    <Icon name="arrow right"/>
+                                </Divider>
 
-                            <StationSelection
-                                
-                                
-                            />
+                                <Grid.Column>
+                                    <h1 className="box-header"> Arrival: </h1>
+                                    <Field name="arrival" id="arrival">
+                                        {({ field, form }: FieldProps<string, typeof initialValues>) => (
+                                            <Input
+                                                {...field}
+                                                type="date"
+                                                min={form.values.departure}
+                                            />
+                                        )}
+                                    </Field>
+                                </Grid.Column>
+                            </Grid.Row>
 
-                        </Grid.Column>
-                    </Grid.Row>
+                            <Grid.Row>
+                                <Grid.Column>
+                                    <h1 className="box-header"> Travel Class: </h1>
 
-                    <Grid.Row>
-                        <div className="btn-center">
-                            <button className="btn-styling" onClick={
-                                () => onSubmit(EXAMPLE_ROUTE_PLANNING_QUERY)
-                            }>
-                                Book Now!
-                            </button>
-                        </div>
-                    </Grid.Row>
-                </Grid>
-            </Segment>
+                                    {/* unfortunately, the dropdown has to look this way */}
+                                    <Field name="travelClass" id="travelClass">
+                                        {({ field, form}: FieldProps) => (
+                                        <Dropdown
+                                            selection
+                                            placeholder='Select Fare'
+                                            options={fareType}
+                                            style={{
+                                                width: '75%'
+                                            }}
+                                            {...field}
+                                            onChange={(_, { name, value }) =>
+                                                form.setFieldValue(name, value)
+                                            }
+                                            onBlur={(_, { name, value}) =>
+                                                form.setFieldValue(name, value)
+                                            }
+                                        />
+                                        )}
+                                    </Field>
+                                    
+                                </Grid.Column>
+                            </Grid.Row>
+
+                            <Grid.Row>
+                                <div className="btn-center">
+                                    <button className="btn-styling" type="submit">
+                                        Book Now!
+                                    </button>
+                                </div>
+                            </Grid.Row>
+                        </Grid>
+                    </Segment>
+                </Form>
+            </Formik>
         </div>
     );
 }

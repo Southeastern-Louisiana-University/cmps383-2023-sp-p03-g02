@@ -1,0 +1,9 @@
+.ui.container.passengers {
+    margin-top: 20px;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+
+.passenger-form-popup .field {
+    margin-bottom: 0.75em;
+}
