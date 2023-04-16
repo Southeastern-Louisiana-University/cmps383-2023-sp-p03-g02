@@ -39,6 +39,14 @@ export function Navbar() : React.ReactElement {
                     to="/mytrips"
                 />
 
+                {/* when master is updated, will be a dropdown instead */}
+                <Menu.Item 
+                    name="Train Stations"
+                    icon="travel"
+                    as={NavLink}
+                    to={routes.trainStation_listing}
+                />
+
                 {user ? (
                     <Menu.Item position="right"
                         name='Logout'
