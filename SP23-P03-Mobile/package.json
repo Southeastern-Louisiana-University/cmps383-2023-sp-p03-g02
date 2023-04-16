@@ -17,7 +17,7 @@
     "formik": "^2.2.9",
     "mitt": "^3.0.0",
     "react": "18.1.0",
-    "react-native": "0.70.5",
+    "react-native": "0.70.8",
     "react-native-svg": "^13.4.0",
     "react-qr-code": "^2.0.11",
     "react-router-native": "^6.10.0"
