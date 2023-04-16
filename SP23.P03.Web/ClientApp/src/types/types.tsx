@@ -7,6 +7,11 @@ export type TrainStationDto = {
     managerId?: number;
 }
 
+export type CreateStationDto = {
+    name: string;
+    address: string;
+}
+
 export type TrainDto = {
     id: number,
     name: string,
