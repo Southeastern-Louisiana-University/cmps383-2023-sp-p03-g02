@@ -12,10 +12,9 @@ export function Footer() : React.ReactElement {
                                 <Header className="header-style"> EnTrack </Header>
 
                                 <p>
-                                    is a transportation service located in the southern states
-                                    of the United States of America. Our focus is on making
-                                    the traveling experience, whether that be for work, personal,
-                                    or vacation, as convenient as it can be. As one of the luxury
+                                    provides affordable, premium transportation across the southern U.S.
+                                    Our focus is on making the traveling experience, whether that be for work, personal,
+                                    or vacation, as convenient and easy as possible. As one of the premium
                                     transportation services, we take the hassle out of booking
                                     tickets and boarding. Our goal is to make traveling by train
                                     easier than traveling by airplane!
