@@ -372,6 +372,15 @@ public static class SeedHelper
         await dataContext.SaveChangesAsync();
     }
 
+    /// <summary>
+    ///     Ensures all of the given <paramref name="entities"/> exist in the <paramref name="set"/>
+    ///     by calling <see cref="EnsureEntity" /> for each of them.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of entity.</typeparam>
+    /// <param name="set"></param>
+    /// <param name="predicate">A function that compares an entity from the given <paramref name="entities"/> (first param) with any entity from the <paramref name="set"/> (second param),
+    /// in order to ensure the existence of that entity in the <paramref name="set"/>.</param>
+    /// <param name="entities">Entities that should be added to the <paramref name="set"/> if they do not already exist according to the <paramref name="predicate"/>.</param>
     private static void EnsureRange<TEntity>(this DbSet<TEntity> set, Func<TEntity, TEntity, bool> predicate, params TEntity[] entities) where TEntity : class
     {
         foreach ( var entity in entities )
@@ -380,6 +389,16 @@ public static class SeedHelper
         }
     }
 
+    /// <summary>
+    ///     Ensures a given <paramref name="entity"/> exists in the <paramref name="set"/> by first checking if
+    ///     <paramref name="predicate"/>(<paramref name="entity"/>, <b>x</b>) is true for any entity <b>x</b> in the <paramref name="set"/>,
+    ///     and if not, <paramref name="entity"/> is added to the <paramref name="set"/>.
+    /// </summary>
+    /// <typeparam name="TEntity">The type of entity.</typeparam>
+    /// <param name="set"></param>
+    /// <param name="predicate">A function that compares a given <paramref name="entity"/> (first param) with any entity from the <paramref name="set"/> (second param),
+    /// in order to ensure the existence of the given <paramref name="entity"/> in the <paramref name="set"/>.</param>
+    /// <param name="entity">An entity that should be added to the <paramref name="set"/> if it does not already exist according to the <paramref name="predicate"/>.</param>
     private static void EnsureEntity<TEntity>(this DbSet<TEntity> set, Func<TEntity, TEntity, bool> predicate, TEntity entity) where TEntity : class
     {
         if (!set.Any(x => predicate(entity, x)))
