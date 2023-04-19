@@ -28,7 +28,7 @@ export function Footer() : React.ReactElement {
                                 
                                 <p> Support </p>
                                 <p> Mobile App </p>
-                                <p> Contact Us </p>
+                                <p> Contact us at support@entrack.com </p>
                             </Grid.Column>
                         </Grid.Row>
 
