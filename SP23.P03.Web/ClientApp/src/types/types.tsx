@@ -16,6 +16,15 @@ export type TrainDto = {
     sleeperCapacity: string,
 }
 
+export type CreateTrainDto = {
+    name: string,
+    status: string,
+    coachCapacity: string,
+    firstClassCapacity: string,
+    roomletCapacity: string,
+    sleeperCapacity: string,
+}
+
 export type TripDto = {
     id: number;
     train: TrainDto;
