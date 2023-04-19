@@ -371,4 +371,20 @@ public static class SeedHelper
 
         await dataContext.SaveChangesAsync();
     }
+
+    private static void EnsureRange<TEntity>(this DbSet<TEntity> set, Func<TEntity, TEntity, bool> predicate, params TEntity[] entities) where TEntity : class
+    {
+        foreach ( var entity in entities )
+        {
+            EnsureEntity(set, predicate, entity);
+        }
+    }
+
+    private static void EnsureEntity<TEntity>(this DbSet<TEntity> set, Func<TEntity, TEntity, bool> predicate, TEntity entity) where TEntity : class
+    {
+        if (!set.Any(x => predicate(entity, x)))
+        {
+            set.Add(entity);
+        }
+    }
 }
