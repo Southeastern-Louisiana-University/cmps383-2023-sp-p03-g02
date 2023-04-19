@@ -15,6 +15,7 @@ type StationActionProps = {
 
 export function StationListingPage(): React.ReactElement<StationActionProps> {
     const user = useUser();
+    const isAdmin = user?.roles.includes("Admin"); //thanks :)
     const stations = useFindStation();
     const trainStation = StationDataService(user);
     const [open, setOpen] = useState(false);
@@ -38,12 +39,7 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
         <Container className="stations">
             <Segment>
 
-                {/* 
-                    if user is not signed in & an admin/manager, they can only view the stations
-                    if user meets req, they will be able to create, edit, and delete stations 
-                */}
-
-                { user ?  ( //this displays when the user is logged in
+                { isAdmin ?  ( //this displays when the admin is logged in
                     <Grid columns={2}>
                     <Grid.Row>
                         <Grid.Column>
