@@ -4,3 +4,13 @@
     margin-bottom: 20px;
     flex-grow: 1;
 }
+
+.modal-content {
+    display: flex;
+    max-width: fit-content;
+    padding: 2em;
+}
+
+.center-form {
+    text-align: center;
+}
