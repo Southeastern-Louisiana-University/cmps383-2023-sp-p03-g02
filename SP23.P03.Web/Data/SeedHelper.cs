@@ -401,7 +401,7 @@ public static class SeedHelper
     /// <param name="entity">An entity that should be added to the <paramref name="set"/> if it does not already exist according to the <paramref name="predicate"/>.</param>
     private static void EnsureEntity<TEntity>(this DbSet<TEntity> set, Func<TEntity, TEntity, bool> predicate, TEntity entity) where TEntity : class
     {
-        if (!set.Any(x => predicate(entity, x)))
+        if (!set.AsEnumerable().Any(x => predicate(entity, x)))
         {
             set.Add(entity);
         }
