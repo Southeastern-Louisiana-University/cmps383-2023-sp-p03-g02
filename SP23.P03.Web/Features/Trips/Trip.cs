@@ -14,8 +14,8 @@ public class Trip
     public required TrainStation FromStation { get; set; }
     public int ToStationId { get; set; }
     public required TrainStation ToStation { get; set; }
-    public DateTimeOffset Departure { get; set; }
-    public DateTimeOffset Arrival { get; set; }
+    public required DateTimeOffset Departure { get; set; }
+    public required DateTimeOffset Arrival { get; set; }
     public int CoachPrice { get; set; } = 0;
     public int FirstClassPrice { get; set; } = 0;
     public int RoomletPrice { get; set; } = 0;

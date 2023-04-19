@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.BoardingPasses;
 using SP23.P03.Web.Features.Passengers;
+using SP23.P03.Web.Features.TrainRoutes;
 using SP23.P03.Web.Features.Trains;
 using SP23.P03.Web.Features.TrainStations;
 using SP23.P03.Web.Features.Trips;
@@ -25,6 +26,7 @@ public static class SeedHelper
         await AddTrips(dataContext);
         await AddPassengers(serviceProvider, dataContext);
         await AddBoardingPasses(serviceProvider, dataContext);
+        await AddTrainRoutes(dataContext);
     }
 
     private static async Task AddUsers(IServiceProvider serviceProvider)
@@ -302,7 +304,320 @@ public static class SeedHelper
                 Name = "Baton Rouge Station",
                 Address = "Baton Rouge, LA"
             }
-            );
+        );
+
+        await dataContext.SaveChangesAsync();
+    }
+
+    public static async Task AddTrainRoutes(DataContext dataContext)
+    {
+        var trainStations = dataContext.Set<TrainStation>();
+        var d = trainStations.ToDictionary(x => x.Name);
+        var trainRoutes = dataContext.Set<TrainRoute>();
+        
+        trainRoutes.EnsureRange((entity, x) => (entity.StationA == x.StationA && entity.StationB == x.StationB)
+                                               || (entity.StationB == x.StationA && entity.StationA == x.StationB),
+            new TrainRoute
+            {
+                StationA = d["Yazoo Station"],
+                StationB = d["Jackson Station"],
+                DistanceMiles = 50,
+            },
+            new TrainRoute
+            {
+                StationA = d["Jackson Station"],
+                StationB = d["Hazlehurst Station"],
+                DistanceMiles = 40,
+            },
+            new TrainRoute
+            {
+                StationA = d["Hazlehurst Station"],
+                StationB = d["Brookhaven Station"],
+                DistanceMiles = 20,
+            },
+            new TrainRoute
+            {
+                StationA = d["Brookhaven Station"],
+                StationB = d["McComb Station"],
+                DistanceMiles = 30,
+            },
+            new TrainRoute
+            {
+                StationA = d["McComb Station"],
+                StationB = d["Hammond Station"],
+                DistanceMiles = 60,
+            },
+            new TrainRoute
+            {
+                StationA = d["Hammond Station"],
+                StationB = d["NOLA Station"],
+                DistanceMiles = 50,
+            },
+            new TrainRoute
+            {
+                StationA = d["NOLA Station"],
+                StationB = d["Schriever Station"],
+                DistanceMiles = 50,
+            },
+            new TrainRoute
+            {
+                StationA = d["Schriever Station"],
+                StationB = d["New Iberia Station"],
+                DistanceMiles = 70,
+            },
+            new TrainRoute
+            {
+                StationA = d["New Iberia Station"],
+                StationB = d["Lafayette Station"],
+                DistanceMiles = 20,
+            },
+            new TrainRoute
+            {
+                StationA = d["Lafayette Station"],
+                StationB = d["Lake Charles Station"],
+                DistanceMiles = 70,
+            },
+            new TrainRoute
+            {
+                StationA = d["Lake Charles Station"],
+                StationB = d["Beaumont Station"],
+                DistanceMiles = 50,
+            },
+            new TrainRoute
+            {
+                StationA = d["Beaumont Station"],
+                StationB = d["Houston Station"],
+                DistanceMiles = 70,
+            },
+            new TrainRoute
+            {
+                StationA = d["Houston Station"],
+                StationB = d["San Antonio Station"],
+                DistanceMiles = 140,
+            },
+            new TrainRoute
+            {
+                StationA = d["San Antonio Station"],
+                StationB = d["San Marcos Station"],
+                DistanceMiles = 30,
+            },
+            new TrainRoute
+            {
+                StationA = d["San Marcos Station"],
+                StationB = d["Austin Station"],
+                DistanceMiles = 30,
+            },
+            new TrainRoute
+            {
+                StationA = d["Austin Station"],
+                StationB = d["Taylor Station"],
+                DistanceMiles = 30,
+            },
+            new TrainRoute
+            {
+                StationA = d["Taylor Station"],
+                StationB = d["Temple Station"],
+                DistanceMiles = 40,
+            },
+            new TrainRoute
+            {
+                StationA = d["Temple Station"],
+                StationB = d["McGregor Station"],
+                DistanceMiles = 30,
+            },
+            new TrainRoute
+            {
+                StationA = d["McGregor Station"],
+                StationB = d["Cleburne Station"],
+                DistanceMiles = 80,
+            },
+            new TrainRoute
+            {
+                StationA = d["Cleburne Station"],
+                StationB = d["Fort Worth Station"],
+                DistanceMiles = 30,
+            },
+            new TrainRoute
+            {
+                StationA = d["Fort Worth Station"],
+                StationB = d["Dallas Station"],
+                DistanceMiles = 30,
+            },
+            new TrainRoute
+            {
+                StationA = d["Dallas Station"],
+                StationB = d["Mineola Station"],
+                DistanceMiles = 80,
+            },
+            new TrainRoute
+            {
+                StationA = d["Mineola Station"],
+                StationB = d["Longview Station"],
+                DistanceMiles = 50,
+            },
+            new TrainRoute
+            {
+                StationA = d["Longview Station"],
+                StationB = d["Marshall Station"],
+                DistanceMiles = 20,
+            },
+            new TrainRoute
+            {
+                StationA = d["Marshall Station"],
+                StationB = d["Texarkana Station"],
+                DistanceMiles = 60,
+            },
+            new TrainRoute
+            {
+                StationA = d["Temple Station"],
+                StationB = d["Killeen Station"],
+                DistanceMiles = 25,
+            },
+            new TrainRoute
+            {
+                StationA = d["Killeen Station"],
+                StationB = d["Fort Hood Station"],
+                DistanceMiles = 10,
+            },
+            new TrainRoute
+            {
+                StationA = d["NOLA Station"],
+                StationB = d["Slidell Station"],
+                DistanceMiles = 35,
+            },
+            new TrainRoute
+            {
+                StationA = d["Slidell Station"],
+                StationB = d["Picayune Station"],
+                DistanceMiles = 20,
+            },
+            new TrainRoute
+            {
+                StationA = d["Picayune Station"],
+                StationB = d["Hattiesburg Station"],
+                DistanceMiles = 80,
+            },
+            new TrainRoute
+            {
+                StationA = d["Hattiesburg Station"],
+                StationB = d["Laurel Station"],
+                DistanceMiles = 35,
+            },
+            new TrainRoute
+            {
+                StationA = d["Laurel Station"],
+                StationB = d["Meridian Station"],
+                DistanceMiles = 65,
+            },
+            new TrainRoute
+            {
+                StationA = d["Galveston Station"],
+                StationB = d["Houston Station"],
+                DistanceMiles = 55,
+            },
+            new TrainRoute
+            {
+                StationA = d["Houston Station"],
+                StationB = d["Prairie View Station"],
+                DistanceMiles = 55,
+            },
+            new TrainRoute
+            {
+                StationA = d["Prairie View Station"],
+                StationB = d["Bryan Station"],
+                DistanceMiles = 60,
+            },
+            new TrainRoute
+            {
+                StationA = d["Bryan Station"],
+                StationB = d["Waco Station"],
+                DistanceMiles = 65,
+            },
+            new TrainRoute
+            {
+                StationA = d["Waco Station"],
+                StationB = d["Fort Worth Station"],
+                DistanceMiles = 70,
+            },
+            new TrainRoute
+            {
+                StationA = d["Dallas Station"],
+                StationB = d["Mesquite Station"],
+                DistanceMiles = 10,
+            },
+            new TrainRoute
+            {
+                StationA = d["Mesquite Station"],
+                StationB = d["Tyler Station"],
+                DistanceMiles = 65,
+            },
+            new TrainRoute
+            {
+                StationA = d["Tyler Station"],
+                StationB = d["Shreveport Station"],
+                DistanceMiles = 60,
+            },
+            new TrainRoute
+            {
+                StationA = d["Shreveport Station"],
+                StationB = d["Jackson Station"],
+                DistanceMiles = 130,
+            },
+            new TrainRoute
+            {
+                StationA = d["Jackson Station"],
+                StationB = d["Meridian Station"],
+                DistanceMiles = 65,
+            },
+            new TrainRoute
+            {
+                StationA = d["Jackson Station"],
+                StationB = d["Hattiesburg Station"],
+                DistanceMiles = 65,
+            },
+            new TrainRoute
+            {
+                StationA = d["Hattiesburg Station"],
+                StationB = d["Biloxi Station"],
+                DistanceMiles = 55,
+            },
+            new TrainRoute
+            {
+                StationA = d["Biloxi Station"],
+                StationB = d["Mobile Station"],
+                DistanceMiles = 40,
+            },
+            new TrainRoute
+            {
+                StationA = d["Biloxi Station"],
+                StationB = d["NOLA Station"],
+                DistanceMiles = 50,
+            },
+            new TrainRoute
+            {
+                StationA = d["Hattiesburg Station"],
+                StationB = d["NOLA Station"],
+                DistanceMiles = 90,
+            },
+            new TrainRoute
+            {
+                StationA = d["NOLA Station"],
+                StationB = d["Baton Rouge Station"],
+                DistanceMiles = 70,
+            },
+            new TrainRoute
+            {
+                StationA = d["Houston Station"],
+                StationB = d["Nacogdoches Station"],
+                DistanceMiles = 125,
+            },
+            new TrainRoute
+            {
+                StationA = d["Nacogdoches Station"],
+                StationB = d["Longview Station"],
+                DistanceMiles = 60,
+            }
+        );
 
         await dataContext.SaveChangesAsync();
     }
