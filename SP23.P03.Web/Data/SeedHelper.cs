@@ -749,92 +749,62 @@ public static class SeedHelper
         var offset = TimeZoneInfo.Local.BaseUtcOffset;
 
         var stations = dataContext.Set<TrainStation>();
-        var hammondStation = await stations.FirstAsync(x => x.Name == "Hammond Station");
-        var slidellStation = await stations.FirstAsync(x => x.Name == "Slidell Station");
-        var nolaStation = await stations.FirstAsync(x => x.Name == "NOLA Station");
 
         var trains = dataContext.Set<Train>();
         var hammondTrain = await trains.FirstAsync(x => x.Name == "Hammond Train");
         var slidellTrain = await trains.FirstAsync(x => x.Name == "Slidell Train");
 
-        trips.AddRange(
-            new Trip
+        var trainRoutes = dataContext.Set<TrainRoute>().AsEnumerable();
+
+        var start = new DateTimeOffset(2023, 06, 13, 7, 00, 00, offset);
+
+        var currentTime = start;
+        var currentStation = stations.First();
+        var visitedStations = new List<TrainStation>();
+        var newTrips = new List<Trip>();
+
+        TrainRoute? currentRoute = null;
+
+        while((currentRoute = trainRoutes.Where(x => (x.StationA == currentStation || x.StationB == currentStation) && !visitedStations.Any(y => y == x.StationA || y == x.StationB)).FirstOrDefault()) != null)
+        {
+            var nextTime = start.AddMinutes(currentRoute.EstimatedMinutes);
+            var nextStation = currentRoute.StationA == currentStation ? currentRoute.StationB : currentRoute.StationA;
+            newTrips.Add(new Trip
             {
                 Train = hammondTrain,
-                FromStation = hammondStation,
-                ToStation = slidellStation,
-                Departure = new DateTimeOffset(2023, 06, 13, 13, 00, 00, offset),
-                Arrival = new DateTimeOffset(2023, 06, 13, 13, 30, 00, offset),
-                CoachPrice = 8000,
-                FirstClassPrice = 18000,
-                RoomletPrice = 25000,
-                SleeperPrice = 32000,
-            },
-            new Trip
-            {
-                Train = hammondTrain,
-                FromStation = slidellStation,
-                ToStation = nolaStation,
-                Departure = new DateTimeOffset(2023, 06, 13, 13, 45, 00, offset),
-                Arrival = new DateTimeOffset(2023, 06, 13, 13, 55, 00, offset),
-                CoachPrice = 8500,
-                FirstClassPrice = 20000,
-                RoomletPrice = 27000,
-                SleeperPrice = 36000,
-            },
-            new Trip
-            {
-                Train = hammondTrain,
-                FromStation = nolaStation,
-                ToStation = hammondStation,
-                Departure = new DateTimeOffset(2023, 06, 13, 14, 15, 00, offset),
-                Arrival = new DateTimeOffset(2023, 06, 13, 14, 35, 00, offset),
-                CoachPrice = 7500,
-                FirstClassPrice = 15000,
-                RoomletPrice = 22000,
-                SleeperPrice = 29000,
-            },
-            new Trip
+                FromStation = currentStation,
+                ToStation = nextStation,
+                Arrival = currentTime,
+                Departure = nextTime,
+                CoachPrice = currentRoute.CoachPrice,
+                FirstClassPrice = currentRoute.FirstClassPrice,
+                RoomletPrice = currentRoute.RoomletPrice,
+                SleeperPrice = currentRoute.SleeperPrice,
+            });
+            visitedStations.Add(currentStation);
+            currentStation = nextStation;
+            currentTime = nextTime;
+        }
+
+        newTrips.Reverse();
+
+        foreach(var trip in newTrips)
+        {
+            trips.Add(trip);
+            trips.Add(new Trip
             {
                 Train = slidellTrain,
-                FromStation = slidellStation,
-                ToStation = nolaStation,
-                Departure = new DateTimeOffset(2023, 06, 13, 11, 50, 00, offset),
-                Arrival = new DateTimeOffset(2023, 06, 13, 12, 00, 00, offset),
-                CoachPrice = 5500,
-                FirstClassPrice = 13500,
-            },
-            new Trip
-            {
-                Train = slidellTrain,
-                FromStation = nolaStation,
-                ToStation = hammondStation,
-                Departure = new DateTimeOffset(2023, 06, 13, 12, 40, 00, offset),
-                Arrival = new DateTimeOffset(2023, 06, 13, 13, 00, 00, offset),
-                CoachPrice = 6000,
-                FirstClassPrice = 15000,
-            },
-            new Trip
-            {
-                Train = slidellTrain,
-                FromStation = hammondStation,
-                ToStation = slidellStation,
-                Departure = new DateTimeOffset(2023, 06, 13, 13, 15, 00, offset),
-                Arrival = new DateTimeOffset(2023, 06, 13, 13, 45, 00, offset),
-                CoachPrice = 6500,
-                FirstClassPrice = 18000,
-            },
-            new Trip
-            {
-                Train = slidellTrain,
-                FromStation = slidellStation,
-                ToStation = nolaStation,
-                Departure = new DateTimeOffset(2023, 06, 13, 14, 15, 00, offset),
-                Arrival = new DateTimeOffset(2023, 06, 13, 14, 25, 00, offset),
-                CoachPrice = 5500,
-                FirstClassPrice = 13000,
-            }
-        );
+                FromStation = trip.ToStation,
+                ToStation = trip.FromStation,
+                Arrival = trip.Arrival,
+                Departure = trip.Departure,
+                CoachPrice = trip.CoachPrice,
+                FirstClassPrice = trip.FirstClassPrice,
+                RoomletPrice = trip.RoomletPrice,
+                SleeperPrice = trip.SleeperPrice,
+            });
+        }
+
 
         await dataContext.SaveChangesAsync();
     }
