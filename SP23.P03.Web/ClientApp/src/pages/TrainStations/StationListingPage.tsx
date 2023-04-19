@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Button, Container, Divider, Grid, Icon, Input, Popup, Segment } from 'semantic-ui-react';
 import StationList from '../../components/StationList';
 import useFindStation from '../../hooks/api/useFindStation';
