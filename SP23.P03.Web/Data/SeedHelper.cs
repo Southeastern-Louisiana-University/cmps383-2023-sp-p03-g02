@@ -23,10 +23,10 @@ public static class SeedHelper
 
         await AddTrainStation(dataContext);
         await AddTrains(serviceProvider, dataContext);
+        await AddTrainRoutes(dataContext);
         await AddTrips(dataContext);
         await AddPassengers(serviceProvider, dataContext);
         await AddBoardingPasses(serviceProvider, dataContext);
-        await AddTrainRoutes(dataContext);
     }
 
     private static async Task AddUsers(IServiceProvider serviceProvider)
