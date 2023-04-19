@@ -750,6 +750,8 @@ public static class SeedHelper
 
         var stations = dataContext.Set<TrainStation>();
 
+        var d = stations.ToDictionary(x => x.Name);
+
         var trains = dataContext.Set<Train>();
         var hammondTrain = await trains.FirstAsync(x => x.Name == "Hammond Train");
         var slidellTrain = await trains.FirstAsync(x => x.Name == "Slidell Train");
@@ -759,50 +761,68 @@ public static class SeedHelper
         var start = new DateTimeOffset(2023, 06, 13, 7, 00, 00, offset);
 
         var currentTime = start;
-        var currentStation = stations.First();
-        var visitedStations = new List<TrainStation>();
-        var newTrips = new List<Trip>();
-
-        TrainRoute? currentRoute = null;
-
-        while((currentRoute = trainRoutes.Where(x => (x.StationA == currentStation || x.StationB == currentStation) && !visitedStations.Any(y => y == x.StationA || y == x.StationB)).FirstOrDefault()) != null)
+        var stationsToVisit = new List<TrainStation>
         {
-            var nextTime = start.AddMinutes(currentRoute.EstimatedMinutes);
-            var nextStation = currentRoute.StationA == currentStation ? currentRoute.StationB : currentRoute.StationA;
-            newTrips.Add(new Trip
+            d["Yazoo Station"],
+            d["Jackson Station"],
+            d["Hazlehurst Station"],
+            d["Brookhaven Station"],
+            d["McComb Station"],
+            d["Hammond Station"],
+            d["NOLA Station"],
+            d["Schriever Station"],
+            d["New Iberia Station"],
+            d["Lafayette Station"],
+            d["Lake Charles Station"],
+            d["Beaumont Station"],
+            d["Houston Station"],
+            d["San Antonio Station"],
+            d["San Marcos Station"],
+            d["Austin Station"],
+        };
+        var prevStation = stationsToVisit.First();
+        foreach(var currentStation in stationsToVisit.Skip(1))
+        {
+            var currentRoute = trainRoutes.Where(x => (x.StationA == prevStation && x.StationB == currentStation) || (x.StationB == prevStation && x.StationA == currentStation)).First();
+            var nextTime = currentTime.AddMinutes(currentRoute.EstimatedMinutes);
+            trips.Add(new Trip
             {
                 Train = hammondTrain,
-                FromStation = currentStation,
-                ToStation = nextStation,
-                Arrival = currentTime,
-                Departure = nextTime,
+                FromStation = prevStation,
+                ToStation = currentStation,
+                Departure = currentTime,
+                Arrival = nextTime,
                 CoachPrice = currentRoute.CoachPrice,
                 FirstClassPrice = currentRoute.FirstClassPrice,
                 RoomletPrice = currentRoute.RoomletPrice,
                 SleeperPrice = currentRoute.SleeperPrice,
             });
-            visitedStations.Add(currentStation);
-            currentStation = nextStation;
-            currentTime = nextTime;
+            currentTime = nextTime.AddMinutes(10);
+            prevStation = currentStation;
         }
 
-        newTrips.Reverse();
+        stationsToVisit.Reverse();
 
-        foreach(var trip in newTrips)
+        currentTime = start;
+
+        foreach (var currentStation in stationsToVisit.Skip(1))
         {
-            trips.Add(trip);
+            var currentRoute = trainRoutes.Where(x => (x.StationA == prevStation && x.StationB == currentStation) || (x.StationB == prevStation && x.StationA == currentStation)).First();
+            var nextTime = currentTime.AddMinutes(currentRoute.EstimatedMinutes);
             trips.Add(new Trip
             {
                 Train = slidellTrain,
-                FromStation = trip.ToStation,
-                ToStation = trip.FromStation,
-                Arrival = trip.Arrival,
-                Departure = trip.Departure,
-                CoachPrice = trip.CoachPrice,
-                FirstClassPrice = trip.FirstClassPrice,
-                RoomletPrice = trip.RoomletPrice,
-                SleeperPrice = trip.SleeperPrice,
+                FromStation = prevStation,
+                ToStation = currentStation,
+                Departure = currentTime,
+                Arrival = nextTime,
+                CoachPrice = currentRoute.CoachPrice,
+                FirstClassPrice = currentRoute.FirstClassPrice,
+                RoomletPrice = currentRoute.RoomletPrice,
+                SleeperPrice = currentRoute.SleeperPrice,
             });
+            currentTime = nextTime.AddMinutes(10);
+            prevStation = currentStation;
         }
 
 
