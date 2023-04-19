@@ -22,6 +22,8 @@ const RouteListing: React.FC<RouteListingProps> = (props) => {
 
     const tripRoutes = useTripRoutes(fromStationId ?? "", toStationId ?? "", departure ?? "", arrival ?? "", travelClass ?? "");
 
+    tripRoutes?.sort((a, b) => DateTime.fromISO(a[a.length - 1].arrival).diff(DateTime.fromISO(a[0].departure)).toMillis() - DateTime.fromISO(b[b.length - 1].arrival).diff(DateTime.fromISO(b[0].departure)).toMillis());
+
     const fromStation = useStation(fromStationId);
     const toStation = useStation(toStationId);
 
@@ -86,7 +88,7 @@ const TripRoute: React.FC<TripRouteProps> = (props) => {
                 </Grid.Column>
                 <Grid.Column>
                     <Header>
-                        {travelClass} Capacity: {trips.reduce((min, curr) => Math.min(min, getTravelClassCapacity(curr, travelClass)), 9999)}
+                        {travelClass} Seats Left: {trips.reduce((min, curr) => Math.min(min, getTravelClassCapacity(curr, travelClass)), 9999)}
                     </Header>
                 </Grid.Column>
                 <Grid.Column floated="right">
