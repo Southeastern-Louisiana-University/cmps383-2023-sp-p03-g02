@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using SP23.P03.Web.Data;
 using SP23.P03.Web.Features.Authorization;
 using SP23.P03.Web.Features.BoardingPasses;
+using SP23.P03.Web.Features.TrainRoutes;
 using SP23.P03.Web.Features.Trains;
 using SP23.P03.Web.Features.TrainStations;
 using SP23.P03.Web.Features.Trips;
@@ -18,6 +19,7 @@ public class TripsController : ControllerBase
     private readonly DbSet<Trip> trips;
     private readonly DbSet<Train> trains;
     private readonly DbSet<TrainStation> stations;
+    private readonly DbSet<TrainRoute> trainRoutes;
     private readonly DataContext dataContext;
 
     public TripsController(DataContext dataContext)
@@ -26,6 +28,7 @@ public class TripsController : ControllerBase
         trips = dataContext.Set<Trip>();
         trains = dataContext.Set<Train>();
         stations = dataContext.Set<TrainStation>();
+        trainRoutes = dataContext.Set<TrainRoute>();
     }
 
     [HttpGet]
@@ -126,17 +129,25 @@ public class TripsController : ControllerBase
             return BadRequest();
         }
 
+        var trainRoute = trainRoutes.FirstOrDefault(x => (x.StationA == fromStation && x.StationB == toStation)
+                                                         || (x.StationB == fromStation && x.StationA == toStation));
+
+        if (trainRoute == null)
+        {
+            return BadRequest();
+        }
+
         var createdTrip = new Trip
         {
             Train = train,
             FromStation = fromStation,
             ToStation = toStation,
             Departure = dto.Departure,
-            Arrival = dto.Arrival,
-            CoachPrice = dto.CoachPrice,
-            FirstClassPrice = dto.FirstClassPrice,
-            RoomletPrice = dto.RoomletPrice,
-            SleeperPrice = dto.SleeperPrice,
+            Arrival = dto.Departure.AddMinutes(trainRoute.EstimatedMinutes),
+            CoachPrice = trainRoute.CoachPrice,
+            FirstClassPrice = trainRoute.FirstClassPrice,
+            RoomletPrice = trainRoute.RoomletPrice,
+            SleeperPrice = trainRoute.SleeperPrice,
         };
 
         trips.Add(createdTrip);
@@ -207,15 +218,22 @@ public class TripsController : ControllerBase
             return BadRequest();
         }
 
+        var trainRoute = trainRoutes.FirstOrDefault(x => (x.StationA == fromStation && x.StationB == toStation)
+                                                         || (x.StationB == fromStation && x.StationA == toStation));
+
+        if (trainRoute == null)
+        {
+            return BadRequest();
+        }
+
         trip.Train = train;
         trip.FromStation = fromStation;
         trip.ToStation = toStation;
-        trip.Departure = dto.Departure;
-        trip.Arrival = dto.Arrival;
-        trip.CoachPrice = dto.CoachPrice;
-        trip.FirstClassPrice = dto.FirstClassPrice;
-        trip.RoomletPrice = dto.RoomletPrice;
-        trip.SleeperPrice = dto.SleeperPrice;
+        trip.Arrival = dto.Departure.AddMinutes(trainRoute.EstimatedMinutes);
+        trip.CoachPrice = trainRoute.CoachPrice;
+        trip.FirstClassPrice = trainRoute.FirstClassPrice;
+        trip.RoomletPrice = trainRoute.RoomletPrice;
+        trip.SleeperPrice = trainRoute.SleeperPrice;
 
         dataContext.SaveChanges();
 
@@ -282,12 +300,7 @@ public class TripsController : ControllerBase
     {
         bool isInvalid = false;
 
-        if (dto.FromStationId == dto.ToStationId
-            || dto.Arrival.CompareTo(dto.Departure) <= 0
-            || dto.CoachPrice < 0
-            || dto.FirstClassPrice < 0
-            || dto.RoomletPrice < 0
-            || dto.SleeperPrice < 0) 
+        if (dto.FromStationId == dto.ToStationId) 
         {
             isInvalid = true;
         }
