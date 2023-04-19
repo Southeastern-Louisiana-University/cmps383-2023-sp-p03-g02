@@ -87,222 +87,222 @@ public static class SeedHelper
             new TrainStation
             {
                 Name = "Yazoo Station",
-                Address = "Yazoo City, MS"
+                Address = "100 N Water St, Yazoo City, MS 39194"
             },
             new TrainStation
             {
                 Name = "Jackson Station",
-                Address = "Jackson, MS"
+                Address = "300 W Capitol St, Jackson, MS 39201"
             },
             new TrainStation
             {
                 Name = "Hazlehurst Station",
-                Address = "Hazlehurst, MS"
+                Address = "722 E Conway St, HazleHurst, MS 39083"
             },
             new TrainStation
             {
                 Name = "Brookhaven Station",
-                Address = "Brookhaven, MS"
+                Address = "440 N Railroad Ave, Brookhaven, MS 39601"
             },
             new TrainStation
             {
                 Name = "McComb Station",
-                Address = "McComb, MS"
+                Address = "114 N Railroad Blvd, McComb, MS 39648"
             },
             new TrainStation
             {
                 Name = "Hammond Station",
-                Address = "Hammond, LA"
+                Address = "404 NW Railroad Ave, Hammond, LA 70401"
             },
             new TrainStation
             {
                 Name = "Slidell Station",
-                Address = "Slidell, LA"
+                Address = "1827 Front St, Slidell, LA 70458"
             },
             new TrainStation
             {
                 Name = "NOLA Station",
-                Address = "New Orleans, LA"
+                Address = "1001 Loyola Ave, New Orleans, LA 70113"
             },
             new TrainStation
             {
                 Name = "Picayune Station",
-                Address = "Picayune, MS"
+                Address = "200 Hwy 11 S, Picayune, MS 39466"
             },
             new TrainStation
             {
                 Name = "Hattiesburg Station",
-                Address = "Hattiesburg, MS"
+                Address = "308 Newman St, Hattiesburg, MS 39401"
             },
             new TrainStation
             {
                 Name = "Laurel Station",
-                Address = "Laurel, MS"
+                Address = "230 N Maple St, Laurel, MS 39440"
             },
             new TrainStation
             {
                 Name = "Meridian Station",
-                Address = "Meridian, MS"
+                Address = "1901 Front St, Meridian, MS 39301"
             },
             new TrainStation
             {
                 Name = "Schriever Station",
-                Address = "Schriever, LA"
+                Address = "LA-24, Schriever, LA 70395"
             },
             new TrainStation
             {
                 Name = "New Iberia Station",
-                Address = "New Iberia, LA"
+                Address = "402 W Washington St, New Iberia, LA 70560"
             },
             new TrainStation
             {
                 Name = "Lafayette Station",
-                Address = "Lafayette, LA"
+                Address = "100 Lee Ave, Lafayette, LA 70501"
             },
             new TrainStation
             {
                 Name = "Lake Charles Station",
-                Address = "Lake Charles, LA"
+                Address = "100 Ryan St, Lake Charles, LA 70601"
             },
             new TrainStation
             {
                 Name = "Beaumont Station",
-                Address = "Beaumont, TX"
+                Address = "2555 W Cedar St, Beaumont, TX 77704"
             },
             new TrainStation
             {
                 Name = "Houston Station",
-                Address = "Houston, TX"
+                Address = "902 Washington Ave, Houston, TX 77002"
             },
             new TrainStation
             {
                 Name = "San Antonio Station",
-                Address = "San Antonio, TX"
+                Address = "350 Hoefgen Aven, San Antonio, TX 78205"
             },
             new TrainStation
             {
                 Name = "San Marcos Station",
-                Address = "San Marcos, TX"
+                Address = "338 S Guadelupe St, San Marcos, TX78666"
             },
             new TrainStation
             {
                 Name = "Austin Station",
-                Address = "Austin, TX"
+                Address = "250 N Lamar Blvd, Austin, TX 78703"
             },
             new TrainStation
             {
                 Name = "Taylor Station",
-                Address = "Taylor, TX"
+                Address = "118 E First St, Taylor, TX 76574"
             },
             new TrainStation
             {
                 Name = "Temple Station",
-                Address = "Temple, TX"
+                Address = "315 W Ave B, Temple, TX 76501"
             },
             new TrainStation
             {
                 Name = "McGregor Station",
-                Address = "McGregor, TX"
+                Address = "1 EnTrack Blvd, McGregor, TX 76657"
             },
             new TrainStation
             {
                 Name = "Cleburne Station",
-                Address = "Cleburne, TX"
+                Address = "206 N Border St, Cleburne, TX 76031"
             },
             new TrainStation
             {
                 Name = "Fort Worth Station",
-                Address = "Fort Worth, TX"
+                Address = "1001 Jones St, Fort Worth, TX 76102"
             },
             new TrainStation
             {
                 Name = "Dallas Station",
-                Address = "Dallas, TX"
+                Address = "400 S Houston St, Dallas, TX 75202"
             },
             new TrainStation
             {
                 Name = "Mineola Station",
-                Address = "Mineola, TX"
+                Address = "115 E Front St, Mineola, TX 75773"
             },
             new TrainStation
             {
                 Name = "Longview Station",
-                Address = "Longview, TX"
+                Address = "905 E Pacific Ave, Longview, TX 75602"
             },
             new TrainStation
             {
                 Name = "Marshall Station",
-                Address = "Marshall, TX"
+                Address = "800 N Washington St, Marshall, TX 75670"
             },
             new TrainStation
             {
                 Name = "Texarkana Station",
-                Address = "Texarkana, TX"
+                Address = "100 E Front St, Texarkana, TX 71854"
             },
             new TrainStation
             {
                 Name = "Galveston Station",
-                Address = "Galveston, TX"
+                Address = "301 59th St, Galveston, TX 75692"
             },
             new TrainStation
             {
                 Name = "Nacogdoches Station",
-                Address = "Nacogdoches, TX"
+                Address = "101 Old Tyler Rd, Nacogdoches, TX 71876"
             },
             new TrainStation
             {
                 Name = "Prairie View Station",
-                Address = "Prairie View, TX"
+                Address = "44814 US Hwy, Prairie View, TX 77446"
             },
             new TrainStation
             {
                 Name = "Bryan Station",
-                Address = "Bryan, TX"
+                Address = "3370 Texas Ave, Bryan, TX 77802"
             },
             new TrainStation
             {
                 Name = "Waco Station",
-                Address = "Waco, TX"
+                Address = "301 S 8th St, Waco, TX 76701"
             },
             new TrainStation
             {
                 Name = "Mesquite Station",
-                Address = "Mesquite, TX"
+                Address = "1331 Hwy 80 E, Mesquite, TX 75150"
             },
             new TrainStation
             {
                 Name = "Killeen Station",
-                Address = "Killeen, TX"
+                Address = "200 E Ave, Killeen, TX 76541"
             },
             new TrainStation
             {
                 Name = "Fort Hood Station",
-                Address = "Fort Hood, TX"
+                Address = "616 N Hood St, Fort Hood, TX 76541"
             },
             new TrainStation
             {
                 Name = "Tyler Station",
-                Address = "Tyler, TX"
+                Address = "210 E Oakwood St, Tyler, TX 75702"
             },
             new TrainStation
             {
                 Name = "Shreveport Station",
-                Address = "Shreveport, LA"
+                Address = "1257 Murphy St, Shreveport, LA 71101"
             },
             new TrainStation
             {
                 Name = "Biloxi Station",
-                Address = "Biloxi, MS"
+                Address = "820 Martin Luther King Jr. Blvd, Biloxi, MS 39530"
             },
             new TrainStation
             {
                 Name = "Mobile Station",
-                Address = "Mobile, AL"
+                Address = "404 N.W Railroad Ave, Mobile, AL 70401"
             },
             new TrainStation
             {
                 Name = "Baton Rouge Station",
-                Address = "Baton Rouge, LA"
+                Address = "1253 Florida Blvd, Baton Rouge, LA 70802"
             }
         );
 
