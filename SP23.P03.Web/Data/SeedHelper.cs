@@ -81,12 +81,32 @@ public static class SeedHelper
     {
         var trainStations = dataContext.Set<TrainStation>();
 
-        if (await trainStations.AnyAsync())
-        {
-            return;
-        }
-
-        trainStations.AddRange(
+        trainStations.EnsureRange((entity, x) => entity.Name == x.Name,
+            new TrainStation
+            {
+                Name = "Yazoo Station",
+                Address = "Yazoo City, MS"
+            },
+            new TrainStation
+            {
+                Name = "Jackson Station",
+                Address = "Jackson, MS"
+            },
+            new TrainStation
+            {
+                Name = "Hazlehurst Station",
+                Address = "Hazlehurst, MS"
+            },
+            new TrainStation
+            {
+                Name = "Brookhaven Station",
+                Address = "Brookhaven, MS"
+            },
+            new TrainStation
+            {
+                Name = "McComb Station",
+                Address = "McComb, MS"
+            },
             new TrainStation
             {
                 Name = "Hammond Station",
@@ -101,7 +121,188 @@ public static class SeedHelper
             {
                 Name = "NOLA Station",
                 Address = "New Orleans, LA"
-            });
+            },
+            new TrainStation
+            {
+                Name = "Picayune Station",
+                Address = "Picayune, MS"
+            },
+            new TrainStation
+            {
+                Name = "Hattiesburg Station",
+                Address = "Hattiesburg, MS"
+            },
+            new TrainStation
+            {
+                Name = "Laurel Station",
+                Address = "Laurel, MS"
+            },
+            new TrainStation
+            {
+                Name = "Meridian Station",
+                Address = "Meridian, MS"
+            },
+            new TrainStation
+            {
+                Name = "Schriever Station",
+                Address = "Schriever, LA"
+            },
+            new TrainStation
+            {
+                Name = "New Iberia Station",
+                Address = "New Iberia, LA"
+            },
+            new TrainStation
+            {
+                Name = "Lafayette Station",
+                Address = "Lafayette, LA"
+            },
+            new TrainStation
+            {
+                Name = "Lake Charles Station",
+                Address = "Lake Charles, LA"
+            },
+            new TrainStation
+            {
+                Name = "Beaumont Station",
+                Address = "Beaumont, TX"
+            },
+            new TrainStation
+            {
+                Name = "Houston Station",
+                Address = "Houston, TX"
+            },
+            new TrainStation
+            {
+                Name = "San Antonio Station",
+                Address = "San Antonio, TX"
+            },
+            new TrainStation
+            {
+                Name = "San Marcos Station",
+                Address = "San Marcos, TX"
+            },
+            new TrainStation
+            {
+                Name = "Austin Station",
+                Address = "Austin, TX"
+            },
+            new TrainStation
+            {
+                Name = "Taylor Station",
+                Address = "Taylor, TX"
+            },
+            new TrainStation
+            {
+                Name = "Temple Station",
+                Address = "Temple, TX"
+            },
+            new TrainStation
+            {
+                Name = "McGregor Station",
+                Address = "McGregor, TX"
+            },
+            new TrainStation
+            {
+                Name = "Cleburne Station",
+                Address = "Cleburne, TX"
+            },
+            new TrainStation
+            {
+                Name = "Fort Worth Station",
+                Address = "Fort Worth, TX"
+            },
+            new TrainStation
+            {
+                Name = "Dallas Station",
+                Address = "Dallas, TX"
+            },
+            new TrainStation
+            {
+                Name = "Mineola Station",
+                Address = "Mineola, TX"
+            },
+            new TrainStation
+            {
+                Name = "Longview Station",
+                Address = "Longview, TX"
+            },
+            new TrainStation
+            {
+                Name = "Marshall Station",
+                Address = "Marshall, TX"
+            },
+            new TrainStation
+            {
+                Name = "Texarkana Station",
+                Address = "Texarkana, TX"
+            },
+            new TrainStation
+            {
+                Name = "Galveston Station",
+                Address = "Galveston, TX"
+            },
+            new TrainStation
+            {
+                Name = "Nacogdoches Station",
+                Address = "Nacogdoches, TX"
+            },
+            new TrainStation
+            {
+                Name = "Prairie View Station",
+                Address = "Prairie View, TX"
+            },
+            new TrainStation
+            {
+                Name = "Bryan Station",
+                Address = "Bryan, TX"
+            },
+            new TrainStation
+            {
+                Name = "Waco Station",
+                Address = "Waco, TX"
+            },
+            new TrainStation
+            {
+                Name = "Mesquite Station",
+                Address = "Mesquite, TX"
+            },
+            new TrainStation
+            {
+                Name = "Killeen Station",
+                Address = "Killeen, TX"
+            },
+            new TrainStation
+            {
+                Name = "Fort Hood Station",
+                Address = "Fort Hood, TX"
+            },
+            new TrainStation
+            {
+                Name = "Tyler Station",
+                Address = "Tyler, TX"
+            },
+            new TrainStation
+            {
+                Name = "Shreveport Station",
+                Address = "Shreveport, LA"
+            },
+            new TrainStation
+            {
+                Name = "Biloxi Station",
+                Address = "Biloxi, MS"
+            },
+            new TrainStation
+            {
+                Name = "Mobile Station",
+                Address = "Mobile, AL"
+            },
+            new TrainStation
+            {
+                Name = "Baton Rouge Station",
+                Address = "Baton Rouge, LA"
+            }
+            );
 
         await dataContext.SaveChangesAsync();
     }
