@@ -10,7 +10,7 @@ import './App.css';
 import LoginModal from './components/LoginModal';
 import PassengersPage from './pages/Passengers/PassengersPage';
 import BoardingPassesPage from './pages/BoardingPasses/BoardingPassesPage';
-import { TrainPage } from './pages/TrainPage/TrainPage';
+import { TrainListingPage } from './pages/Trains/TrainListingPage';
 
 export function App() : React.ReactElement {
   return (
@@ -24,7 +24,7 @@ export function App() : React.ReactElement {
             <Route path={routes.route_planning} element={<RoutePlanning />} />
             <Route path={routes.passengers} element={<PassengersPage />} />
           	<Route path={routes.boardingpasses} element={<BoardingPassesPage />} />
-            <Route path={routes.trains} element={<TrainPage />} />
+            <Route path={routes.trains} element={<TrainListingPage />} />
 
             {/* If the path does not exist */}
             <Route path="*" element={<NotFoundPage />} />
