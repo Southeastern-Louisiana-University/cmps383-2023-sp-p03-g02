@@ -8,6 +8,21 @@
     color: inherit;
 }
 
+@media not screen {
+    .print-button {
+      display: none !important;
+    }
+    
+    .my-boarding-pass-modal {
+        box-shadow: none !important;
+        border: dashed grey !important;
+    }
+
+    .close.icon {
+        display: none !important;
+    }
+}
+
 /* .ui.divided.grid.boardingpass-grid .column {
     width: unset;
 } */
