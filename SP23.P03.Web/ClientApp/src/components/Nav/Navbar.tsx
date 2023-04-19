@@ -38,6 +38,13 @@ export function Navbar() : React.ReactElement {
                     to={routes.boardingpasses}
                 />
 
+                <Menu.Item 
+                    name="Trains"
+                    icon="train"
+                    as={NavLink}
+                    to={routes.trains}
+                />
+
                 {user ? (
                     <Menu.Menu position="right">
                         <Dropdown
