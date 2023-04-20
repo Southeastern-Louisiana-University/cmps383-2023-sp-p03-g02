@@ -55,6 +55,10 @@ const SignupModal = (props: ModalProps) => {
                         <label htmlFor="password">Password</label>
                     </div>
                     <Field as={Input} id="password" name="password" type="password" className="field" />
+                    <div className="field-label">
+                        <label htmlFor="confirm-password">Confirm Password</label>
+                    </div>
+                    <Field as={Input} id="confirm-password" name="confirm-password" type="password" className="field" />
                 </Modal.Content>
                 <Modal.Actions>
                     <Button type="submit" color="green" loading={loading}>

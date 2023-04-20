@@ -38,13 +38,6 @@ export function Navbar() : React.ReactElement {
                     as={NavLink}
                     to={routes.boardingpasses}
                 />
-                
-                <Menu.Item
-                    position="right"
-                    name="Signup"
-                    icon="signup"
-                    onClick={openSignupModal}
-                />
 
                 {user ? (
                     <Menu.Menu position="right">
@@ -81,11 +74,15 @@ export function Navbar() : React.ReactElement {
                         </Dropdown>
                     </Menu.Menu>
                 ) : (
-                    <Menu.Item
-                        name='Login'
-                        icon="sign-in"
-                        onClick={openLoginModal}
-                    />
+                
+                    <><Menu.Item
+                            position="right"
+                            name="Signup"
+                            icon="signup"
+                            onClick={openSignupModal} /><Menu.Item
+                                name='Login'
+                                icon="sign-in"
+                                onClick={openLoginModal} /></>
                 )}
                 
             </Menu>
