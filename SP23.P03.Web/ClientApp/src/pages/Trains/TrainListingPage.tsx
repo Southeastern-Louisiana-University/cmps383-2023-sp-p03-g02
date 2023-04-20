@@ -144,7 +144,7 @@ export function TrainListingPage(): React.ReactElement<TrainActionProps> {
                         <>
                         <Table.Cell singleLine>
                             <TrainDelete trains={trains} train={train} key={train.id} />
-                            <Button color="yellow" compact> Edit </Button>
+                            <TrainEdit trains={trains} train={train} key={train.id} />
                         </Table.Cell>
                         </>
                     ) : (
@@ -194,5 +194,93 @@ const TrainDelete: React.FC<TrainActionProps> = ({train}) => {
             onConfirm={onDelete}
             content={'Are you sure?'}
         />
+    )
+}
+
+const TrainEdit: React.FC<TrainActionProps> = ({train}) => {
+    const user = useUser();
+    const trainService = TrainDataService(user);
+    const [open, setOpen] = useState(false);
+
+    function refreshPage() {
+        window.location.reload();
+    }
+
+    const onEdit = async (values: CreateTrainDto) => {
+        await trainService.updateTrain(train.id, values);
+        refreshPage();
+    }
+
+    const initialValues: CreateTrainDto = {
+        name: "",
+        status: "",
+        coachCapacity: "",
+        firstClassCapacity: "",
+        roomletCapacity: "",
+        sleeperCapacity: "",
+    }
+
+    return (
+        <Formik initialValues={initialValues} onSubmit={onEdit}>
+            <Modal
+                as={Form}
+                trigger={
+                    <Button color="yellow" compact>
+                        <Icon name="edit" /> Edit
+                    </Button>
+                }
+                open={open}
+                onOpen={() => setOpen(true)}
+                onClose={() => setOpen(false)}
+                onConfirm={onEdit}
+                className="create"
+            >
+                <div>
+                            <h2> Add Train </h2>
+                            <div>
+                                <div className="form-group">
+                                    <label> Name </label>
+                                    <br/>
+                                    <Field as={Input} id="name" name="name" />
+                                </div>
+                                <br/>
+                                <div className="form-group">
+                                    <label> Status </label>
+                                    <br/>
+                                    <Field as={Input} id="status" name="status" type="text" />
+                                </div>
+                                <br/>
+                                <div className="form-group">
+                                    <label> Coach Capacity </label>
+                                    <br/>
+                                    <Field as={Input} id="coachCapacity" name="coachCapacity" />
+                                </div>
+                                <br/>
+                                <div className="form-group">
+                                    <label> First Class Capacity </label>
+                                    <br/>
+                                    <Field as={Input} id="firstClassCapacity" name="firstClassCapacity" />
+                                </div>
+                                <br/>
+                                <div className="form-group">
+                                    <label> Roomlet Capacity </label>
+                                    <br/>
+                                    <Field as={Input} id="roomletCapacity" name="roomletCapacity" />
+                                </div>
+                                <br/>
+                                <div className="form-group">
+                                    <label> Sleeper Capacity </label>
+                                    <br/>
+                                    <Field as={Input} id="sleeperCapacity" name="sleeperCapacity" />
+                                </div>
+                                <br/>
+                                <div>
+                                    <Button negative type="button" onClick={() => setOpen(false)}> Close </Button>
+                                    <Button positive type="submit" onConfirm={onEdit}> Submit </Button>
+                                </div>
+                            </div>
+                        </div>
+            </Modal>
+        </Formik>
     )
 }
