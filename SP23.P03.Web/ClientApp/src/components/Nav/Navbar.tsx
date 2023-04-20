@@ -6,6 +6,7 @@ import { logoutUser, useUser } from "../AuthProvider";
 import { openLoginModal } from "../LoginModal";
 import "./NavbarStyling.css"; 
 import ExtraIcon from "../ExtraIcon";
+import { openSignupModal } from "../SignupModal";
 
 export function Navbar() : React.ReactElement {
     const user = useUser();
@@ -42,7 +43,7 @@ export function Navbar() : React.ReactElement {
                     position="right"
                     name="Signup"
                     icon="signup"
-                    //onClick={openSignupModal}
+                    onClick={openSignupModal}
                 />
 
                 {user ? (

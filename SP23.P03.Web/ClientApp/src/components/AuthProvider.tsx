@@ -2,6 +2,7 @@ import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import useSubscription, { notify } from '../hooks/useSubscription';
 import { AuthData, LoginDto, User } from '../types/authentication';
+import { CreateUserDto } from '../types/authentication';
 
 const AuthContext = createContext<AuthData>(null);
 
@@ -23,6 +24,11 @@ export const logoutUser = () => axios.post(`/api/authentication/logout`).then((r
     return response;
 });
 
+export const signupUser = (createUserDto: CreateUserDto) => axios.post<User>(`/api/users/`, createUserDto).then((response) => {
+    notify("signup");
+    return response;
+});
+
 export const AuthProvider: React.FC<React.PropsWithChildren> = (props) => {
     const [user, setUser] = useState<AuthData>(null);
 
@@ -37,6 +43,10 @@ export const AuthProvider: React.FC<React.PropsWithChildren> = (props) => {
     useSubscription("logout", () => {
         setUser(null);
     });
+
+    useSubscription("signup", () => {
+        setUser(null);
+    })
 
     return (
         <AuthContext.Provider value={user}>
