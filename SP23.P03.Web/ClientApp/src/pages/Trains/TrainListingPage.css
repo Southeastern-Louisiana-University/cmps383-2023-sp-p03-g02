@@ -1,5 +1,36 @@
+.ui.container.trains {
+    margin-top: 2em;
+    border: 2px solid var(--main-color) !important;
+}
 
-.render-table {
-    max-width: 75%;
-    align-self: center;
+.ui.modal.create {
+    max-width: 30%;
+    padding: 2em;
+    border: 2px outset var(--main-color) !important;
+    text-align: center;
+}
+
+/*
+.form-group > label {
+    float: left;
+}
+*/
+
+h2 {
+    padding-bottom: 1em !important;
+    border-bottom: 1px solid !important;
+}
+
+form input[type="text"] {
+  border-bottom: solid 1px black !important;
+  height: 2em !important;
+  padding: 1em !important;
+}
+
+form label {
+  font-size: large;
+}
+
+.table-width {
+    max-width: 75%;    
 }
