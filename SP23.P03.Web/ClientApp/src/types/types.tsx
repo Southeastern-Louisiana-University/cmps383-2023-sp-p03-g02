@@ -1,9 +1,15 @@
 
 export type TrainStationDto = {
+    stations: TrainStationDto[];
     id: number;
     name: string;
     address: string;
     managerId?: number;
+}
+
+export type CreateStationDto = {
+    name: string;
+    address: string;
 }
 
 export type TrainDto = {
