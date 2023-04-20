@@ -9,4 +9,5 @@ export const routes = {
     boardingpasses: '/boardingpasses',
     account: '/account',
     passengers: '/passengers',
+    trains: '/trains-listing',
   }
