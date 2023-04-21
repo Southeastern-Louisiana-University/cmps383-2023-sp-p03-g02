@@ -129,8 +129,7 @@ public class TripsController : ControllerBase
             return BadRequest();
         }
 
-        var trainRoute = trainRoutes.FirstOrDefault(x => (x.StationA == fromStation && x.StationB == toStation)
-                                                         || (x.StationB == fromStation && x.StationA == toStation));
+        var trainRoute = trainRoutes.GetTrainRouteOrDefault(fromStation, toStation);
 
         if (trainRoute == null)
         {
@@ -218,8 +217,7 @@ public class TripsController : ControllerBase
             return BadRequest();
         }
 
-        var trainRoute = trainRoutes.FirstOrDefault(x => (x.StationA == fromStation && x.StationB == toStation)
-                                                         || (x.StationB == fromStation && x.StationA == toStation));
+        var trainRoute = trainRoutes.GetTrainRouteOrDefault(fromStation, toStation);
 
         if (trainRoute == null)
         {

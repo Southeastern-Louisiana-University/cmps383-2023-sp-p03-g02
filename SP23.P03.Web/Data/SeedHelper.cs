@@ -783,7 +783,7 @@ public static class SeedHelper
         var prevStation = stationsToVisit.First();
         foreach(var currentStation in stationsToVisit.Skip(1))
         {
-            var currentRoute = trainRoutes.Where(x => (x.StationA == prevStation && x.StationB == currentStation) || (x.StationB == prevStation && x.StationA == currentStation)).First();
+            var currentRoute = trainRoutes.GetTrainRoute(prevStation, currentStation);
             var nextTime = currentTime.AddMinutes(currentRoute.EstimatedMinutes);
             trips.Add(new Trip
             {
@@ -807,7 +807,7 @@ public static class SeedHelper
 
         foreach (var currentStation in stationsToVisit.Skip(1))
         {
-            var currentRoute = trainRoutes.Where(x => (x.StationA == prevStation && x.StationB == currentStation) || (x.StationB == prevStation && x.StationA == currentStation)).First();
+            var currentRoute = trainRoutes.GetTrainRoute(prevStation, currentStation);
             var nextTime = currentTime.AddMinutes(currentRoute.EstimatedMinutes);
             trips.Add(new Trip
             {
