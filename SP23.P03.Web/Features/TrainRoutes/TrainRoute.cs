@@ -14,10 +14,10 @@ public class TrainRoute
     public required TrainStation StationB { get; set; }
     [NotMapped]
     public TrainStation[] Stations => new TrainStation[] { StationA, StationB };
-    public int CoachPrice => (int)(DistanceMiles * 50);
-    public int FirstClassPrice => (int)(DistanceMiles * 100);
-    public int RoomletPrice => (int)(DistanceMiles * 200);
-    public int SleeperPrice => (int)(DistanceMiles * 300);
+    public int CoachPrice => (int)(DistanceMiles * GeographyMultiplier * 50);
+    public int FirstClassPrice => (int)(DistanceMiles * GeographyMultiplier * 100);
+    public int RoomletPrice => (int)(DistanceMiles * GeographyMultiplier * 200);
+    public int SleeperPrice => (int)(DistanceMiles * GeographyMultiplier * 300);
 }
 
 public static class TrainRouteExtensions
