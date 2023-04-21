@@ -143,11 +143,8 @@ public class TripsController : ControllerBase
             ToStation = toStation,
             Departure = dto.Departure,
             Arrival = dto.Departure.AddMinutes(trainRoute.EstimatedMinutes),
-            CoachPrice = trainRoute.CoachPrice,
-            FirstClassPrice = trainRoute.FirstClassPrice,
-            RoomletPrice = trainRoute.RoomletPrice,
-            SleeperPrice = trainRoute.SleeperPrice,
         };
+        createdTrip.CalculatePricing(trainRoute);
 
         trips.Add(createdTrip);
         dataContext.SaveChanges();
@@ -228,10 +225,7 @@ public class TripsController : ControllerBase
         trip.FromStation = fromStation;
         trip.ToStation = toStation;
         trip.Arrival = dto.Departure.AddMinutes(trainRoute.EstimatedMinutes);
-        trip.CoachPrice = trainRoute.CoachPrice;
-        trip.FirstClassPrice = trainRoute.FirstClassPrice;
-        trip.RoomletPrice = trainRoute.RoomletPrice;
-        trip.SleeperPrice = trainRoute.SleeperPrice;
+        trip.CalculatePricing(trainRoute);
 
         dataContext.SaveChanges();
 

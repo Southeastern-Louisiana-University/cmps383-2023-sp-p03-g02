@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SP23.P03.Web.Features.BoardingPasses;
+using SP23.P03.Web.Features.TrainRoutes;
 using SP23.P03.Web.Features.Trains;
 using SP23.P03.Web.Features.TrainStations;
 
@@ -25,6 +26,15 @@ public class Trip
 
 public static class TripExtensions
 {
+
+    public static void CalculatePricing(this Trip trip, TrainRoute trainRoute)
+    {
+
+        trip.CoachPrice = trainRoute.CoachPrice;
+        trip.FirstClassPrice = trainRoute.FirstClassPrice;
+        trip.RoomletPrice = trainRoute.RoomletPrice;
+        trip.SleeperPrice = trainRoute.SleeperPrice;
+    }
     public static int GetCoachCapacity(this Trip trip, DbSet<Trip> trips) => GetRemainingCapacityForTravelClass(trip, trips, TravelClass.Coach);
     public static int GetFirstClassCapacity(this Trip trip, DbSet<Trip> trips) => GetRemainingCapacityForTravelClass(trip, trips, TravelClass.FirstClass);
     public static int GetRoomletCapacity(this Trip trip, DbSet<Trip> trips) => GetRemainingCapacityForTravelClass(trip, trips, TravelClass.Roomlet);

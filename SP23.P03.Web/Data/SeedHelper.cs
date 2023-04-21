@@ -785,18 +785,16 @@ public static class SeedHelper
         {
             var currentRoute = trainRoutes.GetTrainRoute(prevStation, currentStation);
             var nextTime = currentTime.AddMinutes(currentRoute.EstimatedMinutes);
-            trips.Add(new Trip
+            var trip = new Trip
             {
                 Train = hammondTrain,
                 FromStation = prevStation,
                 ToStation = currentStation,
                 Departure = currentTime,
                 Arrival = nextTime,
-                CoachPrice = currentRoute.CoachPrice,
-                FirstClassPrice = currentRoute.FirstClassPrice,
-                RoomletPrice = currentRoute.RoomletPrice,
-                SleeperPrice = currentRoute.SleeperPrice,
-            });
+            };
+            trip.CalculatePricing(currentRoute);
+            trips.Add(trip);
             currentTime = nextTime.AddMinutes(10);
             prevStation = currentStation;
         }
@@ -809,18 +807,16 @@ public static class SeedHelper
         {
             var currentRoute = trainRoutes.GetTrainRoute(prevStation, currentStation);
             var nextTime = currentTime.AddMinutes(currentRoute.EstimatedMinutes);
-            trips.Add(new Trip
+            var trip = new Trip
             {
                 Train = slidellTrain,
                 FromStation = prevStation,
                 ToStation = currentStation,
                 Departure = currentTime,
                 Arrival = nextTime,
-                CoachPrice = currentRoute.CoachPrice,
-                FirstClassPrice = currentRoute.FirstClassPrice,
-                RoomletPrice = currentRoute.RoomletPrice,
-                SleeperPrice = currentRoute.SleeperPrice,
-            });
+            };
+            trip.CalculatePricing(currentRoute);
+            trips.Add(trip);
             currentTime = nextTime.AddMinutes(10);
             prevStation = currentStation;
         }
