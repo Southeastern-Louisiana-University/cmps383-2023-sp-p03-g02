@@ -29,11 +29,17 @@ public static class TripExtensions
 
     public static void CalculatePricing(this Trip trip, TrainRoute trainRoute)
     {
-
-        trip.CoachPrice = trainRoute.CoachPrice;
-        trip.FirstClassPrice = trainRoute.FirstClassPrice;
-        trip.RoomletPrice = trainRoute.RoomletPrice;
-        trip.SleeperPrice = trainRoute.SleeperPrice;
+        var isOnWeekend = trip.Departure.DayOfWeek >= DayOfWeek.Thursday && trip.Departure.DayOfWeek <= DayOfWeek.Sunday;
+        var thanksgiving = new DateTimeOffset(trip.Departure.Year, 11, 1, 0, 0, 0, TimeZoneInfo.Local.BaseUtcOffset);
+        thanksgiving = thanksgiving.AddDays((thanksgiving.DayOfWeek <= DayOfWeek.Thursday ? 25 : 32) - (int)thanksgiving.DayOfWeek);
+        var isOnThanksgivingWeekend = thanksgiving <= trip.Departure && trip.Departure < thanksgiving.AddDays(3);
+        double priceMultiplier = 1.1; // Markup
+        if (isOnWeekend) priceMultiplier *= 1.2; // Weekend price increase
+        if (isOnThanksgivingWeekend) priceMultiplier *= 4/3; // Thanksgiving weekend price increase
+        trip.CoachPrice = (int)(trainRoute.CoachPrice * priceMultiplier);
+        trip.FirstClassPrice = (int)(trainRoute.FirstClassPrice * priceMultiplier);
+        trip.RoomletPrice = (int)(trainRoute.RoomletPrice * priceMultiplier);
+        trip.SleeperPrice = (int)(trainRoute.SleeperPrice * priceMultiplier);
     }
     public static int GetCoachCapacity(this Trip trip, DbSet<Trip> trips) => GetRemainingCapacityForTravelClass(trip, trips, TravelClass.Coach);
     public static int GetFirstClassCapacity(this Trip trip, DbSet<Trip> trips) => GetRemainingCapacityForTravelClass(trip, trips, TravelClass.FirstClass);
