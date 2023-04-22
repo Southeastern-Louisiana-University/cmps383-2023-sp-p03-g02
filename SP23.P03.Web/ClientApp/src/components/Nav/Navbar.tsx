@@ -38,6 +38,36 @@ export function Navbar() : React.ReactElement {
                     to={routes.boardingpasses}
                 />
 
+                <Menu.Menu>
+                    <Dropdown
+                        item
+                        trigger={
+                            <span><Icon name="ticket alternate"/>Additional</span>
+                        }
+                        icon={
+                            <>
+                                <Icon name="caret down" />
+                            </>
+                        }
+                    >
+                        <Dropdown.Menu>
+                            <Dropdown.Item 
+                                text="Trains"
+                                icon="train"
+                                as={NavLink}
+                                to={routes.trains}
+                            />
+                            <Dropdown.Item
+                                text="Train Stations"
+                                icon="map signs"
+                                as={NavLink}
+                                to={routes.trainStation_listing}
+                            />
+                        </Dropdown.Menu>
+
+                    </Dropdown>
+                </Menu.Menu>
+
                 {user ? (
                     <Menu.Menu position="right">
                         <Dropdown
@@ -78,10 +108,8 @@ export function Navbar() : React.ReactElement {
                         icon="sign-in"
                         onClick={openLoginModal}
                     />
-                )}
-                
+                )} 
             </Menu>
-
         </nav>
     );
 }
