@@ -6,6 +6,7 @@ import { useUser } from '../../components/AuthProvider';
 import { CreateStationDto, TrainStationDto } from '../../types/types';
 import StationDataService from '../../hooks/api/StationDataService';
 import { Field, Form, Formik } from 'formik';
+import { isUserAdmin } from '../../helpers/user';
 
 type StationActionProps = {
     stations: TrainStationDto[];
@@ -14,7 +15,7 @@ type StationActionProps = {
 
 export function StationListingPage(): React.ReactElement<StationActionProps> {
     const user = useUser();
-    const isAdmin = user?.roles.includes("Admin"); //thanks :)
+    const isAdmin = isUserAdmin(user); //thanks :)
     const stations = useFindStation();
     const trainStation = StationDataService(user);
     const [open, setOpen] = useState(false);

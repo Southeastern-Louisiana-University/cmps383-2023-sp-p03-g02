@@ -6,6 +6,7 @@ import TrainDataService from "../../hooks/api/TrainDataService";
 import { useUser } from "../../components/AuthProvider";
 import useFindTrain from "../../hooks/api/useFindTrain";
 import { Field, Form, Formik } from "formik";
+import { isUserAdmin } from "../../helpers/user";
 
 type TrainActionProps = {
     trains: TrainDto[];
@@ -14,7 +15,7 @@ type TrainActionProps = {
 
 export function TrainListingPage(): React.ReactElement<TrainActionProps> {
     const user = useUser();
-    const isAdmin = user?.roles.includes("Admin");
+    const isAdmin = isUserAdmin(user);
     const train = TrainDataService(user);
     const trains = useFindTrain();
 
