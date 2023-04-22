@@ -1,10 +1,4 @@
 
-.ui.container.stations {
-    margin-top: 20px;
-    margin-bottom: 20px;
-    flex-grow: 1;
-}
-
 .modal-content {
     display: flex;
     max-width: fit-content;
@@ -13,4 +7,41 @@
 
 .center-form {
     text-align: center;
+}
+
+.ui.container.stations {
+    margin-top: 2em;
+    border: 2px solid var(--main-color) !important;
+}
+
+.ui.modal.create {
+    max-width: 30%;
+    padding: 2em;
+    border: 2px outset var(--main-color) !important;
+    text-align: center;
+}
+
+/*
+.form-group > label {
+    float: left;
+}
+*/
+
+h2 {
+    padding-bottom: 1em !important;
+    border-bottom: 1px solid !important;
+}
+
+form input[type="text"] {
+  border-bottom: solid 1px black !important;
+  height: 2em !important;
+  padding: 1em !important;
+}
+
+form label {
+  font-size: large;
+}
+
+.table-width {
+    max-width: 75%;    
 }
