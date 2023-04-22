@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Confirm, Container, Divider, Grid, Header, Icon, Input, List, Modal, Segment } from 'semantic-ui-react';
-import StationList from '../../components/StationList';
+import { Button, Confirm, Container, Header, Icon, Input, Modal, Segment, Table } from 'semantic-ui-react';
 import useFindStation from '../../hooks/api/useFindStation';
 import './StationListingPage.css';
 import { useUser } from '../../components/AuthProvider';
@@ -37,16 +36,17 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
     
     return (
         <Container className="stations">
-            <Segment>
+            <Header size="huge" attached> Train Stations </Header>
 
-                { isAdmin ?  ( //this displays when the admin is logged in
-                    <Grid columns={2}>
-                    <Grid.Row>
-                        <Grid.Column>
-                            <h1> Train Stations </h1>
-                        </Grid.Column>
+            <Segment attached>
+                <Table columns={2}>
+                    <Table.Header className="ui center aligned">
+                        <Table.HeaderCell> Station </Table.HeaderCell>
+                        <Table.HeaderCell> Address </Table.HeaderCell>
 
-                        <Grid.Column>
+                        { isAdmin ? (
+                            <>
+                            <Table.HeaderCell>
                             <Formik initialValues={initialValues} onSubmit={onCreate}>
                                 <Modal
                                     as={Form}
@@ -79,52 +79,32 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
                                 </div>
                                 </Modal>
                             </Formik>
-                        </Grid.Column>
-                    </Grid.Row>
+                            </Table.HeaderCell>
+                            </>
+                        ) : (
+                            <></>  
+                        )}
+                    </Table.Header>
+                    {stations.map(station => (
+                        <>
+                        <Table.Body className="ui center aligned">
+                            <Table.Cell> {station.name} </Table.Cell>
+                            <Table.Cell> {station.address} </Table.Cell>
 
-                    <Divider />
-
-                    <Grid.Row>
-                    <Grid.Column>
-                        {stations.map(station => (
-                            <div>
-                                <List>
-                                    <List.Item key={station.id}>
-                                        <List.Icon>
-                                            <i className="map signs icon"/>
-                                        </List.Icon>
-
-                                        <List.Content>
-                                            <Header>
-                                                {station.name}
-                                            </Header>
-
-                                            {station.address}
-                                        </List.Content>
-                                    </List.Item>
-
+                            {isAdmin ? (
+                                <>
+                                <Table.Cell singleLine>
                                     <StationDelete stations={stations} station={station} key={station.id} />
                                     <StationEdit stations={stations} station={station} key={station.id} />
-                                </List>
-                                <br/>
-                            </div>
-                        ))}
-                    </Grid.Column>
-                    </Grid.Row>
-                    </Grid>
-                ) : ( //if not -- render just the stations listing
-                    <Grid>
-                        <Grid.Row>
-                            <h1> Train Stations </h1>
-                        </Grid.Row>
-
-                        <Divider />
-                    
-                        <Grid.Row>
-                            <StationList stations={stations} />
-                        </Grid.Row>
-                    </Grid>
-                )}
+                                </Table.Cell>
+                                </>
+                            ) : (
+                                <></>
+                            )}
+                        </Table.Body>
+                        </>
+                    ))}
+                </Table>
             </Segment>
         </Container>
     );
