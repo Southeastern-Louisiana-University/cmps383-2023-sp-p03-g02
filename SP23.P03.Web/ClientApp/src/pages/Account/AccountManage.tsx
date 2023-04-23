@@ -1,12 +1,13 @@
 import React from "react";
 import { Button, Container, Header, Icon, Popup, Segment, Table } from "semantic-ui-react";
 import { useUser } from "../../components/AuthProvider";
+import './AccountManage.css';
 
 export function AccountManage(): React.ReactElement {
     const user = useUser();
 
     return (
-        <Container>
+        <Container className="account">
             <Header size="huge" attached> Manage Account </Header>
 
             <Segment attached>
