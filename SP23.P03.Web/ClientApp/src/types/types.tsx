@@ -82,3 +82,15 @@ export type CreatePassengerDto = {
     lastName: string;
     birthday: string;
 }
+
+export type TrainRouteDto = {
+    distanceMiles: number;
+    estimatedMinutes: number;
+    geographyMultiplier: number;
+    stationA: TrainStationDto;
+    stationB: TrainStationDto;
+    coachPrice: number;
+    firstClassPrice: number;
+    roomletPrice: number;
+    sleeperPrice: number;
+}
