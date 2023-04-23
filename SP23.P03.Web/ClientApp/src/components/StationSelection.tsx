@@ -1,12 +1,16 @@
 import React from "react";
 import { Select } from "semantic-ui-react";
-import useFindStation from "../hooks/api/useFindStation";
 import { FieldProps } from "formik";
+import { TrainStationDto } from "../types/types";
 
-const StationSelection: React.FC<FieldProps> = ({ field, form }) => {
+type StationSelectionProps = FieldProps & {
+    stations: TrainStationDto[],
+    error: boolean,
+};
 
-    const findStation = useFindStation();
-    const data = findStation.map((station) => {
+const StationSelection: React.FC<StationSelectionProps> = ({ field, form, stations, ...rest }) => {
+
+    const data = stations.map((station) => {
         return {
             value: station.id,
             text: `${station.name} | ${station.address}`,
@@ -16,13 +20,12 @@ const StationSelection: React.FC<FieldProps> = ({ field, form }) => {
     return (
         <>
             <Select
-                style={{
-                    width: '75%',
-                }}
+                className="station-selection"
                 placeholder="Enter City"
                 options={data}
                 search
                 clearable
+                {...rest}
                 {...field}
                 onChange={(_, { name, value }) =>
                     form.setFieldValue(name, value)
@@ -30,7 +33,7 @@ const StationSelection: React.FC<FieldProps> = ({ field, form }) => {
                 onBlur={(_, { name, value}) =>
                     form.setFieldValue(name, value)
                 }
-                />
+            />
         </>
     );
 }

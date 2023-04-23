@@ -6,6 +6,7 @@ import StationSelection from '../StationSelection';
 import { RoutePlanningQuery, navigateToRoutePlanning } from '../../helpers/navigation';
 import { Field, FieldProps, Form, Formik } from 'formik';
 import { toSimpleISO } from '../../helpers/time';
+import useFindStation from '../../hooks/api/useFindStation';
 
 const RoutePlanner: React.FC = () => {
     const [searchParams] = useSearchParams();
@@ -30,6 +31,8 @@ const RoutePlanner: React.FC = () => {
         travelClass: searchParams.get("travelClass") ?? "Coach",
     };
 
+    const stations = useFindStation();
+
     return (
         <div className="route-planner">
             <Formik initialValues={initialValues} onSubmit={onSubmit}>
@@ -40,7 +43,7 @@ const RoutePlanner: React.FC = () => {
                             <Grid.Row>
                                 <Grid.Column>
                                     <h1 className="box-header"> Starting From: </h1>
-                                    <Field name="fromStationId" id="fromStationId" component={StationSelection} />
+                                    <Field name="fromStationId" id="fromStationId" component={StationSelection} stations={stations} />
                                 </Grid.Column>
 
                                 <Divider vertical>
@@ -49,7 +52,7 @@ const RoutePlanner: React.FC = () => {
 
                                 <Grid.Column>
                                     <h1 className="box-header"> Going To: </h1>
-                                    <Field name="toStationId" id="toStationId" component={StationSelection} />
+                                    <Field name="toStationId" id="toStationId" component={StationSelection} stations={stations} />
                                 </Grid.Column>
                             </Grid.Row>
 

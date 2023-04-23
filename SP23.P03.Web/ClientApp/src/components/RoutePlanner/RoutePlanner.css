@@ -5,6 +5,10 @@
     position: relative;
 }
 
+.route-planner .station-selection {
+    width: 75%;
+}
+
 .btn-styling {
     width: 8em;
     height: 3em;
