@@ -24,7 +24,7 @@ export const logoutUser = () => axios.post(`/api/authentication/logout`).then((r
     return response;
 });
 
-export const signupUser = (createUserDto: CreateUserDto) => axios.post<User>(`/api/users/`, createUserDto).then((response) => {
+export const signupUser = (createUserDto: CreateUserDto) => axios.post<User>(`/api/users/signup`, createUserDto).then((response) => {
     notify("signup");
     return response;
 });
