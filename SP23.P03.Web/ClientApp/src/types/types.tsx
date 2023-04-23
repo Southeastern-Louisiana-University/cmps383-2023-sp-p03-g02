@@ -44,6 +44,13 @@ export type TripDto = {
     sleeperPrice: number;
 }
 
+export type CreateTripDto = {
+    trainId: number;
+    fromStationId: number;
+    toStationId: number;
+    departure: string;
+}
+
 export type TripWithCapacityDto = TripDto & {
     coachCapacity: number;
     firstClassCapacity: number;

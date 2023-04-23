@@ -10,4 +10,5 @@ export const routes = {
     account: '/account',
     passengers: '/passengers',
     trains: '/trains-listing',
+    trips_scheduling: '/trips-scheduling'
   }
