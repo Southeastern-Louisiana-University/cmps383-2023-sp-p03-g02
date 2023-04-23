@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Container, Divider, Grid, Header, Icon, Message, Modal, Segment } from "semantic-ui-react";
+import { Button, Card, Container, Divider, Grid, Header, Icon, Message, Modal, Segment } from "semantic-ui-react";
 import "./BoardingPassesPage.css";
 import useMyBoardingPasses from "../../hooks/api/useMyBoardingPasses";
 import { useUser } from "../../components/AuthProvider";
@@ -44,6 +44,7 @@ const BoardingPassDisplay: React.FC<{ boardingPass: BoardingPassDto }> = ({ boar
 
     return (
         <Modal
+            className="my-boarding-pass-modal"
             closeIcon
             trigger={
                 <Card fluid className="boardingpass-card">
@@ -113,6 +114,13 @@ const BoardingPassDisplay: React.FC<{ boardingPass: BoardingPassDto }> = ({ boar
                 <Segment attached="bottom">
                     <PassengerList passengers={boardingPass.passengers} />
                 </Segment>
+                <Button
+                    color="blue"
+                    className="print-button"
+                    onClick={() => window.print()}
+                >
+                    <Icon name="print" /> Print
+                </Button>
             </Modal.Content>
         </Modal>
     );
