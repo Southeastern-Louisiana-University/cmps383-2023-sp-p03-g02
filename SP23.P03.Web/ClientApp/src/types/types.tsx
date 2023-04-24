@@ -101,3 +101,16 @@ export type TrainRouteDto = {
     roomletPrice: number;
     sleeperPrice: number;
 }
+    
+export type UserDto = {
+    id: number;
+    userName: string;
+    role: string;
+}
+
+export type CreateUserDto = {
+    id: number;
+    userName: string;
+    password: string;
+    roles: string;
+}

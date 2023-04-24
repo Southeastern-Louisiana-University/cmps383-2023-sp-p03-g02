@@ -1,0 +1,5 @@
+
+.ui.container.account {
+    margin-top: 2em;
+    border: 2px solid var(--main-color) !important;
+}
