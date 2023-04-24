@@ -117,9 +117,8 @@ export function TrainListingPage(): React.ReactElement<TrainActionProps> {
                     <></>
                 )}
             </Table.Header>
-            {trains.map(train => (
-                <>
-                <Table.Body className="ui center aligned">
+            {trains.trains.map(train => (
+                <Table.Body className="ui center aligned" key={train.id}>
                     <Table.Cell>
                         {train.name}
                     </Table.Cell>
@@ -142,15 +141,14 @@ export function TrainListingPage(): React.ReactElement<TrainActionProps> {
                     {isAdmin ? (
                         <>
                         <Table.Cell singleLine>
-                            <TrainDelete trains={trains} train={train} key={train.id} />
-                            <TrainEdit trains={trains} train={train} key={train.id} />
+                            <TrainDelete trains={trains} train={train} />
+                            <TrainEdit trains={trains} train={train} />
                         </Table.Cell>
                         </>
                     ) : (
                         <></>
                     )}
                 </Table.Body>
-                </>
             ))}
             </Table>
             </Segment>

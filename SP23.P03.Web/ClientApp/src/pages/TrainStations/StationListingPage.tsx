@@ -84,24 +84,22 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
                             <></>  
                         )}
                     </Table.Header>
-                        <>
-                        <Table.Body className="ui center aligned">
                     {stations.stations.map(station => (
+                        <Table.Body className="ui center aligned" key={station.id}>
                             <Table.Cell> {station.name} </Table.Cell>
                             <Table.Cell> {station.address} </Table.Cell>
 
                             {isAdmin ? (
                                 <>
                                 <Table.Cell singleLine>
-                                    <StationDelete stations={stations} station={station} key={station.id} />
-                                    <StationEdit stations={stations} station={station} key={station.id} />
+                                    <StationDelete stations={stations} station={station} />
+                                    <StationEdit stations={stations} station={station} />
                                 </Table.Cell>
                                 </>
                             ) : (
                                 <></>
                             )}
                         </Table.Body>
-                        </>
                     ))}
                 </Table>
             </Segment>
