@@ -50,7 +50,7 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
                                                 <Icon name="plus" /> Create
                                             </Button>
                                         }
-                                        className="modal-content"
+                                        className="stations modal-content"
                                         onClose={() => setOpen(false)}
                                         onOpen={() => setOpen(true)}
                                         open={open}
@@ -163,7 +163,7 @@ const StationEdit: React.FC<StationActionProps> = ({ stations, station }) => {
                 onOpen={() => setOpen(true)}
                 open={open}
                 onConfirm={onEdit}
-                className="modal-content"
+                className="stations modal-content"
             >
                 <div className="center-form">
                     <h2> Edit Station </h2>

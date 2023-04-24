@@ -63,7 +63,7 @@ export function TrainListingPage(): React.ReactElement<TrainActionProps> {
                             onOpen={() => setOpen(true)}
                             open={open}
                             onConfirm={onCreate}
-                            className="create"
+                            className="trains create"
                         >  
                             <div>
                                 <h2> Add Train </h2>
@@ -221,7 +221,7 @@ const TrainEdit: React.FC<TrainActionProps> = ({ trains, train }) => {
                 onOpen={() => setOpen(true)}
                 onClose={() => setOpen(false)}
                 onConfirm={onEdit}
-                className="create"
+                className="trains create"
             >
                 <div>
                             <h2> Add Train </h2>
