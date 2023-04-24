@@ -2,27 +2,25 @@ import React, { useState } from "react";
 import { Button, Confirm, Container, Header, Icon, Input, Modal, Segment, Table } from "semantic-ui-react";
 import './TrainListingPage.css';
 import { CreateTrainDto, TrainDto } from "../../types/types";
-import TrainDataService from "../../hooks/api/TrainDataService";
+import useTrains, { TrainsService } from "../../hooks/api/TrainDataService";
 import { useUser } from "../../components/AuthProvider";
-import useFindTrain from "../../hooks/api/useFindTrain";
 import { Field, Form, Formik } from "formik";
 import { isUserAdmin } from "../../helpers/user";
 
 type TrainActionProps = {
-    trains: TrainDto[];
+    trains: TrainsService;
     train: TrainDto;
 }
 
 export function TrainListingPage(): React.ReactElement<TrainActionProps> {
     const user = useUser();
     const isAdmin = isUserAdmin(user);
-    const train = TrainDataService(user);
-    const trains = useFindTrain();
+    const trains = useTrains();
 
     const [open, setOpen] = useState(false);
 
     const onCreate = async (values: CreateTrainDto) => {
-        await train.createTrain(values);
+        await trains.createTrain(values);
         setOpen(false);
     }
     
@@ -166,9 +164,7 @@ export function TrainListingPage(): React.ReactElement<TrainActionProps> {
 *
 */
 
-const TrainDelete: React.FC<TrainActionProps> = ({train}) => {
-    const user = useUser();
-    const trainService = TrainDataService(user);
+const TrainDelete: React.FC<TrainActionProps> = ({trains, train}) => {
     const [open, setOpen] = useState(false);
 
     function refreshPage() {
@@ -176,7 +172,7 @@ const TrainDelete: React.FC<TrainActionProps> = ({train}) => {
     }
 
     const onDelete = async () => {
-        await trainService.deleteTrain(train.id);
+        await trains.deleteTrain(train.id);
         setOpen(false);
         refreshPage();
     }
@@ -198,9 +194,7 @@ const TrainDelete: React.FC<TrainActionProps> = ({train}) => {
     )
 }
 
-const TrainEdit: React.FC<TrainActionProps> = ({train}) => {
-    const user = useUser();
-    const trainService = TrainDataService(user);
+const TrainEdit: React.FC<TrainActionProps> = ({ trains, train }) => {
     const [open, setOpen] = useState(false);
 
     function refreshPage() {
@@ -208,8 +202,9 @@ const TrainEdit: React.FC<TrainActionProps> = ({train}) => {
     }
 
     const onEdit = async (values: CreateTrainDto) => {
-        await trainService.updateTrain(train.id, values);
         refreshPage();
+        await trains.updateTrain(train.id, values);
+        setOpen(false);
     }
 
     const initialValues: CreateTrainDto = {

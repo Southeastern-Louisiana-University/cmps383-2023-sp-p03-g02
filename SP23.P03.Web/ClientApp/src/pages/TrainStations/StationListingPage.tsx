@@ -1,23 +1,21 @@
 import React, { useState } from 'react';
 import { Button, Confirm, Container, Header, Icon, Input, Modal, Segment, Table } from 'semantic-ui-react';
-import useFindStation from '../../hooks/api/useFindStation';
 import './StationListingPage.css';
 import { useUser } from '../../components/AuthProvider';
 import { CreateStationDto, TrainStationDto } from '../../types/types';
-import StationDataService from '../../hooks/api/StationDataService';
+import useStations, { TrainStationsService } from '../../hooks/api/StationDataService';
 import { Field, Form, Formik } from 'formik';
 import { isUserAdmin } from '../../helpers/user';
 
 type StationActionProps = {
-    stations: TrainStationDto[];
+    stations: TrainStationsService;
     station: TrainStationDto;
 }
 
 export function StationListingPage(): React.ReactElement<StationActionProps> {
     const user = useUser();
     const isAdmin = isUserAdmin(user); //thanks :)
-    const stations = useFindStation();
-    const trainStation = StationDataService(user);
+    const stations = useStations();
     const [open, setOpen] = useState(false);
 
     function refreshPage() {
@@ -25,7 +23,7 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
     }
 
     const onCreate = async (values: CreateStationDto) => {
-            await trainStation.createStation(values);
+            await stations.createStation(values);
             setOpen(false);
             refreshPage();
     }
@@ -86,9 +84,9 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
                             <></>  
                         )}
                     </Table.Header>
-                    {stations.map(station => (
                         <>
                         <Table.Body className="ui center aligned">
+                    {stations.stations.map(station => (
                             <Table.Cell> {station.name} </Table.Cell>
                             <Table.Cell> {station.address} </Table.Cell>
 
@@ -117,9 +115,7 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
 *
 */
 
-const StationDelete: React.FC<StationActionProps> = ({station}) => {
-    const user = useUser();
-    const trainStation = StationDataService(user);
+const StationDelete: React.FC<StationActionProps> = ({ stations, station }) => {
     const [open, setOpen] = useState(false);
 
     function refreshPage() {
@@ -127,7 +123,7 @@ const StationDelete: React.FC<StationActionProps> = ({station}) => {
     }
 
     const onDelete = async () => {
-        await trainStation.deleteStation(station.id);
+        await stations.deleteStation(station.id);
         setOpen(false);
         refreshPage();
     }
@@ -149,9 +145,7 @@ const StationDelete: React.FC<StationActionProps> = ({station}) => {
     )
 }
 
-const StationEdit: React.FC<StationActionProps> = ({station}) => {
-    const user = useUser();
-    const trainStation = StationDataService(user);
+const StationEdit: React.FC<StationActionProps> = ({ stations, station }) => {
     const [open, setOpen] = useState(false);
 
     function refreshPage() {
@@ -159,8 +153,9 @@ const StationEdit: React.FC<StationActionProps> = ({station}) => {
     }
 
     const onEdit = async (values: CreateStationDto) => {
-        await trainStation.updateStation(station.id, values);
         refreshPage();
+        await stations.updateStation(station.id, values);
+        setOpen(false);
     }
 
     const initialValues: CreateStationDto = {
