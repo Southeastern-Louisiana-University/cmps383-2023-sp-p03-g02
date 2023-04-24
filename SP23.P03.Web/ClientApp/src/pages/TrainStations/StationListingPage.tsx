@@ -18,14 +18,9 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
     const stations = useStations();
     const [open, setOpen] = useState(false);
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
     const onCreate = async (values: CreateStationDto) => {
             await stations.createStation(values);
             setOpen(false);
-            refreshPage();
     }
 
     const initialValues: CreateStationDto = {
@@ -116,14 +111,9 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
 const StationDelete: React.FC<StationActionProps> = ({ stations, station }) => {
     const [open, setOpen] = useState(false);
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
     const onDelete = async () => {
         await stations.deleteStation(station.id);
         setOpen(false);
-        refreshPage();
     }
 
     return (
@@ -146,12 +136,7 @@ const StationDelete: React.FC<StationActionProps> = ({ stations, station }) => {
 const StationEdit: React.FC<StationActionProps> = ({ stations, station }) => {
     const [open, setOpen] = useState(false);
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
     const onEdit = async (values: CreateStationDto) => {
-        refreshPage();
         await stations.updateStation(station.id, values);
         setOpen(false);
     }

@@ -165,14 +165,9 @@ export function TrainListingPage(): React.ReactElement<TrainActionProps> {
 const TrainDelete: React.FC<TrainActionProps> = ({trains, train}) => {
     const [open, setOpen] = useState(false);
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
     const onDelete = async () => {
         await trains.deleteTrain(train.id);
         setOpen(false);
-        refreshPage();
     }
 
     return (
@@ -195,12 +190,7 @@ const TrainDelete: React.FC<TrainActionProps> = ({trains, train}) => {
 const TrainEdit: React.FC<TrainActionProps> = ({ trains, train }) => {
     const [open, setOpen] = useState(false);
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
     const onEdit = async (values: CreateTrainDto) => {
-        refreshPage();
         await trains.updateTrain(train.id, values);
         setOpen(false);
     }
