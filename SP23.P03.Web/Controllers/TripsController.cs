@@ -129,8 +129,7 @@ public class TripsController : ControllerBase
             return BadRequest();
         }
 
-        var trainRoute = trainRoutes.FirstOrDefault(x => (x.StationA == fromStation && x.StationB == toStation)
-                                                         || (x.StationB == fromStation && x.StationA == toStation));
+        var trainRoute = trainRoutes.GetTrainRouteOrDefault(fromStation, toStation);
 
         if (trainRoute == null)
         {
@@ -144,11 +143,8 @@ public class TripsController : ControllerBase
             ToStation = toStation,
             Departure = dto.Departure,
             Arrival = dto.Departure.AddMinutes(trainRoute.EstimatedMinutes),
-            CoachPrice = trainRoute.CoachPrice,
-            FirstClassPrice = trainRoute.FirstClassPrice,
-            RoomletPrice = trainRoute.RoomletPrice,
-            SleeperPrice = trainRoute.SleeperPrice,
         };
+        createdTrip.CalculatePricing(trainRoute);
 
         trips.Add(createdTrip);
         dataContext.SaveChanges();
@@ -195,6 +191,51 @@ public class TripsController : ControllerBase
         return CreatedAtAction(nameof(GetTripById), new { id = tripDto.Id }, tripDto);
     }
 
+    [HttpPost]
+    [Route("batch")]
+    [Authorize(Roles = RoleNames.Admin)]
+    public ActionResult CreateTripsBatch([FromBody] CreateTripDto[] dtos)
+    {
+        var createdTrips = new List<Trip>();
+
+        foreach(var dto in dtos)
+        {
+            var train = trains.FirstOrDefault(x => x.Id == dto.TrainId);
+            var fromStation = stations.FirstOrDefault(x => x.Id == dto.FromStationId);
+            var toStation = stations.FirstOrDefault(x => x.Id == dto.ToStationId);
+            if (InvalidCreateTripDto(dto)
+            || train == null
+            || fromStation == null
+            || toStation == null)
+            {
+                return BadRequest();
+            }
+            var trainRoute = trainRoutes.GetTrainRouteOrDefault(fromStation, toStation);
+
+            if (trainRoute == null)
+            {
+                return BadRequest();
+            }
+
+            var createdTrip = new Trip
+            {
+                Train = train,
+                FromStation = fromStation,
+                ToStation = toStation,
+                Departure = dto.Departure,
+                Arrival = dto.Departure.AddMinutes(trainRoute.EstimatedMinutes),
+            };
+            createdTrip.CalculatePricing(trainRoute);
+
+            createdTrips.Add(createdTrip);
+        }
+
+        trips.AddRange(createdTrips);
+        dataContext.SaveChanges();
+
+        return Ok(); // All of the trips were successfully created. However a Created status code might be inappropriate since those must lead to a specific URI
+    }
+
     [HttpPut("{id}")]
     [Authorize(Roles = RoleNames.Admin)]
     public ActionResult<TripWithCapacityDto> UpdateTrip([FromBody] CreateTripDto dto, [FromRoute] int id)
@@ -218,8 +259,7 @@ public class TripsController : ControllerBase
             return BadRequest();
         }
 
-        var trainRoute = trainRoutes.FirstOrDefault(x => (x.StationA == fromStation && x.StationB == toStation)
-                                                         || (x.StationB == fromStation && x.StationA == toStation));
+        var trainRoute = trainRoutes.GetTrainRouteOrDefault(fromStation, toStation);
 
         if (trainRoute == null)
         {
@@ -230,10 +270,7 @@ public class TripsController : ControllerBase
         trip.FromStation = fromStation;
         trip.ToStation = toStation;
         trip.Arrival = dto.Departure.AddMinutes(trainRoute.EstimatedMinutes);
-        trip.CoachPrice = trainRoute.CoachPrice;
-        trip.FirstClassPrice = trainRoute.FirstClassPrice;
-        trip.RoomletPrice = trainRoute.RoomletPrice;
-        trip.SleeperPrice = trainRoute.SleeperPrice;
+        trip.CalculatePricing(trainRoute);
 
         dataContext.SaveChanges();
 

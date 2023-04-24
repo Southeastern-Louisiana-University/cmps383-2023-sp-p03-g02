@@ -1,13 +1,28 @@
 
 export type TrainStationDto = {
+    stations: TrainStationDto[];
     id: number;
     name: string;
     address: string;
     managerId?: number;
 }
 
+export type CreateStationDto = {
+    name: string;
+    address: string;
+}
+
 export type TrainDto = {
     id: number,
+    name: string,
+    status: string,
+    coachCapacity: string,
+    firstClassCapacity: string,
+    roomletCapacity: string,
+    sleeperCapacity: string,
+}
+
+export type CreateTrainDto = {
     name: string,
     status: string,
     coachCapacity: string,
@@ -27,6 +42,13 @@ export type TripDto = {
     firstClassPrice: number;
     roomletPrice: number;
     sleeperPrice: number;
+}
+
+export type CreateTripDto = {
+    trainId: number;
+    fromStationId: number;
+    toStationId: number;
+    departure: string;
 }
 
 export type TripWithCapacityDto = TripDto & {
@@ -66,4 +88,29 @@ export type CreatePassengerDto = {
     firstName: string;
     lastName: string;
     birthday: string;
+}
+
+export type TrainRouteDto = {
+    distanceMiles: number;
+    estimatedMinutes: number;
+    geographyMultiplier: number;
+    stationA: TrainStationDto;
+    stationB: TrainStationDto;
+    coachPrice: number;
+    firstClassPrice: number;
+    roomletPrice: number;
+    sleeperPrice: number;
+}
+    
+export type UserDto = {
+    id: number;
+    userName: string;
+    role: string;
+}
+
+export type CreateUserDto = {
+    id: number;
+    userName: string;
+    password: string;
+    roles: string;
 }

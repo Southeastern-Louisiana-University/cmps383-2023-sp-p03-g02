@@ -1,4 +1,6 @@
+import { format } from "date-fns";
+
 export const toSimpleISO = (date: string | Date) => {
     if(typeof date === "string") date = new Date(date);
-    return date.toISOString().substring(0, 10);
+    return format(date, "yyyy-MM-dd");
 };

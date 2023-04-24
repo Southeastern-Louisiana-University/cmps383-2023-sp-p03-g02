@@ -1,0 +1,13 @@
+.ui.container.trips-scheduling {
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+}
+
+.trips-scheduling .station-selection {
+    width: 25em;
+}
+
+.trips-scheduling div.ui.top.attached.header {
+    flex-grow: 0;
+}

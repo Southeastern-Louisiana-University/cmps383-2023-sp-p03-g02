@@ -1,5 +1,5 @@
 import { Field, Form, Formik, FormikHelpers } from "formik";
-import React, { ReactElement, useEffect, useState } from "react";
+import React, { ReactElement, useState } from "react";
 import { Button, Icon, Input, Modal, ModalProps } from "semantic-ui-react";
 import useSubscription, { notify } from "../hooks/useSubscription";
 import { CreateUserDto } from "../types/authentication";

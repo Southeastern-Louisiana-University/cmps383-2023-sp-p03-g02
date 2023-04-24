@@ -11,12 +11,6 @@ const TrainTwo = require('../../assets/choochoo.jpg');
 export function HomePage(): React.ReactElement {
     const user = useUser();
 
-    /*
-    * need to change route to
-    * /route-planning/${fromStationId}/${toStationId}/${departure}/${arrival}/${travelClass}
-    * but for now....its fine lol
-    */
-
     return (
         <div className='home-page'>
             

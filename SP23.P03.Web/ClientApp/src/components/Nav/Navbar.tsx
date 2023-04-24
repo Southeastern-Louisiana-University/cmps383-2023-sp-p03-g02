@@ -7,6 +7,7 @@ import { openLoginModal } from "../LoginModal";
 import "./NavbarStyling.css"; 
 import ExtraIcon from "../ExtraIcon";
 import { openSignupModal } from "../SignupModal";
+import { isUserAdmin } from "../../helpers/user";
 
 export function Navbar() : React.ReactElement {
     const user = useUser();
@@ -38,6 +39,44 @@ export function Navbar() : React.ReactElement {
                     as={NavLink}
                     to={routes.boardingpasses}
                 />
+
+                <Menu.Menu>
+                    <Dropdown
+                        item
+                        trigger={
+                            <span><Icon name="ticket alternate"/>Additional</span>
+                        }
+                        icon={
+                            <>
+                                <Icon name="caret down" />
+                            </>
+                        }
+                    >
+                        <Dropdown.Menu>
+                            <Dropdown.Item 
+                                text="Trains"
+                                icon="train"
+                                as={NavLink}
+                                to={routes.trains}
+                            />
+                            <Dropdown.Item
+                                text="Train Stations"
+                                icon="map signs"
+                                as={NavLink}
+                                to={routes.trainStation_listing}
+                            />
+                            {isUserAdmin(user) && (
+                                <Dropdown.Item
+                                    text="Trip Scheduling"
+                                    icon="calendar alternate outline"
+                                    as={NavLink}
+                                    to={routes.trips_scheduling}
+                                />
+                            )}
+                        </Dropdown.Menu>
+
+                    </Dropdown>
+                </Menu.Menu>
 
                 {user ? (
                     <Menu.Menu position="right">
@@ -86,7 +125,6 @@ export function Navbar() : React.ReactElement {
                 )}
                 
             </Menu>
-
         </nav>
     );
 }
