@@ -2,27 +2,25 @@ import React, { useState } from "react";
 import { Button, Confirm, Container, Header, Icon, Input, Modal, Segment, Table } from "semantic-ui-react";
 import './TrainListingPage.css';
 import { CreateTrainDto, TrainDto } from "../../types/types";
-import TrainDataService from "../../hooks/api/TrainDataService";
+import useTrains, { TrainsService } from "../../hooks/api/TrainDataService";
 import { useUser } from "../../components/AuthProvider";
-import useFindTrain from "../../hooks/api/useFindTrain";
 import { Field, Form, Formik } from "formik";
 import { isUserAdmin } from "../../helpers/user";
 
 type TrainActionProps = {
-    trains: TrainDto[];
+    trains: TrainsService;
     train: TrainDto;
 }
 
 export function TrainListingPage(): React.ReactElement<TrainActionProps> {
     const user = useUser();
     const isAdmin = isUserAdmin(user);
-    const train = TrainDataService(user);
-    const trains = useFindTrain();
+    const trains = useTrains();
 
     const [open, setOpen] = useState(false);
 
     const onCreate = async (values: CreateTrainDto) => {
-        await train.createTrain(values);
+        await trains.createTrain(values);
         setOpen(false);
     }
     
@@ -42,118 +40,120 @@ export function TrainListingPage(): React.ReactElement<TrainActionProps> {
         <Segment attached>
         <Table columns={6}>
             <Table.Header className="ui center aligned">
-                <Table.HeaderCell> Name </Table.HeaderCell>
-                <Table.HeaderCell> Status </Table.HeaderCell>
-                <Table.HeaderCell> Coach Capacity </Table.HeaderCell>
-                <Table.HeaderCell> First Class Capacity </Table.HeaderCell>
-                <Table.HeaderCell> Roomlet Capacity </Table.HeaderCell>
-                <Table.HeaderCell> Sleeper Capacity </Table.HeaderCell>
+                <Table.Row>
+                    <Table.HeaderCell> Name </Table.HeaderCell>
+                    <Table.HeaderCell> Status </Table.HeaderCell>
+                    <Table.HeaderCell> Coach Capacity </Table.HeaderCell>
+                    <Table.HeaderCell> First Class Capacity </Table.HeaderCell>
+                    <Table.HeaderCell> Roomlet Capacity </Table.HeaderCell>
+                    <Table.HeaderCell> Sleeper Capacity </Table.HeaderCell>
 
-                { isAdmin ? (
-                    <>
-                    <Table.HeaderCell>
-                    <Formik initialValues={initialValues} onSubmit={onCreate}>
-                    <Modal
-                        as={Form}
-                        trigger={
-                            <Button positive compact floated="right">
-                                <Icon name="plus" /> Create
-                            </Button>
-                        }
-                        onClose={() => setOpen(false)}
-                        onOpen={() => setOpen(true)}
-                        open={open}
-                        onConfirm={onCreate}
-                        className="create"
-                    >  
-                        <div>
-                            <h2> Add Train </h2>
+                    { isAdmin ? (
+                        <>
+                        <Table.HeaderCell>
+                        <Formik initialValues={initialValues} onSubmit={onCreate}>
+                        <Modal
+                            as={Form}
+                            trigger={
+                                <Button positive compact floated="right">
+                                    <Icon name="plus" /> Create
+                                </Button>
+                            }
+                            onClose={() => setOpen(false)}
+                            onOpen={() => setOpen(true)}
+                            open={open}
+                            onConfirm={onCreate}
+                            className="trains create"
+                        >  
                             <div>
-                                <div className="form-group">
-                                    <label> Name </label>
-                                    <br/>
-                                    <Field as={Input} id="name" name="name" />
-                                </div>
-                                <br/>
-                                <div className="form-group">
-                                    <label> Status </label>
-                                    <br/>
-                                    <Field as={Input} id="status" name="status" type="text" />
-                                </div>
-                                <br/>
-                                <div className="form-group">
-                                    <label> Coach Capacity </label>
-                                    <br/>
-                                    <Field as={Input} id="coachCapacity" name="coachCapacity" />
-                                </div>
-                                <br/>
-                                <div className="form-group">
-                                    <label> First Class Capacity </label>
-                                    <br/>
-                                    <Field as={Input} id="firstClassCapacity" name="firstClassCapacity" />
-                                </div>
-                                <br/>
-                                <div className="form-group">
-                                    <label> Roomlet Capacity </label>
-                                    <br/>
-                                    <Field as={Input} id="roomletCapacity" name="roomletCapacity" />
-                                </div>
-                                <br/>
-                                <div className="form-group">
-                                    <label> Sleeper Capacity </label>
-                                    <br/>
-                                    <Field as={Input} id="sleeperCapacity" name="sleeperCapacity" />
-                                </div>
-                                <br/>
+                                <h2> Add Train </h2>
                                 <div>
-                                    <Button negative type="button" onClick={() => setOpen(false)}> Close </Button>
-                                    <Button positive type="submit" onConfirm={onCreate}> Submit </Button>
+                                    <div className="form-group">
+                                        <label> Name </label>
+                                        <br/>
+                                        <Field as={Input} id="name" name="name" />
+                                    </div>
+                                    <br/>
+                                    <div className="form-group">
+                                        <label> Status </label>
+                                        <br/>
+                                        <Field as={Input} id="status" name="status" type="text" />
+                                    </div>
+                                    <br/>
+                                    <div className="form-group">
+                                        <label> Coach Capacity </label>
+                                        <br/>
+                                        <Field as={Input} id="coachCapacity" name="coachCapacity" />
+                                    </div>
+                                    <br/>
+                                    <div className="form-group">
+                                        <label> First Class Capacity </label>
+                                        <br/>
+                                        <Field as={Input} id="firstClassCapacity" name="firstClassCapacity" />
+                                    </div>
+                                    <br/>
+                                    <div className="form-group">
+                                        <label> Roomlet Capacity </label>
+                                        <br/>
+                                        <Field as={Input} id="roomletCapacity" name="roomletCapacity" />
+                                    </div>
+                                    <br/>
+                                    <div className="form-group">
+                                        <label> Sleeper Capacity </label>
+                                        <br/>
+                                        <Field as={Input} id="sleeperCapacity" name="sleeperCapacity" />
+                                    </div>
+                                    <br/>
+                                    <div>
+                                        <Button negative type="button" onClick={() => setOpen(false)}> Close </Button>
+                                        <Button positive type="submit" onConfirm={onCreate}> Submit </Button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </Modal>
-                    </Formik>
-                    </Table.HeaderCell>
-                    </>
-                ) : (
-                    <></>
-                )}
-            </Table.Header>
-            {trains.map(train => (
-                <>
-                <Table.Body className="ui center aligned">
-                    <Table.Cell>
-                        {train.name}
-                    </Table.Cell>
-                    <Table.Cell>
-                        {train.status}
-                    </Table.Cell>
-                    <Table.Cell>
-                        {train.coachCapacity}
-                    </Table.Cell>
-                    <Table.Cell>
-                        {train.firstClassCapacity}
-                    </Table.Cell>
-                    <Table.Cell>
-                        {train.roomletCapacity}
-                    </Table.Cell>
-                    <Table.Cell>
-                        {train.sleeperCapacity}
-                    </Table.Cell>
-
-                    {isAdmin ? (
-                        <>
-                        <Table.Cell singleLine>
-                            <TrainDelete trains={trains} train={train} key={train.id} />
-                            <TrainEdit trains={trains} train={train} key={train.id} />
-                        </Table.Cell>
+                        </Modal>
+                        </Formik>
+                        </Table.HeaderCell>
                         </>
                     ) : (
                         <></>
                     )}
-                </Table.Body>
-                </>
-            ))}
+                </Table.Row>
+            </Table.Header>
+            <Table.Body>
+                {trains.trains.map(train => (
+                    <Table.Row className="ui center aligned" key={train.id}>
+                        <Table.Cell>
+                            {train.name}
+                        </Table.Cell>
+                        <Table.Cell>
+                            {train.status}
+                        </Table.Cell>
+                        <Table.Cell>
+                            {train.coachCapacity}
+                        </Table.Cell>
+                        <Table.Cell>
+                            {train.firstClassCapacity}
+                        </Table.Cell>
+                        <Table.Cell>
+                            {train.roomletCapacity}
+                        </Table.Cell>
+                        <Table.Cell>
+                            {train.sleeperCapacity}
+                        </Table.Cell>
+
+                        {isAdmin ? (
+                            <>
+                            <Table.Cell singleLine>
+                                <TrainDelete trains={trains} train={train} />
+                                <TrainEdit trains={trains} train={train} />
+                            </Table.Cell>
+                            </>
+                        ) : (
+                            <></>
+                        )}
+                    </Table.Row>
+                ))}
+            </Table.Body>
             </Table>
             </Segment>
             </Container>
@@ -166,19 +166,12 @@ export function TrainListingPage(): React.ReactElement<TrainActionProps> {
 *
 */
 
-const TrainDelete: React.FC<TrainActionProps> = ({train}) => {
-    const user = useUser();
-    const trainService = TrainDataService(user);
+const TrainDelete: React.FC<TrainActionProps> = ({trains, train}) => {
     const [open, setOpen] = useState(false);
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
     const onDelete = async () => {
-        await trainService.deleteTrain(train.id);
+        await trains.deleteTrain(train.id);
         setOpen(false);
-        refreshPage();
     }
 
     return (
@@ -198,18 +191,12 @@ const TrainDelete: React.FC<TrainActionProps> = ({train}) => {
     )
 }
 
-const TrainEdit: React.FC<TrainActionProps> = ({train}) => {
-    const user = useUser();
-    const trainService = TrainDataService(user);
+const TrainEdit: React.FC<TrainActionProps> = ({ trains, train }) => {
     const [open, setOpen] = useState(false);
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
     const onEdit = async (values: CreateTrainDto) => {
-        await trainService.updateTrain(train.id, values);
-        refreshPage();
+        await trains.updateTrain(train.id, values);
+        setOpen(false);
     }
 
     const initialValues: CreateTrainDto = {
@@ -234,7 +221,7 @@ const TrainEdit: React.FC<TrainActionProps> = ({train}) => {
                 onOpen={() => setOpen(true)}
                 onClose={() => setOpen(false)}
                 onConfirm={onEdit}
-                className="create"
+                className="trains create"
             >
                 <div>
                             <h2> Add Train </h2>

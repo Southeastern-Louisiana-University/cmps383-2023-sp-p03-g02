@@ -1,18 +1,17 @@
 import { useEffect, useState } from "react";
-import { User } from "../../types/authentication";
 import { TrainDto, CreateTrainDto } from "../../types/types";
 import axios from "axios";
 
-const TrainDataService = (user: User | null) => {
-    const [train, setTrain] = useState<TrainDto[]>([]);
+const useTrains = () => {
+    const [trains, setTrains] = useState<TrainDto[]>([]);
 
     const fetchTrain = async () =>
         axios.get<TrainDto[]>(`/api/trains`)
-             .then(response => setTrain(response.data))
+             .then(response => setTrains(response.data))
              .catch(console.error);
 
     const createTrain = async (createTrainDto: CreateTrainDto) =>
-        axios.post<TrainDto>(`/api/stations`, createTrainDto)
+        axios.post<TrainDto>(`/api/trains`, createTrainDto)
              .then(() => fetchTrain())
              .catch(error => {
                 alert("There was a problem creating the train");
@@ -36,16 +35,16 @@ const TrainDataService = (user: User | null) => {
              })
 
     useEffect (() => {
-        axios.get<TrainDto[]>(`/api/strains`)
+        axios.get<TrainDto[]>(`/api/trains`)
              .then((response) => {
-                setTrain(response.data);
+                setTrains(response.data);
                 console.log(response.data);
              })
-    }, [user]);
+    }, []);
 
-    return { train, createTrain, updateTrain, deleteTrain };
+    return { trains, createTrain, updateTrain, deleteTrain };
 }
 
-export type train = ReturnType<typeof TrainDataService>
+export type TrainsService = ReturnType<typeof useTrains>
 
-export default TrainDataService;
+export default useTrains;

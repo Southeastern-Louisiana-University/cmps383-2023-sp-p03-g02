@@ -16,21 +16,21 @@
 }
 */
 
-h2 {
+.trains h2 {
     padding-bottom: 1em !important;
     border-bottom: 1px solid !important;
 }
 
-form input[type="text"] {
+.trains form input[type="text"] {
   border-bottom: solid 1px black !important;
   height: 2em !important;
   padding: 1em !important;
 }
 
-form label {
+.trains form label {
   font-size: large;
 }
 
-.table-width {
+.trains .table-width {
     max-width: 75%;    
 }

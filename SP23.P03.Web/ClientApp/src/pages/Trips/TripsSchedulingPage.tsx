@@ -188,7 +188,7 @@ const TripScheduler: React.FC = () => {
                                         <Segment attached="bottom">
                                             <div>
                                                 <label htmlFor="initialDeparture">
-                                                    Initial Departure
+                                                    <b>Initial Departure</b>
                                                 </label>
                                             </div>
                                             <Field

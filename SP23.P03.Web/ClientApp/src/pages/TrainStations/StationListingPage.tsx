@@ -1,33 +1,26 @@
 import React, { useState } from 'react';
 import { Button, Confirm, Container, Header, Icon, Input, Modal, Segment, Table } from 'semantic-ui-react';
-import useFindStation from '../../hooks/api/useFindStation';
 import './StationListingPage.css';
 import { useUser } from '../../components/AuthProvider';
 import { CreateStationDto, TrainStationDto } from '../../types/types';
-import StationDataService from '../../hooks/api/StationDataService';
+import useStations, { TrainStationsService } from '../../hooks/api/StationDataService';
 import { Field, Form, Formik } from 'formik';
 import { isUserAdmin } from '../../helpers/user';
 
 type StationActionProps = {
-    stations: TrainStationDto[];
+    stations: TrainStationsService;
     station: TrainStationDto;
 }
 
 export function StationListingPage(): React.ReactElement<StationActionProps> {
     const user = useUser();
     const isAdmin = isUserAdmin(user); //thanks :)
-    const stations = useFindStation();
-    const trainStation = StationDataService(user);
+    const stations = useStations();
     const [open, setOpen] = useState(false);
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
     const onCreate = async (values: CreateStationDto) => {
-            await trainStation.createStation(values);
+            await stations.createStation(values);
             setOpen(false);
-            refreshPage();
     }
 
     const initialValues: CreateStationDto = {
@@ -42,69 +35,71 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
             <Segment attached>
                 <Table columns={2}>
                     <Table.Header className="ui center aligned">
-                        <Table.HeaderCell> Station </Table.HeaderCell>
-                        <Table.HeaderCell> Address </Table.HeaderCell>
+                        <Table.Row>
+                            <Table.HeaderCell> Station </Table.HeaderCell>
+                            <Table.HeaderCell> Address </Table.HeaderCell>
 
-                        { isAdmin ? (
-                            <>
-                            <Table.HeaderCell>
-                            <Formik initialValues={initialValues} onSubmit={onCreate}>
-                                <Modal
-                                    as={Form}
-                                    trigger={
-                                        <Button positive compact floated='right'>
-                                            <Icon name="plus" /> Create
-                                        </Button>
-                                    }
-                                    className="modal-content"
-                                    onClose={() => setOpen(false)}
-                                    onOpen={() => setOpen(true)}
-                                    open={open}
-                                    onConfirm={onCreate}
-                                >
-
-                                <div className="center-form">
-                                    <h2> Add Station </h2>
-                                        <div>
-                                            <label><b> Station </b></label>
-                                            <Field as={Input} id="name" name="name" />
-                                        </div>
-                                        <br/>
-                                        <div>
-                                            <label><b> Address </b></label>
-                                            <Field as={Input} id="address" name="address" />
-                                        </div>
-                                        <br/>
-                                        <Button negative type="button" onClick={() => setOpen(false)}> Close </Button>
-                                        <Button type="submit" positive onConfirm={onCreate}> Submit </Button>
-                                </div>
-                                </Modal>
-                            </Formik>
-                            </Table.HeaderCell>
-                            </>
-                        ) : (
-                            <></>  
-                        )}
-                    </Table.Header>
-                    {stations.map(station => (
-                        <>
-                        <Table.Body className="ui center aligned">
-                            <Table.Cell> {station.name} </Table.Cell>
-                            <Table.Cell> {station.address} </Table.Cell>
-
-                            {isAdmin ? (
+                            { isAdmin ? (
                                 <>
-                                <Table.Cell singleLine>
-                                    <StationDelete stations={stations} station={station} key={station.id} />
-                                    <StationEdit stations={stations} station={station} key={station.id} />
-                                </Table.Cell>
+                                <Table.HeaderCell>
+                                <Formik initialValues={initialValues} onSubmit={onCreate}>
+                                    <Modal
+                                        as={Form}
+                                        trigger={
+                                            <Button positive compact floated='right'>
+                                                <Icon name="plus" /> Create
+                                            </Button>
+                                        }
+                                        className="stations modal-content"
+                                        onClose={() => setOpen(false)}
+                                        onOpen={() => setOpen(true)}
+                                        open={open}
+                                        onConfirm={onCreate}
+                                    >
+
+                                    <div className="center-form">
+                                        <h2> Add Station </h2>
+                                            <div>
+                                                <label><b> Station </b></label>
+                                                <Field as={Input} id="name" name="name" />
+                                            </div>
+                                            <br/>
+                                            <div>
+                                                <label><b> Address </b></label>
+                                                <Field as={Input} id="address" name="address" />
+                                            </div>
+                                            <br/>
+                                            <Button negative type="button" onClick={() => setOpen(false)}> Close </Button>
+                                            <Button type="submit" positive onConfirm={onCreate}> Submit </Button>
+                                    </div>
+                                    </Modal>
+                                </Formik>
+                                </Table.HeaderCell>
                                 </>
                             ) : (
-                                <></>
+                                <></>  
                             )}
-                        </Table.Body>
-                        </>
-                    ))}
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {stations.stations.map(station => (
+                            <Table.Row className="ui center aligned" key={station.id}>
+                                <Table.Cell> {station.name} </Table.Cell>
+                                <Table.Cell> {station.address} </Table.Cell>
+
+                                {isAdmin ? (
+                                    <>
+                                    <Table.Cell singleLine>
+                                        <StationDelete stations={stations} station={station} />
+                                        <StationEdit stations={stations} station={station} />
+                                    </Table.Cell>
+                                    </>
+                                ) : (
+                                    <></>
+                                )}
+                            </Table.Row>
+                        ))}
+                    </Table.Body>
                 </Table>
             </Segment>
         </Container>
@@ -117,19 +112,12 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
 *
 */
 
-const StationDelete: React.FC<StationActionProps> = ({station}) => {
-    const user = useUser();
-    const trainStation = StationDataService(user);
+const StationDelete: React.FC<StationActionProps> = ({ stations, station }) => {
     const [open, setOpen] = useState(false);
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
     const onDelete = async () => {
-        await trainStation.deleteStation(station.id);
+        await stations.deleteStation(station.id);
         setOpen(false);
-        refreshPage();
     }
 
     return (
@@ -149,18 +137,12 @@ const StationDelete: React.FC<StationActionProps> = ({station}) => {
     )
 }
 
-const StationEdit: React.FC<StationActionProps> = ({station}) => {
-    const user = useUser();
-    const trainStation = StationDataService(user);
+const StationEdit: React.FC<StationActionProps> = ({ stations, station }) => {
     const [open, setOpen] = useState(false);
 
-    function refreshPage() {
-        window.location.reload();
-    }
-
     const onEdit = async (values: CreateStationDto) => {
-        await trainStation.updateStation(station.id, values);
-        refreshPage();
+        await stations.updateStation(station.id, values);
+        setOpen(false);
     }
 
     const initialValues: CreateStationDto = {
@@ -181,7 +163,7 @@ const StationEdit: React.FC<StationActionProps> = ({station}) => {
                 onOpen={() => setOpen(true)}
                 open={open}
                 onConfirm={onEdit}
-                className="modal-content"
+                className="stations modal-content"
             >
                 <div className="center-form">
                     <h2> Edit Station </h2>

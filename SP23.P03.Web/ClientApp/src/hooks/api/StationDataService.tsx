@@ -1,13 +1,12 @@
 import axios from "axios";
 import { CreateStationDto, TrainStationDto } from "../../types/types";
 import { useEffect, useState } from "react";
-import { User } from "../../types/authentication";
 
-const StationDataService = (user: User | null) => {
-    const [station, setStation] = useState<TrainStationDto[]>([]);
+const useStations = () => {
+    const [stations, setStations] = useState<TrainStationDto[]>([]);
 
     const fetchStations = async () => axios.get<TrainStationDto[]>(`/api/stations`)
-        .then(response => setStation(response.data))
+        .then(response => setStations(response.data))
         .catch(console.error);
     
     const createStation = async (createStationDto: CreateStationDto) =>
@@ -37,14 +36,14 @@ const StationDataService = (user: User | null) => {
     useEffect (() => {
         axios.get<TrainStationDto[]>(`/api/stations`)
              .then((response) => {
-                setStation(response.data);
+                setStations(response.data);
                 console.log(response.data);
         });
-    }, [user]);
+    }, []);
      
-    return { station, createStation, updateStation, deleteStation };
+    return { stations, createStation, updateStation, deleteStation };
 }
 
-export type trainStation = ReturnType<typeof StationDataService>;
+export type TrainStationsService = ReturnType<typeof useStations>;
 
-export default StationDataService;
+export default useStations;
