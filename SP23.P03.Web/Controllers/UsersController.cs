@@ -55,4 +55,43 @@ public class UsersController : ControllerBase
             UserName = newUser.UserName,
         });
     }
+
+    [HttpPost]
+    [Route("signup")]
+    public async Task<ActionResult<UserDto>> Signup(CreateUserDto dto)
+    {
+        using var transaction = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled);
+
+        var newUser = new User
+        {
+            UserName = dto.UserName,
+        };
+        var createResult = await userManager.CreateAsync(newUser, dto.Password);
+        if (!createResult.Succeeded)
+        {
+            return BadRequest();
+        }
+
+        try
+        {
+            var roleResult = await userManager.AddToRolesAsync(newUser, dto.Roles);
+            if (!roleResult.Succeeded)
+            {
+                return BadRequest();
+            }
+        }
+        catch (InvalidOperationException e) when (e.Message.StartsWith("Role") && e.Message.EndsWith("does not exist."))
+        {
+            return BadRequest();
+        }
+
+        transaction.Complete();
+
+        return Ok(new UserDto
+        {
+            Id = newUser.Id,
+            Roles = dto.Roles,
+            UserName = newUser.UserName,
+        });
+    }
 }
