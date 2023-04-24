@@ -35,67 +35,71 @@ export function StationListingPage(): React.ReactElement<StationActionProps> {
             <Segment attached>
                 <Table columns={2}>
                     <Table.Header className="ui center aligned">
-                        <Table.HeaderCell> Station </Table.HeaderCell>
-                        <Table.HeaderCell> Address </Table.HeaderCell>
+                        <Table.Row>
+                            <Table.HeaderCell> Station </Table.HeaderCell>
+                            <Table.HeaderCell> Address </Table.HeaderCell>
 
-                        { isAdmin ? (
-                            <>
-                            <Table.HeaderCell>
-                            <Formik initialValues={initialValues} onSubmit={onCreate}>
-                                <Modal
-                                    as={Form}
-                                    trigger={
-                                        <Button positive compact floated='right'>
-                                            <Icon name="plus" /> Create
-                                        </Button>
-                                    }
-                                    className="modal-content"
-                                    onClose={() => setOpen(false)}
-                                    onOpen={() => setOpen(true)}
-                                    open={open}
-                                    onConfirm={onCreate}
-                                >
-
-                                <div className="center-form">
-                                    <h2> Add Station </h2>
-                                        <div>
-                                            <label><b> Station </b></label>
-                                            <Field as={Input} id="name" name="name" />
-                                        </div>
-                                        <br/>
-                                        <div>
-                                            <label><b> Address </b></label>
-                                            <Field as={Input} id="address" name="address" />
-                                        </div>
-                                        <br/>
-                                        <Button negative type="button" onClick={() => setOpen(false)}> Close </Button>
-                                        <Button type="submit" positive onConfirm={onCreate}> Submit </Button>
-                                </div>
-                                </Modal>
-                            </Formik>
-                            </Table.HeaderCell>
-                            </>
-                        ) : (
-                            <></>  
-                        )}
-                    </Table.Header>
-                    {stations.stations.map(station => (
-                        <Table.Body className="ui center aligned" key={station.id}>
-                            <Table.Cell> {station.name} </Table.Cell>
-                            <Table.Cell> {station.address} </Table.Cell>
-
-                            {isAdmin ? (
+                            { isAdmin ? (
                                 <>
-                                <Table.Cell singleLine>
-                                    <StationDelete stations={stations} station={station} />
-                                    <StationEdit stations={stations} station={station} />
-                                </Table.Cell>
+                                <Table.HeaderCell>
+                                <Formik initialValues={initialValues} onSubmit={onCreate}>
+                                    <Modal
+                                        as={Form}
+                                        trigger={
+                                            <Button positive compact floated='right'>
+                                                <Icon name="plus" /> Create
+                                            </Button>
+                                        }
+                                        className="modal-content"
+                                        onClose={() => setOpen(false)}
+                                        onOpen={() => setOpen(true)}
+                                        open={open}
+                                        onConfirm={onCreate}
+                                    >
+
+                                    <div className="center-form">
+                                        <h2> Add Station </h2>
+                                            <div>
+                                                <label><b> Station </b></label>
+                                                <Field as={Input} id="name" name="name" />
+                                            </div>
+                                            <br/>
+                                            <div>
+                                                <label><b> Address </b></label>
+                                                <Field as={Input} id="address" name="address" />
+                                            </div>
+                                            <br/>
+                                            <Button negative type="button" onClick={() => setOpen(false)}> Close </Button>
+                                            <Button type="submit" positive onConfirm={onCreate}> Submit </Button>
+                                    </div>
+                                    </Modal>
+                                </Formik>
+                                </Table.HeaderCell>
                                 </>
                             ) : (
-                                <></>
+                                <></>  
                             )}
-                        </Table.Body>
-                    ))}
+                        </Table.Row>
+                    </Table.Header>
+                    <Table.Body>
+                        {stations.stations.map(station => (
+                            <Table.Row className="ui center aligned" key={station.id}>
+                                <Table.Cell> {station.name} </Table.Cell>
+                                <Table.Cell> {station.address} </Table.Cell>
+
+                                {isAdmin ? (
+                                    <>
+                                    <Table.Cell singleLine>
+                                        <StationDelete stations={stations} station={station} />
+                                        <StationEdit stations={stations} station={station} />
+                                    </Table.Cell>
+                                    </>
+                                ) : (
+                                    <></>
+                                )}
+                            </Table.Row>
+                        ))}
+                    </Table.Body>
                 </Table>
             </Segment>
         </Container>
