@@ -631,32 +631,86 @@ public static class SeedHelper
             return;
         }
 
-        trains.AddRange(
-            new Train
+        var firstNameList = new List<string>()
+        {
+            "Talbot",
+            "Klein",
+            "Poirrier",
+            "Team02",
+            "Alkadi",
+            "Vidacovich",
+            "Overmier",
+            "SELU",
+            "Roomie",
+            "Lion",
+            "383",
+            "Southeastern",
+        };
+        for(int i = 0; i < 36; i++) firstNameList.Add("EnTrack");
+
+        var lastNameList = new List<string>()
+        {
+            "Train",
+            "Express",
+            "EnTrain",
+            "Train Car",
+            "Railcar",
+            "Wagon",
+        };
+
+        var capacityClassList = new List<int[]>()
+        {
+            new int[]
             {
-                Name = "Hammond Train",
-                Status = "In Use",
-                CoachCapacity = 60,
-                FirstClassCapacity = 30,
-                RoomletCapacity = 10,
-                SleeperCapacity = 10,
+                168,
+                0,
+                0,
+                0,
             },
-            new Train
+            new int[]
             {
-                Name = "Slidell Train",
-                Status = "In Use",
-                CoachCapacity = 90,
-                FirstClassCapacity = 30,
+                84,
+                42,
+                0,
+                0,
             },
-            new Train
+            new int[]
             {
-                Name = "NOLA Train",
-                Status = "Out",
-                CoachCapacity = 50,
-                FirstClassCapacity = 10,
-                RoomletCapacity = 20,
-                SleeperCapacity = 30,
+                42,
+                62,
+                0,
+                0,
+            },
+            new int[]
+            {
+                0,
+                42,
+                4,
+                10,
+            },
+        };
+
+        var rand = new Random(2383);
+
+        var trainsToCreate = new List<Train>();
+
+        foreach (var firstName in firstNameList)
+        {
+            var lastName = lastNameList[rand.Next(lastNameList.Count)];
+            var capacityClass = capacityClassList[rand.Next(capacityClassList.Count)];
+
+            trainsToCreate.Add(new Train
+            {
+                Name = $"{firstName} {lastName} {rand.Next(1000)}",
+                Status = "In Use",
+                CoachCapacity = capacityClass[0],
+                FirstClassCapacity = capacityClass[1],
+                RoomletCapacity = capacityClass[2],
+                SleeperCapacity = capacityClass[3],
             });
+        }
+
+        trains.AddRange(trainsToCreate);
 
         await dataContext.SaveChangesAsync();
 
@@ -753,8 +807,8 @@ public static class SeedHelper
         var d = stations.ToDictionary(x => x.Name);
 
         var trains = dataContext.Set<Train>();
-        var hammondTrain = await trains.FirstAsync(x => x.Name == "Hammond Train");
-        var slidellTrain = await trains.FirstAsync(x => x.Name == "Slidell Train");
+        var firstTrain = await trains.FirstAsync();
+        var secondTrain = await trains.Skip(1).FirstAsync();
 
         var trainRoutes = dataContext.Set<TrainRoute>().AsEnumerable();
 
@@ -787,7 +841,7 @@ public static class SeedHelper
             var nextTime = currentTime.AddMinutes(currentRoute.EstimatedMinutes);
             var trip = new Trip
             {
-                Train = hammondTrain,
+                Train = firstTrain,
                 FromStation = prevStation,
                 ToStation = currentStation,
                 Departure = currentTime,
@@ -809,7 +863,7 @@ public static class SeedHelper
             var nextTime = currentTime.AddMinutes(currentRoute.EstimatedMinutes);
             var trip = new Trip
             {
-                Train = slidellTrain,
+                Train = secondTrain,
                 FromStation = prevStation,
                 ToStation = currentStation,
                 Departure = currentTime,
