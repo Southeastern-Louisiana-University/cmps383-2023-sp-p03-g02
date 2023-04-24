@@ -9,8 +9,10 @@ import { Navbar } from './components/Nav/Navbar';
 import { Footer } from './components/Footer/Footer';
 import './App.css';
 import LoginModal from './components/LoginModal';
+import SignupModal from './components/SignupModal';
 import PassengersPage from './pages/Passengers/PassengersPage';
 import BoardingPassesPage from './pages/BoardingPasses/BoardingPassesPage';
+import { AccountManage } from './pages/Account/AccountManage';
 import { TrainListingPage } from './pages/Trains/TrainListingPage';
 import TripsSchedulingPage from './pages/Trips/TripsSchedulingPage';
 
@@ -18,12 +20,14 @@ export function App() : React.ReactElement {
   return (
     <div className="page-container"
     style={{backgroundColor: '#222222'}}>
+        <SignupModal />
         <LoginModal />
         <Navbar />
   
         <div className="page-content">
           <Routes>
             <Route path={routes.home} element={<HomePage />} />
+            <Route path={routes.account} element={<AccountManage />} />
             <Route path={routes.route_planning} element={<RoutePlanning />} />
             <Route path={routes.trainStation_listing} element={<StationListingPage />} />
             <Route path={routes.passengers} element={<PassengersPage />} />
