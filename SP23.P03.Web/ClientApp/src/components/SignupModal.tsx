@@ -10,25 +10,6 @@ export const openSignupModal = () => {
 }
 
 function Password(): ReactElement {
-    const [password, setPassword] = useState({
-        password: '',
-        confirmPassword: ''
-    })
-
-    const [match, setMatch] = useState(false);
-
-    const inputChange: (event: React.ChangeEvent<HTMLInputElement>) => void = (event) => {
-        const { value, name } = event.target;
-        setPassword({
-            ...password,
-            [name]: value
-        }) 
-    }
-
-    useEffect(() => {
-        setMatch(!!password.password && password.confirmPassword === password.confirmPassword)
-    }, [password])
-
     return (
         <div>
             <div className="field-label">
@@ -38,7 +19,7 @@ function Password(): ReactElement {
             <div className="field-label">
                 <label htmlFor="confirm-password">Confirm Password</label>
             </div>
-            <Field as={Input} onChange={inputChange} id="confirmPassword" name="confirmPassword" type="password" className="field" />
+            <Field as={Input} id="confirmPassword" name="confirmPassword" type="password" className="field" />
         </div>
     )
 }
